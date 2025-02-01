@@ -7,12 +7,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="addons\settings_inspector\lib\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Remove="addons\settings_inspector\lib\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="addons\settings_inspector\lib\LgkProductions.Inspector\src\LgkProductions.Inspector.csproj" />
+    <PackageReference Include="LgkProductions.Inspector" Version="0.1.0-alpha" />
   </ItemGroup>
 </Project>

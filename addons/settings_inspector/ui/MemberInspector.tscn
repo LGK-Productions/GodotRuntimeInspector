@@ -1,6 +1,9 @@
-[gd_scene format=3 uid="uid://edq00o2jrvbw"]
+[gd_scene load_steps=3 format=3 uid="uid://edq00o2jrvbw"]
 
-[node name="PropertyInspector" type="Control"]
+[ext_resource type="Script" path="res://addons/settings_inspector/src/MemberInspector.cs" id="1_pm27f"]
+[ext_resource type="PackedScene" uid="uid://b2ppdbs2nh0l" path="res://addons/settings_inspector/ui/member-inputs/LineInput.tscn" id="2_5gchd"]
+
+[node name="PropertyInspector" type="Control" node_paths=PackedStringArray("_label", "_inputContainer")]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 3
 anchors_preset = 15
@@ -9,6 +12,10 @@ anchor_bottom = 1.0
 offset_bottom = -607.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_pm27f")
+_label = NodePath("MarginContainer/HBoxContainer/MarginContainer/Label")
+_inputContainer = NodePath("MarginContainer/HBoxContainer/InputPlaceholder")
+_lineInputScene = ExtResource("2_5gchd")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -34,23 +41,10 @@ theme_override_constants/margin_left = 30
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
+mouse_filter = 0
 text = "Property Name"
 vertical_alignment = 1
 
 [node name="InputPlaceholder" type="Control" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/InputPlaceholder"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 5
-
-[node name="LineEdit" type="LineEdit" parent="MarginContainer/HBoxContainer/InputPlaceholder/MarginContainer"]
-layout_mode = 2
