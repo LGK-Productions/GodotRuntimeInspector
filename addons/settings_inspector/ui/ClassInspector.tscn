@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=3 uid="uid://lnfsq1glnxff"]
+
+[ext_resource type="PackedScene" uid="uid://cy2pkb0dun2c7" path="res://addons/settings_inspector/ui/ClassInspectorContent.tscn" id="1_42s8w"]
+[ext_resource type="Script" path="res://addons/settings_inspector/src/ClassInspector.cs" id="1_qoeo3"]
+
+[node name="ClassInspector" type="Control" node_paths=PackedStringArray("_classContainer", "_classWindow")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qoeo3")
+_classContainer = NodePath("Container")
+_classWindow = NodePath("Window")
+
+[node name="Window" type="Window" parent="."]
+initial_position = 1
+size = Vector2i(790, 475)
+visible = false
+
+[node name="ClassInspectorContent" parent="Window" instance=ExtResource("1_42s8w")]
+
+[node name="Container" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -395.0
+offset_top = -238.0
+offset_right = 396.0
+offset_bottom = 237.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ClassInspectorContent" parent="Container" instance=ExtResource("1_42s8w")]
+layout_mode = 1

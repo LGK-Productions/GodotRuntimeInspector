@@ -1,0 +1,27 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SettingInspector", "SettingInspector.csproj", "{B60416AF-10D1-4CE4-8798-650BE22B9DAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LgkProductions.Inspector", "addons\settings_inspector\lib\LgkProductions.Inspector\src\LgkProductions.Inspector.csproj", "{F7CF7F8C-B0C6-4B93-A842-4A0CFA913357}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+	Debug|Any CPU = Debug|Any CPU
+	ExportDebug|Any CPU = ExportDebug|Any CPU
+	ExportRelease|Any CPU = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B60416AF-10D1-4CE4-8798-650BE22B9DAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B60416AF-10D1-4CE4-8798-650BE22B9DAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B60416AF-10D1-4CE4-8798-650BE22B9DAD}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{B60416AF-10D1-4CE4-8798-650BE22B9DAD}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{B60416AF-10D1-4CE4-8798-650BE22B9DAD}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{B60416AF-10D1-4CE4-8798-650BE22B9DAD}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{F7CF7F8C-B0C6-4B93-A842-4A0CFA913357}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7CF7F8C-B0C6-4B93-A842-4A0CFA913357}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7CF7F8C-B0C6-4B93-A842-4A0CFA913357}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7CF7F8C-B0C6-4B93-A842-4A0CFA913357}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{F7CF7F8C-B0C6-4B93-A842-4A0CFA913357}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7CF7F8C-B0C6-4B93-A842-4A0CFA913357}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+EndGlobal
