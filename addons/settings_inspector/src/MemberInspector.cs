@@ -48,7 +48,7 @@ public partial class MemberInspector : Node
 		_memberInput = null;
 	}
 
-	private void UpdateMemberInputValue(object instance, InspectorMember member, object? value)
+	private void UpdateMemberInputValue(object instance, MetaDataMember member, object? value)
 	{
 		_memberInput.SetValue(value);
 	}
