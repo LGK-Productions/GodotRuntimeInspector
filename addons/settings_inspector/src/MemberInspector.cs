@@ -27,15 +27,13 @@ public partial class MemberInspector : Node
 	
 	public void SetMember(InspectorElement iElement)
 	{
-		_label.Text = iElement.MemberInfo.Name;
+		_label.Text = iElement.MemberInfo.DisplayName;
 		_label.TooltipText = iElement.MemberInfo.Description;
 		
 		var node = GetInputScene(iElement.MemberInfo.Type).Instantiate<Control>();
 		var memberInput = (IMemberInput)node;
 		_inputContainer.AddChild(node);
-		memberInput.SetValue(iElement.Value);
-		memberInput.SetEditable(!iElement.MemberInfo.IsReadOnly);
-
+		memberInput.SetElement(iElement);
 		iElement.ValueChanged += UpdateMemberInputValue;
 		
 		_inspectorMember = iElement;
@@ -83,6 +81,11 @@ public partial class MemberInspector : Node
 		{
 			if (_inputScenes.Count > 0)
 				return _inputScenes[0];
+		}
+		if (inputType == typeof(int))
+		{
+			if (_inputScenes.Count > 1)
+				return _inputScenes[1];
 		}
 
 		return _defaultInputScene;

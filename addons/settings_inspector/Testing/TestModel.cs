@@ -8,6 +8,9 @@ internal class TestModel
 {
     public bool TestBool { get; set; }
     
+    [Range(0, 10)]
+    public int TestRange {get; set;}
+    
     [Display(Name = "Name")]
     [DisplayName("Name2")]
     public int TestName { get; set; }
