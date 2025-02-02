@@ -11,10 +11,14 @@ internal class TestModel
     [Range(0, 10)]
     public int TestRange {get; set;}
 
-    [Range(0, 10)] public float TestFloat { get; set; } = 3.2f;
+    [BoxGroup("Group1")]
+    [Range(0, 10)] 
+    public float TestFloat { get; set; } = 3.2f;
     
     [Range(0, 10)]
     public float TestDouble { get; set; } = 20f;
+
+    public TestEnum TestEnum { get; set; } = Testing.TestEnum.Element2;
 
     [Display(Name = "Name")]
     [DisplayName("Name2")]
@@ -56,4 +60,11 @@ internal class TestModel
     public int TestGroup1 { get; set; }
 
     public int TestDefaultValue { get; set; } = 42;
+}
+
+public enum TestEnum
+{
+    Element1,
+    Element2,
+    Element3
 }

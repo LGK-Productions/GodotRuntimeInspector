@@ -15,14 +15,14 @@ public interface IMemberInput
 
 	public event Action<object>? OnValueChanged;
 
-    public void SetElement(InspectorElement element)
+    public virtual void SetElement(InspectorElement element)
     {
+        OnSetElement(element);
         SetValue(element.Value);
         SetEditable(!element.MemberInfo.IsReadOnly);
-        OnSetElement(element);
     }
 
-    protected void OnSetElement(InspectorElement element)
+    void OnSetElement(InspectorElement element)
     {
         
     }

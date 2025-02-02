@@ -98,6 +98,12 @@ public partial class MemberInspector : Node
 				return _inputScenes[3];
 		}
 
+		if (inputType.IsEnum)
+		{
+			if (_inputScenes.Count > 4)
+				return _inputScenes[4];
+		}
+
 		return _defaultInputScene;
 	}
 }
