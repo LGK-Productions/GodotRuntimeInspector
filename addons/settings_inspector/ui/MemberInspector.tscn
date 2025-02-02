@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://edq00o2jrvbw"]
+[gd_scene load_steps=9 format=3 uid="uid://edq00o2jrvbw"]
 
 [ext_resource type="Script" path="res://addons/settings_inspector/src/MemberInspector.cs" id="1_pm27f"]
 [ext_resource type="PackedScene" uid="uid://b2ppdbs2nh0l" path="res://addons/settings_inspector/ui/member-inputs/LineInput.tscn" id="2_5gchd"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://7we40js704ij" path="res://addons/settings_inspector/ui/member-inputs/FloatInput.tscn" id="5_brbqu"]
 [ext_resource type="PackedScene" uid="uid://cd6ndmsdo77gu" path="res://addons/settings_inspector/ui/member-inputs/DoubleInput.tscn" id="6_m5iul"]
 [ext_resource type="PackedScene" uid="uid://c71heccs6i6kj" path="res://addons/settings_inspector/ui/member-inputs/EnumInput.tscn" id="7_ke1ls"]
+[ext_resource type="PackedScene" uid="uid://cp2ddnc0xpqtr" path="res://addons/settings_inspector/ui/member-inputs/ComplexInput.tscn" id="8_43fib"]
 
 [node name="PropertyInspector" type="Control" node_paths=PackedStringArray("_label", "_inputContainer")]
 custom_minimum_size = Vector2(0, 40)
@@ -21,7 +22,7 @@ script = ExtResource("1_pm27f")
 _label = NodePath("MarginContainer/HBoxContainer/MarginContainer/Label")
 _inputContainer = NodePath("MarginContainer/HBoxContainer/InputPlaceholder")
 _defaultInputScene = ExtResource("2_5gchd")
-_inputScenes = Array[PackedScene]([ExtResource("3_pcwdr"), ExtResource("4_n2c63"), ExtResource("5_brbqu"), ExtResource("6_m5iul"), ExtResource("7_ke1ls")])
+_inputScenes = Array[PackedScene]([ExtResource("3_pcwdr"), ExtResource("4_n2c63"), ExtResource("5_brbqu"), ExtResource("6_m5iul"), ExtResource("7_ke1ls"), ExtResource("8_43fib")])
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

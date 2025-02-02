@@ -97,11 +97,15 @@ public partial class MemberInspector : Node
 			if (_inputScenes.Count > 3)
 				return _inputScenes[3];
 		}
-
 		if (inputType.IsEnum)
 		{
 			if (_inputScenes.Count > 4)
 				return _inputScenes[4];
+		}
+		if (!inputType.IsPrimitive && inputType != typeof(string))
+		{
+			if (_inputScenes.Count > 5)
+				return _inputScenes[5];
 		}
 
 		return _defaultInputScene;

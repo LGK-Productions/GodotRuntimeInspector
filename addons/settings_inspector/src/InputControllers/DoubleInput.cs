@@ -7,5 +7,5 @@ namespace SettingInspector.addons.settings_inspector.src.InputControllers;
 
 public partial class DoubleInput : NumberInput<double>
 {
-    protected override double StepSize { get; } = double.Epsilon;
+	protected override double StepSize { get; } = double.Epsilon;
 }

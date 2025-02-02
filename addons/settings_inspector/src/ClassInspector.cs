@@ -14,8 +14,8 @@ public partial class ClassInspector : Node
 	[Export] private Label _title;
 	[Export] private Button _confirmButton;
 	[Export] private Button _cancelButton;
-    
-    public static PollingTickProvider TickProvider = new(1);
+	
+	public static PollingTickProvider TickProvider = new(1);
 
 
 	private TaskCompletionSource? _tcs;
@@ -45,7 +45,7 @@ public partial class ClassInspector : Node
 			var memberInspector = _memberScene.Instantiate<MemberInspector>();
 			memberInspector.SetMember(element);
 			
-            //Grouping Logic
+			//Grouping Logic
 			if (element.MemberInfo.GroupName == null)
 				_memberParent.AddChild(memberInspector);
 			else
@@ -62,12 +62,12 @@ public partial class ClassInspector : Node
 					memberGroup.AddMember(memberInspector);
 				}
 			}
-            
-            retrievalActions.Add(() =>
-            {
-                if (memberInspector.TryRetrieveMember(out var value))
-                    element.Value = value;
-            });
+			
+			retrievalActions.Add(() =>
+			{
+				if (memberInspector.TryRetrieveMember(out var value))
+					element.Value = value;
+			});
 		}
 
 		try

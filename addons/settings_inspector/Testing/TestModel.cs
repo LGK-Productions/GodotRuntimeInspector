@@ -10,6 +10,8 @@ internal class TestModel
     
     [Range(0, 10)]
     public int TestRange {get; set;}
+    
+    public VeryComplexType TestVeryComplex { get; set; }
 
     [BoxGroup("Group1")]
     [Range(0, 10)] 
@@ -60,6 +62,12 @@ internal class TestModel
     public int TestGroup1 { get; set; }
 
     public int TestDefaultValue { get; set; } = 42;
+}
+
+public class VeryComplexType
+{
+    public string TestString { get; set; }
+    public int TestInt { get; set; } = 7;
 }
 
 public enum TestEnum
