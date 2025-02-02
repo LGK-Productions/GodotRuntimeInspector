@@ -66,8 +66,7 @@ public partial class MemberInspector : Node
 
 		try
 		{
-			var converter = TypeDescriptor.GetConverter(_inspectorMember.MemberInfo.Type);
-			result = converter.ConvertFrom(_memberInput.GetValue());
+			result = Convert.ChangeType(_memberInput.GetValue(), _inspectorMember.MemberInfo.Type);
 			return true;
 		}
 		catch (Exception e)
