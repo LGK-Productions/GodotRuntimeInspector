@@ -11,6 +11,7 @@ namespace SettingInspector.addons.settings_inspector.src;
 public partial class ClassInspector : Node
 {
 	[Export] private PackedScene _memberScene;
+	[Export] private PackedScene _memberGroupScene;
 	[Export] private Node _memberParent;
 	[Export] private Label _title;
 	[Export] private Button _confirmButton;
@@ -38,16 +39,33 @@ public partial class ClassInspector : Node
 
 		_title.Text = classInstance.GetType().Name;
 		List<Action> retrievalActions = new();
+		Dictionary<string, MemberGroup> memberGroups = new();
 		foreach (var element in inspector.Elements)
 		{
 			var memberInspector = _memberScene.Instantiate<MemberInspector>();
-			_memberParent.AddChild(memberInspector);
 			memberInspector.SetMember(element);
 			retrievalActions.Add(() =>
 			{
 				if (memberInspector.TryRetrieveMember(out var value))
 					element.Value = value;
 			});
+			
+			if (element.MemberInfo.GroupName == null)
+				_memberParent.AddChild(memberInspector);
+			else
+			{
+				if (memberGroups.TryGetValue(element.MemberInfo.GroupName, out var group))
+					group.AddMember(memberInspector);
+				else
+				{
+					var memberGroupNode = _memberGroupScene.Instantiate();
+					_memberParent.AddChild(memberGroupNode);
+					var memberGroup = (MemberGroup)memberGroupNode;
+					memberGroup.SetGroup(element.MemberInfo.GroupName);
+					memberGroups.Add(element.MemberInfo.GroupName, memberGroup);
+					memberGroup.AddMember(memberInspector);
+				}
+			}
 		}
 
 		try

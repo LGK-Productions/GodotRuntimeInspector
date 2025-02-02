@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cy2pkb0dun2c7"]
+[gd_scene load_steps=5 format=3 uid="uid://cy2pkb0dun2c7"]
 
 [ext_resource type="Theme" uid="uid://62r1pqjwqsym" path="res://addons/settings_inspector/themes/inspector_theme.tres" id="1_k5phi"]
 [ext_resource type="Script" path="res://addons/settings_inspector/src/ClassInspector.cs" id="1_qoeo3"]
 [ext_resource type="PackedScene" uid="uid://edq00o2jrvbw" path="res://addons/settings_inspector/ui/MemberInspector.tscn" id="3_ydv6d"]
+[ext_resource type="PackedScene" uid="uid://bckaf08f4qymh" path="res://addons/settings_inspector/ui/MemberGroup.tscn" id="4_ldixl"]
 
 [node name="ClassInspectorContent" type="Control" node_paths=PackedStringArray("_memberParent", "_title", "_confirmButton", "_cancelButton")]
 clip_contents = true
@@ -15,6 +16,7 @@ grow_vertical = 2
 theme = ExtResource("1_k5phi")
 script = ExtResource("1_qoeo3")
 _memberScene = ExtResource("3_ydv6d")
+_memberGroupScene = ExtResource("4_ldixl")
 _memberParent = NodePath("Background/MainMargin/VBoxContainer/ScrollContainer/MemberParent")
 _title = NodePath("Background/MainMargin/VBoxContainer/MarginContainer/Title")
 _confirmButton = NodePath("Background/MainMargin/VBoxContainer/MarginContainer2/HBoxContainer/Accept")
