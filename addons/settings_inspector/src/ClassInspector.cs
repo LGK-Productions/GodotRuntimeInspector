@@ -24,12 +24,7 @@ public partial class ClassInspector : Node
 		_cancelButton.Pressed += () => _tcs?.SetCanceled();
 	}
 
-	public Task<T> EditClass<T>() where T : new()
-	{
-		return EditClass<T>(new T());
-	}
-
-	public async Task<T> EditClass<T>(T classInstance) where T : new()
+	public async Task<T> EditClass<T>(T classInstance)
 	{
 		if (_tcs != null)
 		{
@@ -38,7 +33,7 @@ public partial class ClassInspector : Node
 		}
 
 		_tcs = new TaskCompletionSource();
-		TestTickProvider testTickProvider = new();
+		PollingTickProvider testTickProvider = new(1);
 		var inspector = Inspector.Attach(classInstance, testTickProvider);
 
 		_title.Text = classInstance.GetType().Name;
@@ -50,19 +45,26 @@ public partial class ClassInspector : Node
 			memberInspector.SetMember(element);
 			retrievalActions.Add(() =>
 			{
-				if (memberInspector.TryRetrieveMember<int>(out var value))
+				if (memberInspector.TryRetrieveMember(out var value))
 					element.Value = value;
 			});
 		}
 
-		await _tcs.Task;
-
-		foreach (var action in retrievalActions)
+		try
 		{
-			action.Invoke();
+			await _tcs.Task;
+
+			foreach (var action in retrievalActions)
+			{
+				action.Invoke();
+			}
+
+			return classInstance;
 		}
-		
-		return classInstance;
+		finally
+		{
+			_tcs = null;
+		}
 	}
 
 
@@ -72,5 +74,18 @@ public partial class ClassInspector : Node
 
 		public void TriggerTick()
 			=> Tick?.Invoke();
+	}
+	
+	internal sealed class PollingTickProvider : ITickProvider
+	{
+		public event Action? Tick;
+
+		public PollingTickProvider(float pollingRate)
+		{
+			var timer = new System.Timers.Timer(1/pollingRate);
+			timer.Elapsed += (_, __) => Callable.From(() => Tick?.Invoke()).CallDeferred();
+			timer.Start();
+		}
+		
 	}
 }
