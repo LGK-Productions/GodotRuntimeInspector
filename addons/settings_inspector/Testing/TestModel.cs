@@ -6,6 +6,8 @@ namespace SettingInspector.addons.settings_inspector.Testing;
 
 internal class TestModel
 {
+    public bool TestBool { get; set; }
+    
     [Display(Name = "Name")]
     [DisplayName("Name2")]
     public int TestName { get; set; }

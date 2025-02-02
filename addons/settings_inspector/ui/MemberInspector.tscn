@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://edq00o2jrvbw"]
+[gd_scene load_steps=4 format=3 uid="uid://edq00o2jrvbw"]
 
 [ext_resource type="Script" path="res://addons/settings_inspector/src/MemberInspector.cs" id="1_pm27f"]
 [ext_resource type="PackedScene" uid="uid://b2ppdbs2nh0l" path="res://addons/settings_inspector/ui/member-inputs/LineInput.tscn" id="2_5gchd"]
+[ext_resource type="PackedScene" uid="uid://cqxph7lmgkcns" path="res://addons/settings_inspector/ui/member-inputs/ToggleInput.tscn" id="3_pcwdr"]
 
 [node name="PropertyInspector" type="Control" node_paths=PackedStringArray("_label", "_inputContainer")]
 custom_minimum_size = Vector2(0, 40)
@@ -15,7 +16,8 @@ grow_vertical = 2
 script = ExtResource("1_pm27f")
 _label = NodePath("MarginContainer/HBoxContainer/MarginContainer/Label")
 _inputContainer = NodePath("MarginContainer/HBoxContainer/InputPlaceholder")
-_lineInputScene = ExtResource("2_5gchd")
+_defaultInputScene = ExtResource("2_5gchd")
+_inputScenes = Array[PackedScene]([ExtResource("3_pcwdr")])
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

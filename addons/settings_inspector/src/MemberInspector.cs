@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using Godot;
+using Godot.Collections;
 using LgkProductions.Inspector;
 using LgkProductions.Inspector.MetaData;
 using SettingInspector.addons.settings_inspector.src.InputControllers;
@@ -11,7 +12,9 @@ public partial class MemberInspector : Node
 {
 	[Export] private Label _label;
 	[Export] private Control _inputContainer;
-	[Export] private PackedScene _lineInputScene;
+	[Export] private PackedScene _defaultInputScene;
+
+	[Export] private Godot.Collections.Array<PackedScene> _inputScenes;
 
 	private InspectorElement? _inspectorMember;
 	private IMemberInput? _memberInput;
@@ -27,14 +30,16 @@ public partial class MemberInspector : Node
 		_label.Text = iElement.MemberInfo.Name;
 		_label.TooltipText = iElement.MemberInfo.Description;
 		
-		var lineInput = _lineInputScene.Instantiate<LineInput>();
-		_inputContainer.AddChild(lineInput);
-		lineInput.SetValue(iElement.Value);
+		var node = GetInputScene(iElement.MemberInfo.Type).Instantiate<Control>();
+		var memberInput = (IMemberInput)node;
+		_inputContainer.AddChild(node);
+		memberInput.SetValue(iElement.Value);
+		memberInput.SetEditable(!iElement.MemberInfo.IsReadOnly);
 
 		iElement.ValueChanged += UpdateMemberInputValue;
 		
 		_inspectorMember = iElement;
-		_memberInput = lineInput;
+		_memberInput = memberInput;
 	}
 
 	public void RemoveMember()
@@ -71,5 +76,16 @@ public partial class MemberInspector : Node
 		}
 
 		return false;
+	}
+
+	private PackedScene GetInputScene(Type inputType)
+	{
+		if (inputType == typeof(bool))
+		{
+			if (_inputScenes.Count > 0)
+				return _inputScenes[0];
+		}
+
+		return _defaultInputScene;
 	}
 }
