@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
 using LgkProductions.Inspector;
-using LgkProductions.Inspector.MetaData;
-using SettingInspector.addons.settings_inspector.Testing;
 
 namespace SettingInspector.addons.settings_inspector.src;
 
@@ -16,6 +14,9 @@ public partial class ClassInspector : Node
 	[Export] private Label _title;
 	[Export] private Button _confirmButton;
 	[Export] private Button _cancelButton;
+    
+    public static PollingTickProvider TickProvider = new(1);
+
 
 	private TaskCompletionSource? _tcs;
 
@@ -34,8 +35,7 @@ public partial class ClassInspector : Node
 		}
 
 		_tcs = new TaskCompletionSource();
-		PollingTickProvider testTickProvider = new(1);
-		var inspector = Inspector.Attach(classInstance, testTickProvider);
+		var inspector = Inspector.Attach(classInstance, TickProvider);
 
 		_title.Text = classInstance.GetType().Name;
 		List<Action> retrievalActions = new();
@@ -44,12 +44,8 @@ public partial class ClassInspector : Node
 		{
 			var memberInspector = _memberScene.Instantiate<MemberInspector>();
 			memberInspector.SetMember(element);
-			retrievalActions.Add(() =>
-			{
-				if (memberInspector.TryRetrieveMember(out var value))
-					element.Value = value;
-			});
 			
+            //Grouping Logic
 			if (element.MemberInfo.GroupName == null)
 				_memberParent.AddChild(memberInspector);
 			else
@@ -66,6 +62,12 @@ public partial class ClassInspector : Node
 					memberGroup.AddMember(memberInspector);
 				}
 			}
+            
+            retrievalActions.Add(() =>
+            {
+                if (memberInspector.TryRetrieveMember(out var value))
+                    element.Value = value;
+            });
 		}
 
 		try
@@ -84,17 +86,8 @@ public partial class ClassInspector : Node
 			_tcs = null;
 		}
 	}
-
-
-	internal sealed class TestTickProvider : ITickProvider
-	{
-		public event Action? Tick;
-
-		public void TriggerTick()
-			=> Tick?.Invoke();
-	}
 	
-	internal sealed class PollingTickProvider : ITickProvider
+	public sealed class PollingTickProvider : ITickProvider
 	{
 		public event Action? Tick;
 

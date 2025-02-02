@@ -8,8 +8,8 @@ namespace SettingInspector.addons.settings_inspector.src;
 public partial class ClassInspectorHandler : Control
 {
 	[Export] private Control _classInspectorContainer;
-	[Export] private Window _classWindow;
 	[Export] private PackedScene _classInspectorScene;
+	[Export] private PackedScene _classWindowScene;
 
 	public override void _Ready()
 	{
@@ -27,7 +27,7 @@ public partial class ClassInspectorHandler : Control
 		{
 			try
 			{
-				model = await OpenClassInspectorWindow(model);
+				model = await OpenClassInspector(model, true);
 				break;
 			}
 			catch (OperationCanceledException e)
@@ -37,22 +37,34 @@ public partial class ClassInspectorHandler : Control
 		}
 	}
 
-	public Task<T> OpenClassInspectorWindow<T>() where T : new()
+	public Task<T> OpenClassInspector<T>() where T : new()
 	{
-		return OpenClassInspectorWindow<T>(new T());
+		return OpenClassInspector<T>(new T());
 	}
 	
-	public async Task<T> OpenClassInspectorWindow<T>(T instance)
+	public async Task<T> OpenClassInspector<T>(T instance, bool asWindow = false)
 	{
 		var inspector = _classInspectorScene.Instantiate<ClassInspector>();
-		_classInspectorContainer.AddChild(inspector);
+		Window inspectorWindow = null;
+		if (!asWindow)
+			_classInspectorContainer.AddChild(inspector);
+		else
+		{
+			inspectorWindow = _classWindowScene.Instantiate<Window>();
+			AddChild(inspectorWindow);
+			inspectorWindow.AddChild(inspector);
+		}
+		
 		try
 		{
 			return await inspector.EditClass(instance);
 		}
 		finally
 		{
-			_classInspectorContainer.RemoveChild(inspector);
+			if (!asWindow)
+				_classInspectorContainer.RemoveChild(inspector);
+			else 
+				inspectorWindow!.QueueFree();
 		}
 	}
 }
