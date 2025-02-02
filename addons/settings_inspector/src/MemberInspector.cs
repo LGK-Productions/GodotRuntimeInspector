@@ -87,6 +87,16 @@ public partial class MemberInspector : Node
 			if (_inputScenes.Count > 1)
 				return _inputScenes[1];
 		}
+		if (inputType == typeof(float))
+		{
+			if (_inputScenes.Count > 2)
+				return _inputScenes[2];
+		}
+		if (inputType == typeof(double))
+		{
+			if (_inputScenes.Count > 3)
+				return _inputScenes[3];
+		}
 
 		return _defaultInputScene;
 	}

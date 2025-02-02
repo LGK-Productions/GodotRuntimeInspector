@@ -10,18 +10,23 @@ internal class TestModel
     
     [Range(0, 10)]
     public int TestRange {get; set;}
+
+    [Range(0, 10)] public float TestFloat { get; set; } = 3.2f;
     
+    [Range(0, 10)]
+    public float TestDouble { get; set; } = 20f;
+
     [Display(Name = "Name")]
     [DisplayName("Name2")]
-    public int TestName { get; set; }
+    public string TestName { get; set; } = "Name should be \"Name2\"";
 
     [Display(Description = "Description")]
     [Description("Description2")]
-    public int TestDescription { get; set; }
+    public string TestDescription { get; set; } = "Hover for description";
 
     [Editable(allowEdit: true)]
     [ReadOnly(isReadOnly: true)]
-    public int TestReadOnly { get; set; }
+    public string TestReadOnly { get; set; }
 
     [HideInInspector]
     [Browsable(false)]
@@ -33,13 +38,13 @@ internal class TestModel
 
     [PropertyOrder(1_000_000)]
     [Display(Order = 1)]
-    public int TestOrderFar { get; set; }
+    public string TestOrderFar { get; set; }
 
     [PropertyOrder]
-    public int TestOrder1 { get; set; }
+    public string TestOrder1 { get; set; }
 
     [PropertyOrder]
-    public int TestOrder2 { get; set; }
+    public string TestOrder2 { get; set; }
 
     [PropertyOrder(-1)]
     [Display(Order = -1)]

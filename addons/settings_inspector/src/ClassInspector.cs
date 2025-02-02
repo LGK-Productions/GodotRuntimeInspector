@@ -86,6 +86,5 @@ public partial class ClassInspector : Node
 			timer.Elapsed += (_, __) => Callable.From(() => Tick?.Invoke()).CallDeferred();
 			timer.Start();
 		}
-		
 	}
 }
