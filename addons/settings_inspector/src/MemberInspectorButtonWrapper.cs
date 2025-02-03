@@ -12,6 +12,7 @@ public partial class MemberInspectorButtonWrapper : Control
 	[Export] private Button _cancelButton;
 	[Export] private Button _confirmButton;
 	[Export] private Node _inspectorContainer;
+	[Export] private PackedScene _memberGroupScene;
 
 	private TaskCompletionSource? _tcs;
 	List<(InspectorElement, MemberInspector)> _inspectors = new();
@@ -33,13 +34,33 @@ public partial class MemberInspectorButtonWrapper : Control
 		_tcs = new TaskCompletionSource();
 		_nameLabel.Text = typeof(T).Name;
 
+		//TODO: massive code doubling with class container!!
 		var inspector = Inspector.Attach(instance, ClassInspector.TickProvider);
+		Dictionary<string, MemberGroup> memberGroups = new();
 		
 		foreach (var element in inspector.Elements)
 		{
 			var scene = MemberInspectorHandler.Instance.GetInputScene(element.MemberInfo.Type);
 			var memberInspector = (MemberInspector)scene.Instantiate();
-			_inspectorContainer.AddChild(memberInspector);
+			
+			//Grouping Logic
+			if (element.MemberInfo.GroupName == null)
+				_inspectorContainer.AddChild(memberInspector);
+			else
+			{
+				if (memberGroups.TryGetValue(element.MemberInfo.GroupName, out var group))
+					group.AddMember(memberInspector);
+				else
+				{
+					var memberGroupNode = _memberGroupScene.Instantiate();
+					_inspectorContainer.AddChild(memberGroupNode);
+					var memberGroup = (MemberGroup)memberGroupNode;
+					memberGroup.SetGroup(element.MemberInfo.GroupName);
+					memberGroups.Add(element.MemberInfo.GroupName, memberGroup);
+					memberGroup.AddMember(memberInspector);
+				}
+			}
+			
 			memberInspector.SetMember(element);
 			_inspectors.Add((element, memberInspector));
 		}

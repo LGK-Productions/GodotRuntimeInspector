@@ -39,9 +39,6 @@ public partial class ClassInspector : MemberInspector
 		foreach (var element in inspector.Elements)
 		{
 			var memberInspector = MemberInspectorHandler.Instance!.GetInputScene(element.MemberInfo.Type).Instantiate<MemberInspector>();
-			memberInspector.SetMember(element);
-            memberInspector.ValueChanged += ChildValueChanged;
-            _inspectors.Add((element, memberInspector));
 			
 			//Grouping Logic
 			if (element.MemberInfo.GroupName == null)
@@ -60,6 +57,10 @@ public partial class ClassInspector : MemberInspector
 					memberGroup.AddMember(memberInspector);
 				}
 			}
+            
+            memberInspector.SetMember(element);
+            memberInspector.ValueChanged += ChildValueChanged;
+            _inspectors.Add((element, memberInspector));
 		}
 	}
     
