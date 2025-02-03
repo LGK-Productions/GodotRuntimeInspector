@@ -1,48 +1,36 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Godot;
 using LgkProductions.Inspector;
 
 namespace SettingInspector.addons.settings_inspector.src;
 
-public partial class ClassInspector : Node
+public partial class ClassInspector : MemberInspector
 {
-	[Export] private PackedScene _memberScene;
 	[Export] private PackedScene _memberGroupScene;
 	[Export] private Node _memberParent;
-	[Export] private Label _title;
-	[Export] private Button _confirmButton;
-	[Export] private Button _cancelButton;
+    
+    private object? _instance;
+    
+    List<(InspectorElement, MemberInspector)> _inspectors = new();
 	
 	public static PollingTickProvider TickProvider = new(1);
 
-
-	private TaskCompletionSource? _tcs;
-
-	public override void _Ready()
+	protected override void SetValue(object? classInstance)
 	{
-		_confirmButton.Pressed += () => _tcs?.SetResult();
-		_cancelButton.Pressed += () => _tcs?.SetCanceled();
-	}
-
-	public async Task<T> EditClass<T>(T classInstance)
-	{
-		if (_tcs != null)
-		{
-			GD.Print("Tried to open class editor, but it is already open.");
-			throw new OperationCanceledException();
-		}
-
-		_tcs = new TaskCompletionSource();
+        if (classInstance == null)
+        {
+            GD.PrintErr("classInstance is null");
+            return;
+        }
+        ClearInspector();
+        _instance = classInstance;
 		var inspector = Inspector.Attach(classInstance, TickProvider);
 
-		_title.Text = classInstance.GetType().Name;
-		List<Action> retrievalActions = new();
 		Dictionary<string, MemberGroup> memberGroups = new();
 		foreach (var element in inspector.Elements)
 		{
-			var memberInspector = _memberScene.Instantiate<MemberInspector>();
+			var memberInspector = ClassInspectorHandler.Instance!.GetInputScene(element.MemberInfo.Type).Instantiate<MemberInspector>();
 			memberInspector.SetMember(element);
 			
 			//Grouping Logic
@@ -62,31 +50,9 @@ public partial class ClassInspector : Node
 					memberGroup.AddMember(memberInspector);
 				}
 			}
-			
-			retrievalActions.Add(() =>
-			{
-				if (memberInspector.TryRetrieveMember(out var value))
-					element.Value = value;
-			});
-		}
-
-		try
-		{
-			await _tcs.Task;
-
-			foreach (var action in retrievalActions)
-			{
-				action.Invoke();
-			}
-
-			return classInstance;
-		}
-		finally
-		{
-			_tcs = null;
 		}
 	}
-	
+    
 	public sealed class PollingTickProvider : ITickProvider
 	{
 		public event Action? Tick;
@@ -98,4 +64,33 @@ public partial class ClassInspector : Node
 			timer.Start();
 		}
 	}
+
+    protected override object? GetValue()
+    {
+        //Write values back
+        foreach (var (element, inspector) in _inspectors)
+        {
+            if (inspector.TryRetrieveMember(out object? value))
+                element.Value = value;
+        }
+
+        return _instance;
+    }
+
+    public override void SetEditable(bool editable)
+    {
+        foreach (var (_, inspector) in _inspectors)
+        {
+            inspector.SetEditable(editable);
+        }
+    }
+
+    private void ClearInspector()
+    {
+        foreach (var (element, inspector) in _inspectors)
+        {
+            inspector.QueueFree();
+        }
+        _inspectors.Clear();
+    }
 }

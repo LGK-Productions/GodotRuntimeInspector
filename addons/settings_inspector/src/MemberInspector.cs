@@ -8,17 +8,11 @@ using SettingInspector.addons.settings_inspector.src.InputControllers;
 
 namespace SettingInspector.addons.settings_inspector.src;
 
-public partial class MemberInspector : Node
+public abstract partial class MemberInspector : Control
 {
 	[Export] private Label _label;
-	[Export] private Control _inputContainer;
-	[Export] private PackedScene _defaultInputScene;
 
-	[Export] private Godot.Collections.Array<PackedScene> _inputScenes;
-
-	private InspectorElement? _inspectorMember;
-	private IMemberInput? _memberInput;
-
+	protected InspectorElement? InspectorElement;
 	
 	public override void _ExitTree()
 	{
@@ -29,34 +23,41 @@ public partial class MemberInspector : Node
 	{
 		_label.Text = iElement.MemberInfo.DisplayName;
 		_label.TooltipText = iElement.MemberInfo.Description;
+		SetEditable(!iElement.MemberInfo.IsReadOnly);
+		InspectorElement = iElement;
 		
-		var node = GetInputScene(iElement.MemberInfo.Type).Instantiate<Control>();
-		var memberInput = (IMemberInput)node;
-		_inputContainer.AddChild(node);
-		memberInput.SetElement(iElement);
+        OnSetMetaData(iElement.MemberInfo);
+		
 		iElement.ValueChanged += UpdateMemberInputValue;
-		
-		_inspectorMember = iElement;
-		_memberInput = memberInput;
+		SetValue(iElement.Value);
+	}
+	
+	protected abstract object? GetValue();
+	protected abstract void SetValue(object? value);
+	public abstract void SetEditable(bool editable);
+	protected virtual void OnSetMetaData(MetaDataMember member){}
+	public event Action<object?> ValueChanged;
+	protected void OnValueChanged()
+	{
+		ValueChanged?.Invoke(GetValue());
 	}
 
 	public void RemoveMember()
 	{
-		if (_inspectorMember == null) return;
-		_inspectorMember.ValueChanged -= UpdateMemberInputValue;
-		_inspectorMember = null;
-		_memberInput = null;
+		if (InspectorElement == null) return;
+		InspectorElement.ValueChanged -= UpdateMemberInputValue;
+		InspectorElement = null;
 	}
 
 	private void UpdateMemberInputValue(object instance, MetaDataMember member, object? value)
 	{
-		_memberInput.SetValue(value);
+		SetValue(value);
 	}
 
 	public bool TryRetrieveMember(out object? result)
 	{
 		result = default;
-		if (_inspectorMember == null || _memberInput == null)
+		if (InspectorElement == null)
 		{
 			GD.PrintErr("Could not retrieve member, due to no member being set");
 			return false;
@@ -64,7 +65,7 @@ public partial class MemberInspector : Node
 
 		try
 		{
-			result = Convert.ChangeType(_memberInput.GetValue(), _inspectorMember.MemberInfo.Type);
+			result = Convert.ChangeType(GetValue(), InspectorElement.MemberInfo.Type);
 			return true;
 		}
 		catch (Exception e)
@@ -73,41 +74,5 @@ public partial class MemberInspector : Node
 		}
 
 		return false;
-	}
-
-	private PackedScene GetInputScene(Type inputType)
-	{
-		if (inputType == typeof(bool))
-		{
-			if (_inputScenes.Count > 0)
-				return _inputScenes[0];
-		}
-		if (inputType == typeof(int))
-		{
-			if (_inputScenes.Count > 1)
-				return _inputScenes[1];
-		}
-		if (inputType == typeof(float))
-		{
-			if (_inputScenes.Count > 2)
-				return _inputScenes[2];
-		}
-		if (inputType == typeof(double))
-		{
-			if (_inputScenes.Count > 3)
-				return _inputScenes[3];
-		}
-		if (inputType.IsEnum)
-		{
-			if (_inputScenes.Count > 4)
-				return _inputScenes[4];
-		}
-		if (!inputType.IsPrimitive && inputType != typeof(string))
-		{
-			if (_inputScenes.Count > 5)
-				return _inputScenes[5];
-		}
-
-		return _defaultInputScene;
 	}
 }

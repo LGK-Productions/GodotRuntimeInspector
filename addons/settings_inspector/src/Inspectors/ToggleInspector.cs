@@ -3,38 +3,40 @@ using Godot;
 
 namespace SettingInspector.addons.settings_inspector.src.InputControllers;
 
-public partial class ToggleInput : Control, IMemberInput
+public partial class ToggleInspector : MemberInspector
 {
 	[Export] CheckBox _checkbox;
 
 	public override void _EnterTree()
 	{
+        base._EnterTree();
 		_checkbox.Pressed += OnPressed;
 	}
 
 	public override void _ExitTree()
 	{
+        base._ExitTree();
 		_checkbox.Pressed -= OnPressed;
 	}
 
-	public void SetValue(object value)
+	protected override void SetValue(object? value)
 	{
-		_checkbox.SetPressed((bool)value);
+        if (value is bool b)
+            _checkbox.SetPressed(b);
 	}
 
-	public object GetValue()
+	protected override object? GetValue()
 	{
 		return _checkbox.IsPressed();
 	}
 
-	public void SetEditable(bool editable)
+	public override void SetEditable(bool editable)
 	{
 		_checkbox.Disabled = !editable;
 	}
 
 	private void OnPressed()
-	{
-		OnValueChanged?.Invoke(GetValue());
-	}
-	public event Action<object>? OnValueChanged;
+    {
+        OnValueChanged();
+    }
 }

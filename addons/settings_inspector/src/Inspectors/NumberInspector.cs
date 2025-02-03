@@ -2,10 +2,11 @@ using System;
 using System.Numerics;
 using Godot;
 using LgkProductions.Inspector;
+using LgkProductions.Inspector.MetaData;
 
 namespace SettingInspector.addons.settings_inspector.src.InputControllers;
 
-public partial class NumberInput<T> : Control, IMemberInput where T : struct, INumber<T>
+public partial class NumberInspector<T> : MemberInspector where T : struct, INumber<T>
 {
 	[Export] private SpinBox _spinBox;
 
@@ -13,46 +14,48 @@ public partial class NumberInput<T> : Control, IMemberInput where T : struct, IN
 
 	public override void _EnterTree()
 	{
+        base._EnterTree();
 		_spinBox.ValueChanged += OnNumberChanged;
 	}
 
 	public override void _ExitTree()
 	{
+        base._ExitTree();
 		_spinBox.ValueChanged -= OnNumberChanged;
 	}
 
-	public void SetValue(object value)
+	protected override void SetValue(object? value)
 	{
+        if (value == null) return;
 		_spinBox.Value = (double)Convert.ChangeType(value, typeof(double));
 	}
 
-	public object GetValue()
+	protected override object? GetValue()
 	{
 		return Convert.ChangeType(_spinBox.Value, typeof(T));
 	}
 
-	public void SetEditable(bool editable)
+	public override void SetEditable(bool editable)
 	{
 		_spinBox.Editable = editable;
 	}
 
 	private void OnNumberChanged(double value)
 	{
-		OnValueChanged?.Invoke(value);
+		OnValueChanged();
 	}
 
-	public void OnSetElement(InspectorElement element)
+	protected override void OnSetMetaData(MetaDataMember member)
 	{
-		if (element.MemberInfo.MaxValue != null)
-			_spinBox.MaxValue = (double)Convert.ChangeType(element.MemberInfo.MaxValue, typeof(double));
+		if (member.MaxValue != null)
+			_spinBox.MaxValue = (double)Convert.ChangeType(member.MaxValue, typeof(double));
 		else
 			_spinBox.AllowGreater = true;
-		if (element.MemberInfo.MinValue != null)
-			_spinBox.MinValue = (double)Convert.ChangeType(element.MemberInfo.MinValue, typeof(double));
+		if (member.MinValue != null)
+			_spinBox.MinValue = (double)Convert.ChangeType(member.MinValue, typeof(double));
 		else
 			_spinBox.AllowLesser = true;
 		_spinBox.Step = StepSize;
 	}
 
-	public event Action<object>? OnValueChanged;
 }

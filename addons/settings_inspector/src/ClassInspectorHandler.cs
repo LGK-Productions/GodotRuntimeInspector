@@ -10,6 +10,8 @@ public partial class ClassInspectorHandler : Control
 	[Export] private Control _classInspectorContainer;
 	[Export] private PackedScene _classInspectorScene;
 	[Export] private PackedScene _classWindowScene;
+    [Export] public PackedScene DefaultInspectorScene;
+    [Export] public Godot.Collections.Array<PackedScene> InspectorScenes;
 
 	
 	public static ClassInspectorHandler? Instance { get; private set; }
@@ -80,4 +82,40 @@ public partial class ClassInspectorHandler : Control
 				inspectorWindow!.QueueFree();
 		}
 	}
+    
+    public PackedScene GetInputScene(Type inputType)
+    {
+        if (inputType == typeof(bool))
+        {
+            if (InspectorScenes.Count > 0)
+                return Instance.InspectorScenes[0];
+        }
+        if (inputType == typeof(int))
+        {
+            if (InspectorScenes.Count > 1)
+                return InspectorScenes[1];
+        }
+        if (inputType == typeof(float))
+        {
+            if (InspectorScenes.Count > 2)
+                return InspectorScenes[2];
+        }
+        if (inputType == typeof(double))
+        {
+            if (InspectorScenes.Count > 3)
+                return InspectorScenes[3];
+        }
+        if (inputType.IsEnum)
+        {
+            if (InspectorScenes.Count > 4)
+                return InspectorScenes[4];
+        }
+        if (!inputType.IsPrimitive && inputType != typeof(string))
+        {
+            if (InspectorScenes.Count > 5)
+                return InspectorScenes[5];
+        }
+
+        return DefaultInspectorScene;
+    }
 }

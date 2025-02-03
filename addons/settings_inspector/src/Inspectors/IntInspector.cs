@@ -5,7 +5,7 @@ using LgkProductions.Inspector.MetaData;
 
 namespace SettingInspector.addons.settings_inspector.src.InputControllers;
 
-public partial class DoubleInput : NumberInput<double>
+public partial class IntInspector : NumberInspector<int>
 {
-	protected override double StepSize { get; } = double.Epsilon;
+	protected override double StepSize { get; } = 1;
 }
