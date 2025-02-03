@@ -67,7 +67,7 @@ public partial class ClassInspector : MemberInspector
 		}
 	}
 
-    private void ChildValueChanged(object? value)
+    private void ChildValueChanged()
     {
         OnValueChanged();
     }
