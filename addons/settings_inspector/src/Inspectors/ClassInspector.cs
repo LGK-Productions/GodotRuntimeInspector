@@ -32,6 +32,8 @@ public partial class ClassInspector : MemberInspector
 		{
 			var memberInspector = ClassInspectorHandler.Instance!.GetInputScene(element.MemberInfo.Type).Instantiate<MemberInspector>();
 			memberInspector.SetMember(element);
+            memberInspector.ValueChanged += ChildValueChanged;
+            _inspectors.Add((element, memberInspector));
 			
 			//Grouping Logic
 			if (element.MemberInfo.GroupName == null)
@@ -65,6 +67,11 @@ public partial class ClassInspector : MemberInspector
 		}
 	}
 
+    private void ChildValueChanged(object? value)
+    {
+        OnValueChanged();
+    }
+
     protected override object? GetValue()
     {
         //Write values back
@@ -89,6 +96,7 @@ public partial class ClassInspector : MemberInspector
     {
         foreach (var (element, inspector) in _inspectors)
         {
+            inspector.ValueChanged -= ChildValueChanged;
             inspector.QueueFree();
         }
         _inspectors.Clear();
