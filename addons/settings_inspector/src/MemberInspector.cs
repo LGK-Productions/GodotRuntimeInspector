@@ -36,10 +36,10 @@ public abstract partial class MemberInspector : Control
 	protected abstract void SetValue(object? value);
 	public abstract void SetEditable(bool editable);
 	protected virtual void OnSetMetaData(MetaDataMember member){}
-	public event Action<object?> ValueChanged;
+	public event Action ValueChanged;
 	protected void OnValueChanged()
 	{
-		ValueChanged?.Invoke(GetValue());
+		ValueChanged?.Invoke();
 	}
 
 	public void RemoveMember()
