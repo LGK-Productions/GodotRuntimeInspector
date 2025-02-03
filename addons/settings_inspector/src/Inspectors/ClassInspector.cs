@@ -9,30 +9,41 @@ public partial class ClassInspector : MemberInspector
 {
 	[Export] private PackedScene _memberGroupScene;
 	[Export] private Node _memberParent;
-    
-    private object? _instance;
-    
-    List<(InspectorElement, MemberInspector)> _inspectors = new();
+	[Export] private Button _unattachButton;
+	
+	private object? _instance;
+
+	public override void _EnterTree()
+	{
+		base._EnterTree();
+		_unattachButton.Pressed += () =>
+		{
+			if (_instance == null) return;
+			MemberInspectorHandler.Instance.OpenClassInspector(_instance, true);
+		};
+	}
+
+	List<(InspectorElement, MemberInspector)> _inspectors = new();
 	
 	public static PollingTickProvider TickProvider = new(1);
 
-    protected override void SetValue(object? classInstance)
+	protected override void SetValue(object? classInstance)
 	{
-        if (classInstance == null)
-        {
-            GD.Print("classInstance is null. Trying to create new instance.");
-            try
-            {
-                classInstance = Activator.CreateInstance(InspectorElement.MemberInfo.Type);
-            }
-            catch (Exception e)
-            {
-                GD.PrintErr(e);
-                return;
-            }
-        }
-        ClearInspector();
-        _instance = classInstance;
+		if (classInstance == null)
+		{
+			GD.Print("classInstance is null. Trying to create new instance.");
+			try
+			{
+				classInstance = Activator.CreateInstance(InspectorElement.MemberInfo.Type);
+			}
+			catch (Exception e)
+			{
+				GD.PrintErr(e);
+				return;
+			}
+		}
+		ClearInspector();
+		_instance = classInstance;
 		var inspector = Inspector.Attach(classInstance, TickProvider);
 
 		Dictionary<string, MemberGroup> memberGroups = new();
@@ -57,13 +68,13 @@ public partial class ClassInspector : MemberInspector
 					memberGroup.AddMember(memberInspector);
 				}
 			}
-            
-            memberInspector.SetMember(element);
-            memberInspector.ValueChanged += ChildValueChanged;
-            _inspectors.Add((element, memberInspector));
+			
+			memberInspector.SetMember(element);
+			memberInspector.ValueChanged += ChildValueChanged;
+			_inspectors.Add((element, memberInspector));
 		}
 	}
-    
+	
 	public sealed class PollingTickProvider : ITickProvider
 	{
 		public event Action? Tick;
@@ -76,38 +87,38 @@ public partial class ClassInspector : MemberInspector
 		}
 	}
 
-    private void ChildValueChanged()
-    {
-        OnValueChanged();
-    }
+	private void ChildValueChanged()
+	{
+		OnValueChanged();
+	}
 
-    protected override object? GetValue()
-    {
-        //Write values back
-        foreach (var (element, inspector) in _inspectors)
-        {
-            if (inspector.TryRetrieveMember(out object? value))
-                element.Value = value;
-        }
+	protected override object? GetValue()
+	{
+		//Write values back
+		foreach (var (element, inspector) in _inspectors)
+		{
+			if (inspector.TryRetrieveMember(out object? value))
+				element.Value = value;
+		}
 
-        return _instance;
-    }
+		return _instance;
+	}
 
-    public override void SetEditable(bool editable)
-    {
-        foreach (var (_, inspector) in _inspectors)
-        {
-            inspector.SetEditable(editable);
-        }
-    }
+	public override void SetEditable(bool editable)
+	{
+		foreach (var (_, inspector) in _inspectors)
+		{
+			inspector.SetEditable(editable);
+		}
+	}
 
-    private void ClearInspector()
-    {
-        foreach (var (element, inspector) in _inspectors)
-        {
-            inspector.ValueChanged -= ChildValueChanged;
-            inspector.QueueFree();
-        }
-        _inspectors.Clear();
-    }
+	private void ClearInspector()
+	{
+		foreach (var (element, inspector) in _inspectors)
+		{
+			inspector.ValueChanged -= ChildValueChanged;
+			inspector.QueueFree();
+		}
+		_inspectors.Clear();
+	}
 }
