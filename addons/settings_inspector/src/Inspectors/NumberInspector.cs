@@ -14,19 +14,19 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
 
 	public override void _EnterTree()
 	{
-        base._EnterTree();
+		base._EnterTree();
 		_spinBox.ValueChanged += OnNumberChanged;
 	}
 
 	public override void _ExitTree()
 	{
-        base._ExitTree();
+		base._ExitTree();
 		_spinBox.ValueChanged -= OnNumberChanged;
 	}
 
 	protected override void SetValue(object? value)
 	{
-        if (value == null) return;
+		if (value == null) return;
 		_spinBox.Value = (double)Convert.ChangeType(value, typeof(double));
 	}
 

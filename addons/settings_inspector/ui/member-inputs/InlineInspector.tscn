@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://cgxsnary7mkam"]
+[gd_scene load_steps=5 format=3 uid="uid://cgxsnary7mkam"]
 
-[ext_resource type="Script" path="res://addons/settings_inspector/src/MemberGroup.cs" id="1_bqqli"]
+[ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/ClassInspector.cs" id="1_gh2an"]
+[ext_resource type="PackedScene" uid="uid://bckaf08f4qymh" path="res://addons/settings_inspector/ui/MemberGroup.tscn" id="2_rdl6h"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_erohp"]
 bg_color = Color(0, 0, 0, 0.184314)
@@ -11,15 +12,16 @@ corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w5inr"]
 
-[node name="InlineInspector" type="PanelContainer" node_paths=PackedStringArray("_groupNameLabel", "_memberParent")]
+[node name="InlineInspector" type="PanelContainer" node_paths=PackedStringArray("_memberParent", "_label")]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 57.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_erohp")
-script = ExtResource("1_bqqli")
-_groupNameLabel = NodePath("VBoxContainer/MarginContainer/Label")
-_memberParent = NodePath("")
+script = ExtResource("1_gh2an")
+_memberGroupScene = ExtResource("2_rdl6h")
+_memberParent = NodePath("VBoxContainer/ContentHolder/VBoxContainer")
+_label = NodePath("VBoxContainer/MarginContainer/Label")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -49,3 +51,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_w5inr")
 [node name="ContentHolder" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ContentHolder"]
+layout_mode = 2

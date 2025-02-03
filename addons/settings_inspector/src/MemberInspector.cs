@@ -1,10 +1,7 @@
 using System;
-using System.ComponentModel;
 using Godot;
-using Godot.Collections;
 using LgkProductions.Inspector;
 using LgkProductions.Inspector.MetaData;
-using SettingInspector.addons.settings_inspector.src.InputControllers;
 
 namespace SettingInspector.addons.settings_inspector.src;
 
@@ -26,7 +23,7 @@ public abstract partial class MemberInspector : Control
 		SetEditable(!iElement.MemberInfo.IsReadOnly);
 		InspectorElement = iElement;
 		
-        OnSetMetaData(iElement.MemberInfo);
+		OnSetMetaData(iElement.MemberInfo);
 		
 		iElement.ValueChanged += UpdateMemberInputValue;
 		SetValue(iElement.Value);

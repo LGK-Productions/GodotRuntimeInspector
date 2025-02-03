@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://q2rqrwwx2811"]
 
-[ext_resource type="Script" path="res://addons/settings_inspector/src/MemberInspector.cs" id="1_64qbj"]
+[ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/EnumInspector.cs" id="1_fh0l2"]
 
-[node name="EnumInspector" type="MarginContainer"]
+[node name="EnumInspector" type="MarginContainer" node_paths=PackedStringArray("_optionButton", "_label")]
 custom_minimum_size = Vector2(0, 40)
 anchors_preset = 10
 anchor_right = 1.0
@@ -12,7 +12,9 @@ theme_override_constants/margin_left = 3
 theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 3
 theme_override_constants/margin_bottom = 3
-script = ExtResource("1_64qbj")
+script = ExtResource("1_fh0l2")
+_optionButton = NodePath("HBoxContainer/MarginContainer2/OptionButton")
+_label = NodePath("HBoxContainer/MarginContainer/Label")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2

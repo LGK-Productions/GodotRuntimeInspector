@@ -1,11 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://cy2pkb0dun2c7"]
+[gd_scene load_steps=3 format=3 uid="uid://cy2pkb0dun2c7"]
 
 [ext_resource type="Theme" uid="uid://62r1pqjwqsym" path="res://addons/settings_inspector/themes/inspector_theme.tres" id="1_68bgs"]
-[ext_resource type="Script" path="res://addons/settings_inspector/src/ClassInspector.cs" id="2_c7bo0"]
-[ext_resource type="PackedScene" uid="uid://edq00o2jrvbw" path="res://addons/settings_inspector/ui/member-inputs/LineInspector.tscn" id="3_12y17"]
-[ext_resource type="PackedScene" uid="uid://bckaf08f4qymh" path="res://addons/settings_inspector/ui/MemberGroup.tscn" id="4_blh3u"]
+[ext_resource type="Script" path="res://addons/settings_inspector/src/MemberInspectorButtonWrapper.cs" id="2_f5qts"]
 
-[node name="ClassInspectorWrapper" type="Panel" node_paths=PackedStringArray("_confirmButton", "_cancelButton")]
+[node name="ClassInspectorWrapper" type="Panel" node_paths=PackedStringArray("_nameLabel", "_cancelButton", "_confirmButton", "_inspectorContainer")]
 clip_contents = true
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,11 +11,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_68bgs")
-script = ExtResource("2_c7bo0")
-_memberScene = ExtResource("3_12y17")
-_memberGroupScene = ExtResource("4_blh3u")
-_confirmButton = NodePath("MainMargin/VBoxContainer/MarginContainer2/HBoxContainer/Accept")
+script = ExtResource("2_f5qts")
+_nameLabel = NodePath("MainMargin/VBoxContainer/MarginContainer/Title")
 _cancelButton = NodePath("MainMargin/VBoxContainer/MarginContainer2/HBoxContainer/Cancel")
+_confirmButton = NodePath("MainMargin/VBoxContainer/MarginContainer2/HBoxContainer/Accept")
+_inspectorContainer = NodePath("MainMargin/VBoxContainer/InspectorContentHolder/ClassInspectorContent")
 
 [node name="MainMargin" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -49,6 +47,10 @@ vertical_alignment = 1
 [node name="InspectorContentHolder" type="ScrollContainer" parent="MainMargin/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="ClassInspectorContent" type="VBoxContainer" parent="MainMargin/VBoxContainer/InspectorContentHolder"]
+layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="MarginContainer2" type="MarginContainer" parent="MainMargin/VBoxContainer"]
 layout_mode = 2

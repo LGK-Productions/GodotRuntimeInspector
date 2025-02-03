@@ -11,32 +11,32 @@ public partial class LineInspector : MemberInspector
 
 	public override void _EnterTree()
 	{
-        base._EnterTree();
+		base._EnterTree();
 		_lineEdit.TextChanged += OnTextChanged;
 	}
 
 	public override void _ExitTree()
 	{
-        base._ExitTree();
+		base._ExitTree();
 		_lineEdit.TextChanged -= OnTextChanged;
 	}
 
 	private void OnTextChanged(string newValue)
-    {
-        OnValueChanged();
-    }
+	{
+		OnValueChanged();
+	}
 
 	protected override void SetValue(object? value)
 	{
 		_lineEdit.Text = value?.ToString();
 	}
 
-    protected override object? GetValue()
+	protected override object? GetValue()
 	{
 		return _lineEdit.Text;
 	}
 
-    public override void SetEditable(bool editable)
+	public override void SetEditable(bool editable)
 	{
 		_lineEdit.Editable = editable;
 	}

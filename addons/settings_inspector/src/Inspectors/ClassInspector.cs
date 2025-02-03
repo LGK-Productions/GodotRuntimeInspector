@@ -16,12 +16,20 @@ public partial class ClassInspector : MemberInspector
 	
 	public static PollingTickProvider TickProvider = new(1);
 
-	protected override void SetValue(object? classInstance)
+    protected override void SetValue(object? classInstance)
 	{
         if (classInstance == null)
         {
-            GD.PrintErr("classInstance is null");
-            return;
+            GD.Print("classInstance is null. Trying to create new instance.");
+            try
+            {
+                classInstance = Activator.CreateInstance(InspectorElement.MemberInfo.Type);
+            }
+            catch (Exception e)
+            {
+                GD.PrintErr(e);
+                return;
+            }
         }
         ClearInspector();
         _instance = classInstance;
@@ -30,7 +38,7 @@ public partial class ClassInspector : MemberInspector
 		Dictionary<string, MemberGroup> memberGroups = new();
 		foreach (var element in inspector.Elements)
 		{
-			var memberInspector = ClassInspectorHandler.Instance!.GetInputScene(element.MemberInfo.Type).Instantiate<MemberInspector>();
+			var memberInspector = MemberInspectorHandler.Instance!.GetInputScene(element.MemberInfo.Type).Instantiate<MemberInspector>();
 			memberInspector.SetMember(element);
             memberInspector.ValueChanged += ChildValueChanged;
             _inspectors.Add((element, memberInspector));

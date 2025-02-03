@@ -19,13 +19,13 @@ public partial class ToggleInspector : MemberInspector
 		_checkbox.Pressed -= OnPressed;
 	}
 
-	protected override void SetValue(object? value)
+    protected override void SetValue(object? value)
 	{
         if (value is bool b)
             _checkbox.SetPressed(b);
 	}
 
-	protected override object? GetValue()
+    protected override object? GetValue()
 	{
 		return _checkbox.IsPressed();
 	}

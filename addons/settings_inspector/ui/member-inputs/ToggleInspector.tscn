@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://je1rbey7jxnq"]
 
-[ext_resource type="Script" path="res://addons/settings_inspector/src/MemberInspector.cs" id="1_maxbo"]
+[ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/ToggleInspector.cs" id="1_eo6wk"]
 
-[node name="ToggleInspector" type="MarginContainer"]
+[node name="ToggleInspector" type="MarginContainer" node_paths=PackedStringArray("_checkbox", "_label")]
 custom_minimum_size = Vector2(0, 40)
 anchors_preset = 10
 anchor_right = 1.0
@@ -12,7 +12,9 @@ theme_override_constants/margin_left = 3
 theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 3
 theme_override_constants/margin_bottom = 3
-script = ExtResource("1_maxbo")
+script = ExtResource("1_eo6wk")
+_checkbox = NodePath("HBoxContainer/MarginContainer3/CheckBox")
+_label = NodePath("HBoxContainer/MarginContainer/Label")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2

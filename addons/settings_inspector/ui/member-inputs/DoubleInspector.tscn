@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://b6d0uqwp7g3k"]
 
-[ext_resource type="Script" path="res://addons/settings_inspector/src/MemberInspector.cs" id="1_tqya1"]
+[ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/DoubleInspector.cs" id="1_6nyjg"]
 
-[node name="ToggleInspector" type="MarginContainer"]
+[node name="DoubleInspector" type="MarginContainer" node_paths=PackedStringArray("_spinBox", "_label")]
 custom_minimum_size = Vector2(0, 40)
 anchors_preset = 10
 anchor_right = 1.0
@@ -12,7 +12,9 @@ theme_override_constants/margin_left = 3
 theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 3
 theme_override_constants/margin_bottom = 3
-script = ExtResource("1_tqya1")
+script = ExtResource("1_6nyjg")
+_spinBox = NodePath("HBoxContainer/MarginContainer2/SpinBox")
+_label = NodePath("HBoxContainer/MarginContainer/Label")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2

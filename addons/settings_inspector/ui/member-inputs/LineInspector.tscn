@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://edq00o2jrvbw"]
 
-[ext_resource type="Script" path="res://addons/settings_inspector/src/MemberInspector.cs" id="1_pm27f"]
+[ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/LineInspector.cs" id="1_dpfsd"]
 
-[node name="LineInspector" type="MarginContainer"]
+[node name="LineInspector" type="MarginContainer" node_paths=PackedStringArray("_lineEdit", "_label")]
 custom_minimum_size = Vector2(0, 40)
 anchors_preset = 10
 anchor_right = 1.0
@@ -12,7 +12,9 @@ theme_override_constants/margin_left = 3
 theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 3
 theme_override_constants/margin_bottom = 3
-script = ExtResource("1_pm27f")
+script = ExtResource("1_dpfsd")
+_lineEdit = NodePath("HBoxContainer/MarginContainer2/LineEdit")
+_label = NodePath("HBoxContainer/MarginContainer/Label")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
