@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://lnfsq1glnxff"]
+[gd_scene load_steps=3 format=3 uid="uid://lnfsq1glnxff"]
 
 [ext_resource type="Script" path="res://addons/settings_inspector/src/ClassInspectorHandler.cs" id="1_k1d0u"]
-[ext_resource type="PackedScene" uid="uid://cy2pkb0dun2c7" path="res://addons/settings_inspector/ui/ClassInspector.tscn" id="2_aqk78"]
-[ext_resource type="PackedScene" uid="uid://b1sxcktro3xif" path="res://addons/settings_inspector/ui/ClassInspectorWindow.tscn" id="3_d357t"]
+[ext_resource type="PackedScene" uid="uid://cy2pkb0dun2c7" path="res://addons/settings_inspector/ui/ClassInspectorWrapper.tscn" id="2_aqk78"]
 
 [node name="ClassInspector" type="Control" node_paths=PackedStringArray("_classInspectorContainer")]
 layout_mode = 3
@@ -14,7 +13,6 @@ grow_vertical = 2
 script = ExtResource("1_k1d0u")
 _classInspectorContainer = NodePath("Container")
 _classInspectorScene = ExtResource("2_aqk78")
-_classWindowScene = ExtResource("3_d357t")
 
 [node name="Container" type="Control" parent="."]
 layout_mode = 1

@@ -11,20 +11,20 @@ public partial class ClassInspectorHandler : Control
 	[Export] private PackedScene _classInspectorScene;
 	[Export] private PackedScene _classWindowScene;
 
-    
-    public static ClassInspectorHandler? Instance { get; private set; }
+	
+	public static ClassInspectorHandler? Instance { get; private set; }
 
-    public override void _EnterTree()
-    {
-        if (Instance != null)
-            QueueFree();
-        else
-        {
-            Instance = this;
-        }
-    }
+	public override void _EnterTree()
+	{
+		if (Instance != null)
+			QueueFree();
+		else
+		{
+			Instance = this;
+		}
+	}
 
-    public override void _Ready()
+	public override void _Ready()
 	{
 		InspectorTesting();
 	}

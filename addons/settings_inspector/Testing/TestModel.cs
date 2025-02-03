@@ -14,7 +14,7 @@ internal class TestModel
     public VeryComplexType TestVeryComplex { get; set; }
 
     [BoxGroup("Group1")]
-    [Range(0, 10)] 
+    [Range(0, 10)]
     public float TestFloat { get; set; } = 3.2f;
     
     [Range(0, 10)]

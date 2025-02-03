@@ -1,6 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://bckaf08f4qymh"]
+[gd_scene load_steps=4 format=3 uid="uid://cgxsnary7mkam"]
 
-[ext_resource type="Script" path="res://addons/settings_inspector/src/MemberGroup.cs" id="1_rbo24"]
+[ext_resource type="Script" path="res://addons/settings_inspector/src/MemberGroup.cs" id="1_bqqli"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_erohp"]
 bg_color = Color(0, 0, 0, 0.184314)
@@ -11,15 +11,15 @@ corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w5inr"]
 
-[node name="MemberGroup" type="PanelContainer" node_paths=PackedStringArray("_groupNameLabel", "_memberParent")]
+[node name="InlineInspector" type="PanelContainer" node_paths=PackedStringArray("_groupNameLabel", "_memberParent")]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 57.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_erohp")
-script = ExtResource("1_rbo24")
+script = ExtResource("1_bqqli")
 _groupNameLabel = NodePath("VBoxContainer/MarginContainer/Label")
-_memberParent = NodePath("VBoxContainer/MarginContainer2/MemberParentContainer")
+_memberParent = NodePath("")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -34,7 +34,7 @@ theme_override_constants/margin_bottom = 3
 [node name="Label" type="Label" parent="VBoxContainer/MarginContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 21
-text = "Group Name"
+text = "Property Name"
 
 [node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
@@ -46,9 +46,6 @@ custom_minimum_size = Vector2(0, 1)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_w5inr")
 
-[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
+[node name="ContentHolder" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 10
-
-[node name="MemberParentContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer2"]
-layout_mode = 2

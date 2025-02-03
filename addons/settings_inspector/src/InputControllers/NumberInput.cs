@@ -9,7 +9,7 @@ public partial class NumberInput<T> : Control, IMemberInput where T : struct, IN
 {
 	[Export] private SpinBox _spinBox;
 
-    protected virtual double StepSize { get; } = 1;
+	protected virtual double StepSize { get; } = 1;
 
 	public override void _EnterTree()
 	{
@@ -51,8 +51,8 @@ public partial class NumberInput<T> : Control, IMemberInput where T : struct, IN
 			_spinBox.MinValue = (double)Convert.ChangeType(element.MemberInfo.MinValue, typeof(double));
 		else
 			_spinBox.AllowLesser = true;
-        _spinBox.Step = StepSize;
-    }
+		_spinBox.Step = StepSize;
+	}
 
 	public event Action<object>? OnValueChanged;
 }

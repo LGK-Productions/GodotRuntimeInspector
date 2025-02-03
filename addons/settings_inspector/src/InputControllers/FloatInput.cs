@@ -7,5 +7,5 @@ namespace SettingInspector.addons.settings_inspector.src.InputControllers;
 
 public partial class FloatInput : NumberInput<float>
 {
-    protected override double StepSize { get; } = float.Epsilon;
+	protected override double StepSize { get; } = float.Epsilon;
 }
