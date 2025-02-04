@@ -31,15 +31,15 @@ public partial class EnumInspector : MemberInspector
 
 	protected override void SetValue(object? value)
 	{
-        if (value == null || Enum.IsDefined(value.GetType(), value) == false || InspectorElement == null) return;
-        var name = Enum.GetName(InspectorElement.MemberInfo.Type, value);
+        if (value == null || Enum.IsDefined(value.GetType(), value) == false || ValueType == null) return;
+        var name = Enum.GetName(ValueType, value);
         if (name == null) return;
 		_optionButton.Selected = _enumLabels.IndexOf(name);
 	}
 
 	protected override object? GetValue()
     {
-        return InspectorElement == null ? null : Enum.Parse(InspectorElement.MemberInfo.Type, _enumLabels[_optionButton.Selected]);
+        return ValueType == null ? null : Enum.Parse(ValueType, _enumLabels[_optionButton.Selected]);
     }
 
 	public override void SetEditable(bool editable)

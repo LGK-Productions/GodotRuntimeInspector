@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
 using SettingInspector.addons.settings_inspector.Testing;
@@ -110,6 +112,12 @@ public partial class MemberInspectorHandler : Control
 		{
 			if (InspectorScenes.Count > 4)
 				return InspectorScenes[4];
+		}
+
+		if (inputType.IsGenericType && inputType.GetGenericTypeDefinition() == typeof(List<>))
+		{
+			if (InspectorScenes.Count > 6)
+				return InspectorScenes[6];
 		}
 		if (!inputType.IsPrimitive && inputType != typeof(string))
 		{

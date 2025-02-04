@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using LgkProductions.Inspector.Attributes;
@@ -19,6 +20,8 @@ internal class TestModel
 
     [TabGroup("Tab2")]
     public string TestTab { get; set; } = "new tab";
+
+    [TabGroup("Tab2")] public List<int> TestList { get; set; } = [0, 1, 2];
     
     [Range(0, 10)]
     public float TestDouble { get; set; } = 20f;

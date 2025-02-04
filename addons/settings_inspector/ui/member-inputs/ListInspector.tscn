@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://ts8gnglujv7i"]
 
-[ext_resource type="Script" path="res://addons/settings_inspector/src/MemberGroup.cs" id="1_cf1ef"]
+[ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/ListInspector.cs" id="1_oec23"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_erohp"]
 bg_color = Color(0, 0, 0, 0.184314)
@@ -11,14 +11,16 @@ corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w5inr"]
 
-[node name="ListInspector" type="PanelContainer" node_paths=PackedStringArray("_groupNameLabel")]
+[node name="ListInspector" type="PanelContainer" node_paths=PackedStringArray("_addButton", "_memberParent", "_label")]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 57.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_erohp")
-script = ExtResource("1_cf1ef")
-_groupNameLabel = NodePath("VBoxContainer/MarginContainer/Label")
+script = ExtResource("1_oec23")
+_addButton = NodePath("VBoxContainer/MarginContainer2/HBoxContainer/Add")
+_memberParent = NodePath("VBoxContainer/MemberParent")
+_label = NodePath("VBoxContainer/MarginContainer/Label")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2

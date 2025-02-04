@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://lnfsq1glnxff"]
+[gd_scene load_steps=12 format=3 uid="uid://lnfsq1glnxff"]
 
 [ext_resource type="Script" path="res://addons/settings_inspector/src/MemberInspectorHandler.cs" id="1_lw1hq"]
 [ext_resource type="PackedScene" uid="uid://cy2pkb0dun2c7" path="res://addons/settings_inspector/ui/MemberInspectorWrapper.tscn" id="2_yoyhv"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://b6d0uqwp7g3k" path="res://addons/settings_inspector/ui/member-inputs/DoubleInspector.tscn" id="8_jtcy8"]
 [ext_resource type="PackedScene" uid="uid://q2rqrwwx2811" path="res://addons/settings_inspector/ui/member-inputs/EnumInspector.tscn" id="9_vpbcg"]
 [ext_resource type="PackedScene" uid="uid://cgxsnary7mkam" path="res://addons/settings_inspector/ui/member-inputs/InlineInspector.tscn" id="10_n0ah6"]
+[ext_resource type="PackedScene" uid="uid://ts8gnglujv7i" path="res://addons/settings_inspector/ui/member-inputs/ListInspector.tscn" id="11_d3yan"]
 
 [node name="ClassInspector" type="Control" node_paths=PackedStringArray("_classInspectorContainer")]
 layout_mode = 3
@@ -23,7 +24,7 @@ _classInspectorContainer = NodePath("Container")
 _memberInspectorWrapperScene = ExtResource("2_yoyhv")
 _classWindowScene = ExtResource("3_gutww")
 DefaultInspectorScene = ExtResource("4_vim35")
-InspectorScenes = Array[PackedScene]([ExtResource("5_ovw4k"), ExtResource("6_eanj8"), ExtResource("7_8lgo8"), ExtResource("8_jtcy8"), ExtResource("9_vpbcg"), ExtResource("10_n0ah6")])
+InspectorScenes = Array[PackedScene]([ExtResource("5_ovw4k"), ExtResource("6_eanj8"), ExtResource("7_8lgo8"), ExtResource("8_jtcy8"), ExtResource("9_vpbcg"), ExtResource("10_n0ah6"), ExtResource("11_d3yan")])
 
 [node name="Container" type="Control" parent="."]
 layout_mode = 1

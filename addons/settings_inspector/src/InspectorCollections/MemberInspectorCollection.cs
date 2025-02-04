@@ -14,6 +14,7 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
 	
 	private readonly List<(InspectorElement, MemberInspector)> _inspectors = new();
 	Dictionary<string, MemberGroup> _memberGroups = new();
+    private bool _editable = true;
 
 	public void SetMemberInspector(Inspector inspector)
 	{
@@ -48,6 +49,7 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
 		}
 
 		memberInspector.SetMember(element);
+        memberInspector.SetEditable(_editable);
 		_inspectors.Add((element, memberInspector));
 		memberInspector.ValueChanged += OnChildValueChanged;
 	}
@@ -74,6 +76,7 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
 
 	public void SetEditable(bool editable)
 	{
+        _editable = editable;
 		foreach (var (_, inspector) in _inspectors)
 		{
 			inspector.SetEditable(editable);
