@@ -15,6 +15,8 @@ public interface IMemberInspectorCollection : IEnumerable<(InspectorElement, Mem
     public void Clear();
 
     public void SetEditable(bool editable);
+
+    public void SetScrollable(bool scrollable);
     
     public event Action ValueChanged;
 }

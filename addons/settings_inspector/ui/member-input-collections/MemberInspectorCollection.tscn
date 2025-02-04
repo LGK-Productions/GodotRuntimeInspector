@@ -3,11 +3,15 @@
 [ext_resource type="Script" path="res://addons/settings_inspector/src/InspectorCollections/MemberInspectorCollection.cs" id="1_gai4g"]
 [ext_resource type="PackedScene" uid="uid://bckaf08f4qymh" path="res://addons/settings_inspector/ui/member-input-collections/MemberGroup.tscn" id="2_3m6fy"]
 
-[node name="MarginContainer" type="MarginContainer" node_paths=PackedStringArray("_memberInspectorParent")]
+[node name="MarginContainer" type="MarginContainer" node_paths=PackedStringArray("_memberInspectorParent", "_scrollContainer")]
 offset_right = 1152.0
 script = ExtResource("1_gai4g")
 _memberInspectorParent = NodePath("ClassInspectorContent")
 _memberGroupScene = ExtResource("2_3m6fy")
+_scrollContainer = NodePath("ScrollContainer")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 2
 
 [node name="ClassInspectorContent" type="VBoxContainer" parent="."]
 layout_mode = 2

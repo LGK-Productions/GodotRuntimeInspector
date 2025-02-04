@@ -11,11 +11,6 @@ public abstract partial class MemberInspector : Control
 
 	protected InspectorElement? InspectorElement;
 	
-	public override void _ExitTree()
-	{
-		RemoveMember();
-	}
-	
 	public void SetMember(InspectorElement iElement)
 	{
 		_label.Text = iElement.MemberInfo.DisplayName;
@@ -37,13 +32,6 @@ public abstract partial class MemberInspector : Control
 	protected void OnValueChanged()
 	{
 		ValueChanged?.Invoke();
-	}
-
-	public void RemoveMember()
-	{
-		if (InspectorElement == null) return;
-		InspectorElement.ValueChanged -= UpdateMemberInputValue;
-		InspectorElement = null;
 	}
 
 	private void UpdateMemberInputValue(object instance, MetaDataMember member, object? value)

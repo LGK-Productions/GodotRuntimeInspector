@@ -46,7 +46,7 @@ text = "Class Name"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="InspectorContentHolder" type="ScrollContainer" parent="MainMargin/VBoxContainer"]
+[node name="InspectorContentHolder" type="MarginContainer" parent="MainMargin/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 

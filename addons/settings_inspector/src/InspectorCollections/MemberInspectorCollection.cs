@@ -10,6 +10,7 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
 {
 	[Export] private Node _memberInspectorParent;
 	[Export] private PackedScene _memberGroupScene;
+	[Export] private ScrollContainer _scrollContainer;
 	
 	private readonly List<(InspectorElement, MemberInspector)> _inspectors = new();
 	Dictionary<string, MemberGroup> _memberGroups = new();
@@ -95,4 +96,18 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
 	}
 	
 	public event Action ValueChanged;
+
+	public void SetScrollable(bool scrollable)
+	{
+		if (!scrollable)
+		{
+			if (_memberInspectorParent.GetParent() is ScrollContainer scroll)
+				_memberInspectorParent.Reparent(scroll.GetParent());
+		}
+		else
+		{
+			if (_memberInspectorParent.GetParent() is not ScrollContainer)
+				_memberInspectorParent.Reparent(_scrollContainer);
+		}
+	}
 }

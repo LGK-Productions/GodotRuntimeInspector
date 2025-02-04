@@ -17,11 +17,19 @@ public partial class ClassInspector : MemberInspector
 	public override void _EnterTree()
 	{
 		base._EnterTree();
-		_unattachButton.Pressed += () =>
-		{
-			if (_instance == null) return;
-			MemberInspectorHandler.Instance.OpenClassInspector(_instance, true, InspectorElement.MemberInfo.IsReadOnly);
-		};
+		_unattachButton.Pressed += OpenMemberAsWindow;
+	}
+
+	public override void _ExitTree()
+	{
+		base._ExitTree();
+		_unattachButton.Pressed -= OpenMemberAsWindow;
+	}
+
+	private void OpenMemberAsWindow()
+	{
+		if (_instance == null) return;
+		MemberInspectorHandler.Instance.OpenClassInspector(_instance, true, InspectorElement.MemberInfo.IsReadOnly);
 	}
 	
 	public static PollingTickProvider TickProvider = new(1);

@@ -87,10 +87,20 @@ public partial class MemberInspectorTabCollection : Control, IMemberInspectorCol
 		}
 	}
 
+	public void SetScrollable(bool scrollable)
+	{
+		foreach (var (_, collection) in _tabs)
+		{
+			collection.SetScrollable(scrollable);
+		}
+	}
+
 	private void OnChildValueChanged()
 	{
 		ValueChanged?.Invoke();
 	}
+	
+	
 
 	public event Action? ValueChanged;
 }

@@ -40,6 +40,7 @@ public partial class MemberInspectorButtonWrapper : Control
 		var memberCollection = (IMemberInspectorCollection)memberCollectionNode;
 		memberCollection.SetMemberInspector(inspector);
 		memberCollection.SetEditable(!readOnly);
+		memberCollection.SetScrollable(true);
 
 		try
 		{
