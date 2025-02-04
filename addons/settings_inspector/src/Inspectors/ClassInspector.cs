@@ -1,14 +1,15 @@
 using System;
 using Godot;
 using LgkProductions.Inspector;
-using LgkProductions.Inspector.MetaData;
 using SettingInspector.addons.settings_inspector.src.InspectorCollections;
+using SettingInspector.addons.settings_inspector.src.Inspectors;
 
 namespace SettingInspector.addons.settings_inspector.src;
 
 public partial class ClassInspector : MemberInspector
 {
 	[Export] private PackedScene _memberCollectionScene;
+	[Export] private PackedScene _memberTabCollectionScene;
 	[Export] private Node _memberParent;
 	[Export] private Button _unattachButton;
 	
@@ -52,21 +53,15 @@ public partial class ClassInspector : MemberInspector
 		}
 		_instance = classInstance;
 		var inspector = Inspector.Attach(classInstance, TickProvider);
+		var memberCollectionNode = (MemberUiInfo.AllowTabs ? _memberTabCollectionScene : _memberCollectionScene).Instantiate();
+		_memberParent.AddChild(memberCollectionNode);
+		_memberInspectorCollection = (IMemberInspectorCollection)memberCollectionNode;
 		_memberInspectorCollection.SetMemberInspector(inspector);
-		
+		_memberInspectorCollection.SetScrollable(MemberUiInfo.Scrollable);
+		_memberInspectorCollection.ValueChanged += OnValueChanged;
 	}
 
-    protected override void OnSetMetaData(MetaDataMember member)
-    {
-        base.OnSetMetaData(member);
-        var memberCollectionNode = _memberCollectionScene.Instantiate();
-        _memberParent.AddChild(memberCollectionNode);
-        _memberInspectorCollection = (IMemberInspectorCollection)memberCollectionNode;
-        _memberInspectorCollection.SetEditable(!member.IsReadOnly);
-        _memberInspectorCollection.ValueChanged += OnValueChanged;
-    }
-
-    public sealed class PollingTickProvider : ITickProvider
+	public sealed class PollingTickProvider : ITickProvider
 	{
 		public event Action? Tick;
 
@@ -92,6 +87,7 @@ public partial class ClassInspector : MemberInspector
 
 	public override void SetEditable(bool editable)
 	{
+		base.SetEditable(editable);
 		_memberInspectorCollection?.SetEditable(editable);
 	}
 }

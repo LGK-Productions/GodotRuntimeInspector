@@ -38,6 +38,7 @@ public partial class LineInspector : MemberInspector
 
 	public override void SetEditable(bool editable)
 	{
+		base.SetEditable(editable);
 		_lineEdit.Editable = editable;
 	}
 

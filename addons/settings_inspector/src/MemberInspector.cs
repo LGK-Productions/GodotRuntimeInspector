@@ -2,50 +2,60 @@ using System;
 using Godot;
 using LgkProductions.Inspector;
 using LgkProductions.Inspector.MetaData;
+using SettingInspector.addons.settings_inspector.src.Inspectors;
 
 namespace SettingInspector.addons.settings_inspector.src;
 
 public abstract partial class MemberInspector : Control
 {
 	[Export] private Label _label;
-    
-    protected Type? ValueType;
-    protected bool Editable = true;
+	[Export] private Control _background;
+	[Export] private Control _labelContainer;
+	
+	protected Type? ValueType;
+	
+	protected bool Editable = true;
+	protected MemberUiInfo MemberUiInfo;
 	
 	public void SetMember(InspectorElement iElement)
 	{
 		_label.Text = iElement.MemberInfo.DisplayName;
 		_label.TooltipText = iElement.MemberInfo.Description;
-        
-        ValueType = iElement.MemberInfo.Type;
-        
-        SetEditable(!iElement.MemberInfo.IsReadOnly);
-
 		
+		SetEditable(!iElement.MemberInfo.IsReadOnly);
 		OnSetMetaData(iElement.MemberInfo);
-		
+		SetInstance(iElement.Value);
+
 		iElement.ValueChanged += UpdateMemberInputValue;
-		SetValue(iElement.Value);
 	}
 
 	/// <summary>
 	/// Sets an input value, removing the name label description, etc
 	/// </summary>
 	/// <param name="value"></param>
-	public void SetInputValue(object? value)
+	public void SetInstance(object? value, MemberUiInfo memberUiInfo = new())
 	{
-		_label.Visible = false;
-        ValueType = value?.GetType();
+		ValueType = value?.GetType();
+		SetMemberUiInfo(memberUiInfo);
 		SetValue(value);
+	}
+
+	protected virtual void SetMemberUiInfo(MemberUiInfo memberUiInfo)
+	{
+		MemberUiInfo = memberUiInfo;
+		_labelContainer?.SetVisible(!memberUiInfo.IsLabelHidden);
+		_label?.SetVisible(!memberUiInfo.IsLabelHidden);
+		_background?.SetVisible(!memberUiInfo.IsBackgroundHidden);
 	}
 	
 	protected abstract object? GetValue();
 	protected abstract void SetValue(object? value);
 
-    public virtual void SetEditable(bool editable)
-    {
-        Editable = editable;
-    }
+	public virtual void SetEditable(bool editable)
+	{
+		Editable = editable;
+	}
+	
 	protected virtual void OnSetMetaData(MetaDataMember member){}
 	public event Action ValueChanged;
 	protected void OnValueChanged()

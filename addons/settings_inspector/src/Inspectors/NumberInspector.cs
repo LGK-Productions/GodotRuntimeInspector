@@ -37,6 +37,7 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
 
 	public override void SetEditable(bool editable)
 	{
+        base.SetEditable(editable);
 		_spinBox.Editable = editable;
 	}
 

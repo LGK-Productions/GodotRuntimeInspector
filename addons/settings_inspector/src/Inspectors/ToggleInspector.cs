@@ -9,34 +9,35 @@ public partial class ToggleInspector : MemberInspector
 
 	public override void _EnterTree()
 	{
-        base._EnterTree();
+		base._EnterTree();
 		_checkbox.Pressed += OnPressed;
 	}
 
 	public override void _ExitTree()
 	{
-        base._ExitTree();
+		base._ExitTree();
 		_checkbox.Pressed -= OnPressed;
 	}
 
-    protected override void SetValue(object? value)
+	protected override void SetValue(object? value)
 	{
-        if (value is bool b)
-            _checkbox.SetPressed(b);
+		if (value is bool b)
+			_checkbox.SetPressed(b);
 	}
 
-    protected override object? GetValue()
+	protected override object? GetValue()
 	{
 		return _checkbox.IsPressed();
 	}
 
 	public override void SetEditable(bool editable)
 	{
+		base.SetEditable(editable);
 		_checkbox.Disabled = !editable;
 	}
 
 	private void OnPressed()
-    {
-        OnValueChanged();
-    }
+	{
+		OnValueChanged();
+	}
 }

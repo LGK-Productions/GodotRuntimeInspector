@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/LineInspector.cs" id="1_dpfsd"]
 
-[node name="LineInspector" type="MarginContainer" node_paths=PackedStringArray("_lineEdit", "_label")]
+[node name="LineInspector" type="MarginContainer" node_paths=PackedStringArray("_lineEdit", "_label", "_labelContainer")]
 custom_minimum_size = Vector2(0, 40)
 anchors_preset = 10
 anchor_right = 1.0
@@ -13,18 +13,22 @@ theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 3
 theme_override_constants/margin_bottom = 3
 script = ExtResource("1_dpfsd")
-_lineEdit = NodePath("HBoxContainer/MarginContainer2/LineEdit")
-_label = NodePath("HBoxContainer/MarginContainer/Label")
+_lineEdit = NodePath("MarginContainer/HBoxContainer/LineEdit")
+_label = NodePath("MarginContainer/HBoxContainer/Label")
+_labelContainer = NodePath("MarginContainer/HBoxContainer/Label")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 5
 
-[node name="Label" type="Label" parent="HBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -32,12 +36,6 @@ mouse_filter = 0
 text = "Property Name"
 vertical_alignment = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer"]
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 5
-
-[node name="LineEdit" type="LineEdit" parent="HBoxContainer/MarginContainer2"]
-layout_mode = 2
