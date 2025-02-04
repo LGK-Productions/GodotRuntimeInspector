@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://diheksfofmcdc"]
+
+[ext_resource type="Script" path="res://addons/settings_inspector/src/MemberInspectorCollection.cs" id="1_jncl6"]
+[ext_resource type="PackedScene" uid="uid://bckaf08f4qymh" path="res://addons/settings_inspector/ui/MemberGroup.tscn" id="2_3m6fy"]
+
+[node name="ClassInspectorContent" type="VBoxContainer" node_paths=PackedStringArray("_memberInspectorParent")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+script = ExtResource("1_jncl6")
+_memberInspectorParent = NodePath(".")
+_memberGroupScene = ExtResource("2_3m6fy")

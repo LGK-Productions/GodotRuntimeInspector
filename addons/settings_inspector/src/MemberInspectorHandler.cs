@@ -58,7 +58,7 @@ public partial class MemberInspectorHandler : Control
 		return OpenClassInspector<T>(new T());
 	}
 	
-	public async Task<T> OpenClassInspector<T>(T instance, bool asWindow = false)
+	public async Task<T> OpenClassInspector<T>(T instance, bool asWindow = false, bool readOnly = false)
 	{
 		var inspector = _memberInspectorWrapperScene.Instantiate<MemberInspectorButtonWrapper>();
 		Window inspectorWindow = null;
@@ -73,7 +73,7 @@ public partial class MemberInspectorHandler : Control
 		
 		try
 		{
-			return await inspector.SetInspector(instance);
+			return await inspector.SetInspector(instance, readOnly);
 		}
 		finally
 		{

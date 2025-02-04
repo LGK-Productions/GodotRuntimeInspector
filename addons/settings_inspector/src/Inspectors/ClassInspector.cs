@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Godot;
 using LgkProductions.Inspector;
 
@@ -7,11 +6,12 @@ namespace SettingInspector.addons.settings_inspector.src;
 
 public partial class ClassInspector : MemberInspector
 {
-	[Export] private PackedScene _memberGroupScene;
+	[Export] private PackedScene _memberCollectionScene;
 	[Export] private Node _memberParent;
 	[Export] private Button _unattachButton;
 	
 	private object? _instance;
+	private MemberInspectorCollection? _memberInspectorCollection;
 
 	public override void _EnterTree()
 	{
@@ -19,11 +19,9 @@ public partial class ClassInspector : MemberInspector
 		_unattachButton.Pressed += () =>
 		{
 			if (_instance == null) return;
-			MemberInspectorHandler.Instance.OpenClassInspector(_instance, true);
+			MemberInspectorHandler.Instance.OpenClassInspector(_instance, true, InspectorElement.MemberInfo.IsReadOnly);
 		};
 	}
-
-	List<(InspectorElement, MemberInspector)> _inspectors = new();
 	
 	public static PollingTickProvider TickProvider = new(1);
 
@@ -42,37 +40,13 @@ public partial class ClassInspector : MemberInspector
 				return;
 			}
 		}
-		ClearInspector();
 		_instance = classInstance;
 		var inspector = Inspector.Attach(classInstance, TickProvider);
-
-		Dictionary<string, MemberGroup> memberGroups = new();
-		foreach (var element in inspector.Elements)
-		{
-			var memberInspector = MemberInspectorHandler.Instance!.GetInputScene(element.MemberInfo.Type).Instantiate<MemberInspector>();
-			
-			//Grouping Logic
-			if (element.MemberInfo.GroupName == null)
-				_memberParent.AddChild(memberInspector);
-			else
-			{
-				if (memberGroups.TryGetValue(element.MemberInfo.GroupName, out var group))
-					group.AddMember(memberInspector);
-				else
-				{
-					var memberGroupNode = _memberGroupScene.Instantiate();
-					_memberParent.AddChild(memberGroupNode);
-					var memberGroup = (MemberGroup)memberGroupNode;
-					memberGroup.SetGroup(element.MemberInfo.GroupName);
-					memberGroups.Add(element.MemberInfo.GroupName, memberGroup);
-					memberGroup.AddMember(memberInspector);
-				}
-			}
-			
-			memberInspector.SetMember(element);
-			memberInspector.ValueChanged += ChildValueChanged;
-			_inspectors.Add((element, memberInspector));
-		}
+		_memberInspectorCollection = _memberCollectionScene.Instantiate<MemberInspectorCollection>();
+		_memberParent.AddChild(_memberInspectorCollection);
+		_memberInspectorCollection.SetMemberInspector(inspector);
+        _memberInspectorCollection.SetEditable(!InspectorElement.MemberInfo.IsReadOnly);
+		_memberInspectorCollection.ValueChanged += OnValueChanged;
 	}
 	
 	public sealed class PollingTickProvider : ITickProvider
@@ -95,30 +69,12 @@ public partial class ClassInspector : MemberInspector
 	protected override object? GetValue()
 	{
 		//Write values back
-		foreach (var (element, inspector) in _inspectors)
-		{
-			if (inspector.TryRetrieveMember(out object? value))
-				element.Value = value;
-		}
-
+		_memberInspectorCollection?.WriteBack();
 		return _instance;
 	}
 
 	public override void SetEditable(bool editable)
 	{
-		foreach (var (_, inspector) in _inspectors)
-		{
-			inspector.SetEditable(editable);
-		}
-	}
-
-	private void ClearInspector()
-	{
-		foreach (var (element, inspector) in _inspectors)
-		{
-			inspector.ValueChanged -= ChildValueChanged;
-			inspector.QueueFree();
-		}
-		_inspectors.Clear();
+		_memberInspectorCollection?.SetEditable(editable);
 	}
 }

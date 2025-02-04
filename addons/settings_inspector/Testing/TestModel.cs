@@ -10,8 +10,8 @@ internal class TestModel
     
     [Range(0, 10)]
     public int TestRange {get; set;}
-    
-    public VeryComplexType TestVeryComplex { get; set; }
+
+    public VeryComplexType TestVeryComplex { get; set; } = new();
 
     [BoxGroup("Group1")]
     [Range(0, 10)]
