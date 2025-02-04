@@ -16,6 +16,9 @@ internal class TestModel
     [BoxGroup("Group1")]
     [Range(0, 10)]
     public float TestFloat { get; set; } = 3.2f;
+
+    [TabGroup("Tab2")]
+    public string TestTab { get; set; } = "new tab";
     
     [Range(0, 10)]
     public float TestDouble { get; set; } = 20f;
@@ -29,7 +32,7 @@ internal class TestModel
     [Display(Description = "Description")]
     [Description("Description2")]
     public string TestDescription { get; set; } = "Hover for description";
-
+    
     [Editable(allowEdit: true)]
     [ReadOnly(isReadOnly: true)]
     public string TestReadOnly { get; set; }

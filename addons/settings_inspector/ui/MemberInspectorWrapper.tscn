@@ -2,7 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://62r1pqjwqsym" path="res://addons/settings_inspector/themes/inspector_theme.tres" id="1_68bgs"]
 [ext_resource type="Script" path="res://addons/settings_inspector/src/MemberInspectorButtonWrapper.cs" id="2_f5qts"]
-[ext_resource type="PackedScene" uid="uid://diheksfofmcdc" path="res://addons/settings_inspector/ui/MemberInspectorCollection.tscn" id="3_7jhxp"]
+[ext_resource type="PackedScene" uid="uid://dkcox87a5snt0" path="res://addons/settings_inspector/ui/member-input-collections/MemberInspectorTabCollection.tscn" id="3_uuebn"]
 
 [node name="ClassInspectorWrapper" type="Panel" node_paths=PackedStringArray("_nameLabel", "_cancelButton", "_confirmButton", "_inspectorContainer")]
 clip_contents = true
@@ -17,7 +17,7 @@ _nameLabel = NodePath("MainMargin/VBoxContainer/MarginContainer/Title")
 _cancelButton = NodePath("MainMargin/VBoxContainer/MarginContainer2/HBoxContainer/Cancel")
 _confirmButton = NodePath("MainMargin/VBoxContainer/MarginContainer2/HBoxContainer/Accept")
 _inspectorContainer = NodePath("MainMargin/VBoxContainer/InspectorContentHolder")
-_memberCollectionScene = ExtResource("3_7jhxp")
+_memberCollectionScene = ExtResource("3_uuebn")
 
 [node name="MainMargin" type="MarginContainer" parent="."]
 layout_mode = 1

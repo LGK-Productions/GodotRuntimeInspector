@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
 using LgkProductions.Inspector;
+using SettingInspector.addons.settings_inspector.src.InspectorCollections;
 
 namespace SettingInspector.addons.settings_inspector.src;
 
@@ -34,10 +35,11 @@ public partial class MemberInspectorButtonWrapper : Control
 		_nameLabel.Text = typeof(T).Name;
 
 		var inspector = Inspector.Attach(instance, ClassInspector.TickProvider);
-		var memberCollection = _memberCollectionScene.Instantiate<MemberInspectorCollection>();
-		_inspectorContainer.AddChild(memberCollection);
+		var memberCollectionNode = _memberCollectionScene.Instantiate();
+		_inspectorContainer.AddChild(memberCollectionNode);
+		var memberCollection = (IMemberInspectorCollection)memberCollectionNode;
 		memberCollection.SetMemberInspector(inspector);
-        memberCollection.SetEditable(!readOnly);
+		memberCollection.SetEditable(!readOnly);
 
 		try
 		{

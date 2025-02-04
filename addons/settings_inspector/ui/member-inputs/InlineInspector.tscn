@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://cgxsnary7mkam"]
 
 [ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/ClassInspector.cs" id="1_gh2an"]
-[ext_resource type="PackedScene" uid="uid://diheksfofmcdc" path="res://addons/settings_inspector/ui/MemberInspectorCollection.tscn" id="2_0ywnt"]
+[ext_resource type="PackedScene" uid="uid://dkcox87a5snt0" path="res://addons/settings_inspector/ui/member-input-collections/MemberInspectorTabCollection.tscn" id="2_704xg"]
 [ext_resource type="Texture2D" uid="uid://db1o47rcju6sw" path="res://addons/settings_inspector/art/icons/share.png" id="3_oytnm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_erohp"]
@@ -20,7 +20,7 @@ offset_bottom = 57.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_erohp")
 script = ExtResource("1_gh2an")
-_memberCollectionScene = ExtResource("2_0ywnt")
+_memberCollectionScene = ExtResource("2_704xg")
 _memberParent = NodePath("VBoxContainer/ContentHolder")
 _unattachButton = NodePath("VBoxContainer/MarginContainer/HBoxContainer/Button")
 _label = NodePath("VBoxContainer/MarginContainer/HBoxContainer/Label")

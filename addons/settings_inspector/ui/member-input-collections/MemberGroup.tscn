@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bckaf08f4qymh"]
 
-[ext_resource type="Script" path="res://addons/settings_inspector/src/MemberGroup.cs" id="1_rbo24"]
+[ext_resource type="Script" path="res://addons/settings_inspector/src/InspectorCollections/MemberGroup.cs" id="1_o3lf3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_erohp"]
 bg_color = Color(0, 0, 0, 0.184314)
@@ -17,7 +17,7 @@ anchor_right = 1.0
 offset_bottom = 57.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_erohp")
-script = ExtResource("1_rbo24")
+script = ExtResource("1_o3lf3")
 _groupNameLabel = NodePath("VBoxContainer/MarginContainer/Label")
 _memberParent = NodePath("VBoxContainer/MarginContainer2/MemberParentContainer")
 

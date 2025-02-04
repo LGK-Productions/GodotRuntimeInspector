@@ -4,47 +4,51 @@ using System.Collections.Generic;
 using Godot;
 using LgkProductions.Inspector;
 
-namespace SettingInspector.addons.settings_inspector.src;
+namespace SettingInspector.addons.settings_inspector.src.InspectorCollections;
 
-public partial class MemberInspectorCollection : Control, IEnumerable<(InspectorElement, MemberInspector)>
+public partial class MemberInspectorCollection : Control, IMemberInspectorCollection
 {
 	[Export] private Node _memberInspectorParent;
 	[Export] private PackedScene _memberGroupScene;
 	
 	private readonly List<(InspectorElement, MemberInspector)> _inspectors = new();
+	Dictionary<string, MemberGroup> _memberGroups = new();
 
 	public void SetMemberInspector(Inspector inspector)
 	{
 		Clear();
-		Dictionary<string, MemberGroup> memberGroups = new();
-
 		foreach (var element in inspector.Elements)
 		{
-			var scene = MemberInspectorHandler.Instance.GetInputScene(element.MemberInfo.Type);
-			var memberInspector = (MemberInspector)scene.Instantiate();
+			AddElement(element);
+		}
+	}
 
-			//Grouping Logic
-			if (element.MemberInfo.GroupName == null)
-				_memberInspectorParent.AddChild(memberInspector);
+	public void AddElement(InspectorElement element)
+	{
+		var scene = MemberInspectorHandler.Instance.GetInputScene(element.MemberInfo.Type);
+		var memberInspector = (MemberInspector)scene.Instantiate();
+
+		//Grouping Logic
+		if (element.MemberInfo.GroupName == null)
+			_memberInspectorParent.AddChild(memberInspector);
+		else
+		{
+			if (_memberGroups.TryGetValue(element.MemberInfo.GroupName, out var group))
+				group.AddMember(memberInspector);
 			else
 			{
-				if (memberGroups.TryGetValue(element.MemberInfo.GroupName, out var group))
-					group.AddMember(memberInspector);
-				else
-				{
-					var memberGroupNode = _memberGroupScene.Instantiate();
-					_memberInspectorParent.AddChild(memberGroupNode);
-					var memberGroup = (MemberGroup)memberGroupNode;
-					memberGroup.SetGroup(element.MemberInfo.GroupName);
-					memberGroups.Add(element.MemberInfo.GroupName, memberGroup);
-					memberGroup.AddMember(memberInspector);
-				}
+				var memberGroupNode = _memberGroupScene.Instantiate();
+				_memberInspectorParent.AddChild(memberGroupNode);
+				var memberGroup = (MemberGroup)memberGroupNode;
+				memberGroup.SetGroup(element.MemberInfo.GroupName);
+				_memberGroups.Add(element.MemberInfo.GroupName, memberGroup);
+				memberGroup.AddMember(memberInspector);
 			}
-
-			memberInspector.SetMember(element);
-			_inspectors.Add((element, memberInspector));
-			memberInspector.ValueChanged += OnChildValueChanged;
 		}
+
+		memberInspector.SetMember(element);
+		_inspectors.Add((element, memberInspector));
+		memberInspector.ValueChanged += OnChildValueChanged;
 	}
 
 	public void WriteBack()
@@ -64,6 +68,7 @@ public partial class MemberInspectorCollection : Control, IEnumerable<(Inspector
 			inspector.QueueFree();
 		}
 		_inspectors.Clear();
+		_memberGroups.Clear();
 	}
 
 	public void SetEditable(bool editable)

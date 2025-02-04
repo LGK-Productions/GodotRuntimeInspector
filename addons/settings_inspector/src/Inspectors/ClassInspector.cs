@@ -1,6 +1,7 @@
 using System;
 using Godot;
 using LgkProductions.Inspector;
+using SettingInspector.addons.settings_inspector.src.InspectorCollections;
 
 namespace SettingInspector.addons.settings_inspector.src;
 
@@ -11,7 +12,7 @@ public partial class ClassInspector : MemberInspector
 	[Export] private Button _unattachButton;
 	
 	private object? _instance;
-	private MemberInspectorCollection? _memberInspectorCollection;
+	private IMemberInspectorCollection? _memberInspectorCollection;
 
 	public override void _EnterTree()
 	{
@@ -42,10 +43,11 @@ public partial class ClassInspector : MemberInspector
 		}
 		_instance = classInstance;
 		var inspector = Inspector.Attach(classInstance, TickProvider);
-		_memberInspectorCollection = _memberCollectionScene.Instantiate<MemberInspectorCollection>();
-		_memberParent.AddChild(_memberInspectorCollection);
+		var memberCollectionNode = _memberCollectionScene.Instantiate();
+		_memberParent.AddChild(memberCollectionNode);
+		_memberInspectorCollection = (IMemberInspectorCollection)memberCollectionNode;
 		_memberInspectorCollection.SetMemberInspector(inspector);
-        _memberInspectorCollection.SetEditable(!InspectorElement.MemberInfo.IsReadOnly);
+		_memberInspectorCollection.SetEditable(!InspectorElement.MemberInfo.IsReadOnly);
 		_memberInspectorCollection.ValueChanged += OnValueChanged;
 	}
 	
