@@ -13,16 +13,16 @@ public abstract partial class MemberInspector : Control
 	[Export] private Control _background;
 	[Export] private Control _labelContainer;
 
-	protected Type? ValueType;
+	public Type? ValueType { get; private set; }
 
 	protected bool Editable = true;
 	protected MemberUiInfo MemberUiInfo;
-    
-    private InspectorElement? _element;
+	
+	private InspectorElement? _element;
 
 	public void SetMember(InspectorElement iElement)
 	{
-        _element = iElement;
+		_element = iElement;
 		_label.Text = _element.MemberInfo.DisplayName;
 		_label.TooltipText = _element.MemberInfo.Description;
 
@@ -37,7 +37,7 @@ public abstract partial class MemberInspector : Control
 
 		SetInstance(value!);
 
-        _element.ValueChanged += UpdateMemberInputValue;
+		_element.ValueChanged += UpdateMemberInputValue;
 	}
 
 	private bool TryCreateInstance(Type type, out object? instance)
@@ -60,12 +60,15 @@ public abstract partial class MemberInspector : Control
 		}
 	}
 
-	public void SetInstance(object value, MemberUiInfo memberUiInfo = new())
+	public void SetInstance(object value) => SetInstance(value, MemberUiInfo.Default);
+
+	public void SetInstance(object value, MemberUiInfo memberUiInfo)
 	{
 		ValueType = value.GetType();
 		SetMemberUiInfo(memberUiInfo);
 		SetValue(value);
 	}
+
 
 	protected virtual void SetMemberUiInfo(MemberUiInfo memberUiInfo)
 	{
@@ -77,10 +80,10 @@ public abstract partial class MemberInspector : Control
 
 	protected abstract object? GetValue();
 
-    protected virtual void SetValue(object value)
-    {
-        Clear();
-    }
+	protected virtual void SetValue(object value)
+	{
+		Clear();
+	}
 
 	public virtual void SetEditable(bool editable)
 	{
@@ -91,13 +94,13 @@ public abstract partial class MemberInspector : Control
 	{
 	}
 
-    public virtual void Clear()
-    {
-        if (_element != null)
-        {
-            _element.ValueChanged -= UpdateMemberInputValue;
-        }
-    }
+	public virtual void Clear()
+	{
+		if (_element != null)
+		{
+			_element.ValueChanged -= UpdateMemberInputValue;
+		}
+	}
 
 	public event Action ValueChanged;
 

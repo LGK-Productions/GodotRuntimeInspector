@@ -56,7 +56,7 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
 	{
 		foreach (var (element, inspector) in _inspectors)
 		{
-            if (element.MemberInfo.IsReadOnly) continue;
+			if (element.MemberInfo.IsReadOnly) continue;
 			if (inspector.TryRetrieveMember(out var value))
 				element.Value = value;
 		}
@@ -67,14 +67,14 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
 		foreach (var (_, inspector) in _inspectors)
 		{
 			inspector.ValueChanged -= OnChildValueChanged;
-            inspector.Clear();
+			inspector.Clear();
 			inspector.QueueFree();
 		}
 		_inspectors.Clear();
-        foreach (var (_, group) in _memberGroups)
-        {
-            group.QueueFree();
-        }
+		foreach (var (_, group) in _memberGroups)
+		{
+			group.QueueFree();
+		}
 		_memberGroups.Clear();
 	}
 

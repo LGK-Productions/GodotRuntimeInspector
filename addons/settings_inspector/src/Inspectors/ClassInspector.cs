@@ -14,7 +14,8 @@ public partial class ClassInspector : MemberInspector
 	[Export] private Button _unattachButton;
 	
 	private object? _instance;
-	private IMemberInspectorCollection? _memberInspectorCollection;
+	private Node? _memberCollectionNode;
+    private IMemberInspectorCollection? MemberInspectorCollection => (IMemberInspectorCollection)_memberCollectionNode;
 
 	public override void _EnterTree()
 	{
@@ -38,15 +39,14 @@ public partial class ClassInspector : MemberInspector
 
 	protected override void SetValue(object classInstance)
 	{
-        base.SetValue(classInstance);
+		base.SetValue(classInstance);
 		_instance = classInstance;
 		var inspector = Inspector.Attach(classInstance, TickProvider);
-		var memberCollectionNode = (MemberUiInfo.AllowTabs ? _memberTabCollectionScene : _memberCollectionScene).Instantiate();
-		_memberParent.AddChild(memberCollectionNode);
-		_memberInspectorCollection = (IMemberInspectorCollection)memberCollectionNode;
-		_memberInspectorCollection.SetMemberInspector(inspector);
-		_memberInspectorCollection.SetScrollable(MemberUiInfo.Scrollable);
-		_memberInspectorCollection.ValueChanged += OnValueChanged;
+		_memberCollectionNode = (MemberUiInfo.AllowTabs ? _memberTabCollectionScene : _memberCollectionScene).Instantiate();
+		_memberParent.AddChild(_memberCollectionNode);
+        MemberInspectorCollection.SetMemberInspector(inspector);
+        MemberInspectorCollection.SetScrollable(MemberUiInfo.Scrollable);
+        MemberInspectorCollection.ValueChanged += OnValueChanged;
 	}
 
 	public sealed class PollingTickProvider : ITickProvider
@@ -61,14 +61,16 @@ public partial class ClassInspector : MemberInspector
 		}
 	}
 
-    public override void Clear()
-    {
-        base.Clear();
-        _instance = null;
-        _memberInspectorCollection?.Clear();
-    }
+	public override void Clear()
+	{
+		base.Clear();
+		_instance = null;
+		MemberInspectorCollection?.Clear();
+        _memberCollectionNode?.QueueFree();
+        _memberCollectionNode = null;
+	}
 
-    private void ChildValueChanged()
+	private void ChildValueChanged()
 	{
 		OnValueChanged();
 	}
@@ -76,13 +78,13 @@ public partial class ClassInspector : MemberInspector
 	protected override object? GetValue()
 	{
 		//Write values back
-		_memberInspectorCollection?.WriteBack();
+        MemberInspectorCollection?.WriteBack();
 		return _instance;
 	}
 
 	public override void SetEditable(bool editable)
 	{
 		base.SetEditable(editable);
-		_memberInspectorCollection?.SetEditable(editable);
+        MemberInspectorCollection?.SetEditable(editable);
 	}
 }

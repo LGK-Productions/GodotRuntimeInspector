@@ -21,7 +21,7 @@ public partial class ToggleInspector : MemberInspector
 
 	protected override void SetValue(object value)
 	{
-        base.SetValue(value);
+		base.SetValue(value);
 		_checkbox.SetPressed((bool)value);
 	}
 

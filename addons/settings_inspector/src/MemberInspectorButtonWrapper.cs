@@ -28,11 +28,15 @@ public partial class MemberInspectorButtonWrapper : Control
 	{
 		PreferredObjectCreationHandling = JsonObjectCreationHandling.Replace
 	};
-    
-    private FileDialog _fileDialog = FileDialogFactory.CreateNativeJson();
+
+	private static readonly MemberUiInfo MemberUiInfo = new ()
+	{
+		AllowTabs = true, Scrollable = true, IsLabelHidden = true, IsBackgroundHidden = true
+	};
+	
+	private FileDialog _fileDialog = FileDialogFactory.CreateNativeJson();
 
 	private TaskCompletionSource? _tcs;
-	private object? _instance;
 	private MemberInspector? _inspector;
 
 	public override void _Ready()
@@ -41,51 +45,52 @@ public partial class MemberInspectorButtonWrapper : Control
 		_confirmButton.Pressed += () => _tcs?.SetResult();
 		_loadButton.Pressed += LoadButtonPressed;
 		_saveButton.Pressed += SaveButtonPressed;
-        AddChild(_fileDialog);
+		AddChild(_fileDialog);
 	}
 
 	private void SaveButtonPressed()
 	{
 		_fileDialog.FileMode = FileDialog.FileModeEnum.SaveFile;
-        
-        _fileDialog.FileSelected += FileDialogConfirmed;
-        _fileDialog.PopupCentered();
-        _fileDialog.FileSelected -= FileDialogConfirmed;
+		
+		_fileDialog.FileSelected += FileDialogConfirmed;
+		_fileDialog.PopupCentered();
+		_fileDialog.FileSelected -= FileDialogConfirmed;
 		
 
-        void FileDialogConfirmed(string path)
-        {
-            SaveJson(path);
-        }
+		void FileDialogConfirmed(string path)
+		{
+			SaveJson(path);
+		}
 	}
 	private void LoadButtonPressed()
 	{
-        _fileDialog.FileSelected += FileDialogConfirmed;
-        
-        _fileDialog.PopupCentered();
-        
-        _fileDialog.FileSelected -= FileDialogConfirmed;
+		_fileDialog.FileSelected += FileDialogConfirmed;
+		
+		_fileDialog.PopupCentered();
+		
+		_fileDialog.FileSelected -= FileDialogConfirmed;
 
 
-        
-        void FileDialogConfirmed(string filePath)
-        {
-            if (!File.Exists(filePath))
-            {
-                GD.PrintErr("File not found: " + filePath);
-                return;
-            }
-            LoadJson(File.ReadAllText(filePath));
-        }
+		
+		void FileDialogConfirmed(string filePath)
+		{
+			if (!File.Exists(filePath))
+			{
+				GD.PrintErr("File not found: " + filePath);
+				return;
+			}
+			LoadJson(File.ReadAllText(filePath));
+		}
 	}
 
 	private void LoadJson(string json)
 	{
-		if (_instance == null) return;
+		if (_inspector?.ValueType == null) return;
 		try
 		{
-			_instance = JsonSerializer.Deserialize(json, _instance.GetType(), DeserializerOptions);
-            UpdateInstance();
+			var value = JsonSerializer.Deserialize(json, _inspector.ValueType, DeserializerOptions);
+			if (value is not null)
+				_inspector.SetInstance(value, MemberUiInfo);
 		}
 		catch (Exception e)
 		{
@@ -95,12 +100,12 @@ public partial class MemberInspectorButtonWrapper : Control
 
 	private void SaveJson(string path)
 	{
-		if (_instance == null || _inspector == null) return;
-        
+		if (_inspector?.ValueType == null) return;
+		
 		try
 		{
-            if (!_inspector.TryRetrieveMember(out var value)) return;
-			var json = JsonSerializer.Serialize(value, _instance.GetType(), SerializerOptions);
+			if (!_inspector.TryRetrieveMember(out var value)) return;
+			var json = JsonSerializer.Serialize(value, _inspector.ValueType, SerializerOptions);
 			File.WriteAllText(path, json);
 		}
 		catch (Exception e)
@@ -123,34 +128,26 @@ public partial class MemberInspectorButtonWrapper : Control
 			return instance;
 		}
 		
-		_instance = instance;
 		_tcs = new TaskCompletionSource();
 		_nameLabel.Text = typeof(T).Name;
 
 		_inspector = MemberInspectorHandler.Instance.GetInputScene(typeof(T)).Instantiate<MemberInspector>();
 		_inspectorContainer.AddChild(_inspector);
 
-        UpdateInstance();
+		_inspector.SetInstance(instance, MemberUiInfo);
 		try
 		{
 			await _tcs.Task;
-			
-			if (_inspector.TryRetrieveMember(out var value))
-				return (T)value;
-			return (T)_instance;
+
+			if (!_inspector.TryRetrieveMember(out var value))
+				throw new NullReferenceException();
+			return (T)value;
 		}
 		finally
 		{
-            _inspector.Clear();
-            _inspector = null;
+			_inspector.Clear();
+			_inspector = null;
 			_tcs = null;
-			_instance = null;
 		}
 	}
-
-    private void UpdateInstance()
-    {
-        if (_inspector == null || _instance == null) return;
-        _inspector.SetInstance(_instance, new MemberUiInfo() {AllowTabs = true, Scrollable = true, IsLabelHidden = true, IsBackgroundHidden = true});
-    }
 }

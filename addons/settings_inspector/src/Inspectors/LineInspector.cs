@@ -28,7 +28,7 @@ public partial class LineInspector : MemberInspector
 
 	protected override void SetValue(object value)
 	{
-        base.SetValue(value);
+		base.SetValue(value);
 		_lineEdit.Text = value.ToString();
 	}
 
