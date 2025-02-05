@@ -37,10 +37,6 @@ public partial class MemberInspectorHandler : Control
 	private async void InspectorTesting()
 	{
 		TestModel model = new();
-		Task.Delay(5000).ContinueWith(x =>
-		{
-			return model.TestOrder0++;
-		});
 		while (true)
 		{
 			try

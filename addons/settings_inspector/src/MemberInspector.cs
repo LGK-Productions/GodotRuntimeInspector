@@ -42,7 +42,7 @@ public abstract partial class MemberInspector : Control
         instance = null;
         if (type == typeof(string))
         {
-            instance = "";
+            instance = string.Empty;
             return true;
         }
 
