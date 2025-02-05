@@ -31,11 +31,11 @@ public partial class MemberInspectorButtonWrapper : Control
 			return instance;
 		}
 
-        if (instance == null)
-        {
-            GD.PrintErr("Instance is null");
-            return instance;
-        }
+		if (instance == null)
+		{
+			GD.PrintErr("Instance is null");
+			return instance;
+		}
 		
 		_tcs = new TaskCompletionSource();
 		_nameLabel.Text = typeof(T).Name;

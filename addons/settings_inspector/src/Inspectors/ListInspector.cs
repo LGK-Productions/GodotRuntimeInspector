@@ -9,6 +9,7 @@ namespace SettingInspector.addons.settings_inspector.src.Inspectors;
 public partial class ListInspector : MemberInspector
 {
 	[Export] private Button _addButton;
+	[Export] private Button _removeButton;
 	[Export] private Node _memberParent;
 
 	private readonly List<MemberInspector> _inspectors = new();
@@ -20,13 +21,15 @@ public partial class ListInspector : MemberInspector
 	public override void _EnterTree()
 	{
 		base._EnterTree();
-		_addButton.Pressed += AddNewListElement;
+		_addButton.Pressed += AppendNewListElement;
+		_removeButton.Pressed += RemoveLastListElement;
 	}
 
 	public override void _ExitTree()
 	{
 		base._ExitTree();
-		_addButton.Pressed -= AddNewListElement;
+		_addButton.Pressed -= AppendNewListElement;
+		_removeButton.Pressed -= RemoveLastListElement;
 	}
 
 	protected override object? GetValue()
@@ -50,8 +53,8 @@ public partial class ListInspector : MemberInspector
 		_listElementType = list.GetType().GetGenericArguments()[0];
 		_listElementScene = MemberInspectorHandler.Instance.GetInputScene(_listElementType);
 		foreach (var obj in _list)
-        {
-            if (obj == null) continue;
+		{
+			if (obj == null) continue;
 			AddListElement(obj);
 		}
 	}
@@ -65,7 +68,7 @@ public partial class ListInspector : MemberInspector
 		_inspectors.Add(memberInstance);
 	}
 
-	private void AddNewListElement()
+	private void AppendNewListElement()
 	{
 		if (_listElementType == null) return;
 		try
@@ -77,7 +80,19 @@ public partial class ListInspector : MemberInspector
 		{
 			GD.PrintErr(e.ToString());
 		}
-		
+	}
+
+	private void RemoveListElement(int index)
+	{
+		if (_inspectors.Count <= index || index < 0) return;
+		var inspector = _inspectors[index];
+		_inspectors.RemoveAt(index);
+		inspector.QueueFree();
+	}
+
+	private void RemoveLastListElement()
+	{
+		RemoveListElement(_inspectors.Count - 1);
 	}
 
 	public override void SetEditable(bool editable)

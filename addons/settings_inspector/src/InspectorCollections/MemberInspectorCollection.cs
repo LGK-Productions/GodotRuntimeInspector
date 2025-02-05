@@ -13,7 +13,7 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
 	[Export] private ScrollContainer _scrollContainer;
 	
 	private readonly List<(InspectorElement, MemberInspector)> _inspectors = new();
-    readonly Dictionary<string, MemberGroup> _memberGroups = new();
+	readonly Dictionary<string, MemberGroup> _memberGroups = new();
 
 	public void SetMemberInspector(Inspector inspector)
 	{

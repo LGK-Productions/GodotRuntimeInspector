@@ -9,117 +9,117 @@ namespace SettingInspector.addons.settings_inspector.src;
 
 public abstract partial class MemberInspector : Control
 {
-    [Export] private Label _label;
-    [Export] private Control _background;
-    [Export] private Control _labelContainer;
+	[Export] private Label _label;
+	[Export] private Control _background;
+	[Export] private Control _labelContainer;
 
-    protected Type? ValueType;
+	protected Type? ValueType;
 
-    protected bool Editable = true;
-    protected MemberUiInfo MemberUiInfo;
+	protected bool Editable = true;
+	protected MemberUiInfo MemberUiInfo;
 
-    public void SetMember(InspectorElement iElement)
-    {
-        _label.Text = iElement.MemberInfo.DisplayName;
-        _label.TooltipText = iElement.MemberInfo.Description;
+	public void SetMember(InspectorElement iElement)
+	{
+		_label.Text = iElement.MemberInfo.DisplayName;
+		_label.TooltipText = iElement.MemberInfo.Description;
 
-        SetEditable(!iElement.MemberInfo.IsReadOnly);
-        OnSetMetaData(iElement.MemberInfo);
-        var value = iElement.Value;
-        if (value == null && !TryCreateInstance(iElement.MemberInfo.Type, out value))
-        {
-            GD.Print("Value is null, could not create instance.");
-            return;
-        }
+		SetEditable(!iElement.MemberInfo.IsReadOnly);
+		OnSetMetaData(iElement.MemberInfo);
+		var value = iElement.Value;
+		if (value == null && !TryCreateInstance(iElement.MemberInfo.Type, out value))
+		{
+			GD.Print("Value is null, could not create instance.");
+			return;
+		}
 
-        SetInstance(value!);
+		SetInstance(value!);
 
-        iElement.ValueChanged += UpdateMemberInputValue;
-    }
+		iElement.ValueChanged += UpdateMemberInputValue;
+	}
 
-    private bool TryCreateInstance(Type type, out object? instance)
-    {
-        instance = null;
-        if (type == typeof(string))
-        {
-            instance = string.Empty;
-            return true;
-        }
+	private bool TryCreateInstance(Type type, out object? instance)
+	{
+		instance = null;
+		if (type == typeof(string))
+		{
+			instance = string.Empty;
+			return true;
+		}
 
-        try
-        {
-            instance = Activator.CreateInstance(type);
-            return true;
-        }
-        catch (Exception e)
-        {
-            return false;
-        }
-    }
+		try
+		{
+			instance = Activator.CreateInstance(type);
+			return true;
+		}
+		catch (Exception e)
+		{
+			return false;
+		}
+	}
 
-    /// <summary>
-    /// Sets an input value, removing the name label description, etc
-    /// </summary>
-    /// <param name="value"></param>
-    public void SetInstance(object value, MemberUiInfo memberUiInfo = new())
-    {
-        ValueType = value.GetType();
-        SetMemberUiInfo(memberUiInfo);
-        SetValue(value);
-    }
+	/// <summary>
+	/// Sets an input value, removing the name label description, etc
+	/// </summary>
+	/// <param name="value"></param>
+	public void SetInstance(object value, MemberUiInfo memberUiInfo = new())
+	{
+		ValueType = value.GetType();
+		SetMemberUiInfo(memberUiInfo);
+		SetValue(value);
+	}
 
-    protected virtual void SetMemberUiInfo(MemberUiInfo memberUiInfo)
-    {
-        MemberUiInfo = memberUiInfo;
-        _labelContainer?.SetVisible(!memberUiInfo.IsLabelHidden);
-        _label?.SetVisible(!memberUiInfo.IsLabelHidden);
-        _background?.SetVisible(!memberUiInfo.IsBackgroundHidden);
-    }
+	protected virtual void SetMemberUiInfo(MemberUiInfo memberUiInfo)
+	{
+		MemberUiInfo = memberUiInfo;
+		_labelContainer?.SetVisible(!memberUiInfo.IsLabelHidden);
+		_label?.SetVisible(!memberUiInfo.IsLabelHidden);
+		_background?.SetVisible(!memberUiInfo.IsBackgroundHidden);
+	}
 
-    protected abstract object? GetValue();
-    protected abstract void SetValue(object value);
+	protected abstract object? GetValue();
+	protected abstract void SetValue(object value);
 
-    public virtual void SetEditable(bool editable)
-    {
-        Editable = editable;
-    }
+	public virtual void SetEditable(bool editable)
+	{
+		Editable = editable;
+	}
 
-    protected virtual void OnSetMetaData(MetaDataMember member)
-    {
-    }
+	protected virtual void OnSetMetaData(MetaDataMember member)
+	{
+	}
 
-    public event Action ValueChanged;
+	public event Action ValueChanged;
 
-    protected void OnValueChanged()
-    {
-        ValueChanged?.Invoke();
-    }
+	protected void OnValueChanged()
+	{
+		ValueChanged?.Invoke();
+	}
 
-    private void UpdateMemberInputValue(object instance, MetaDataMember member, object? value)
-    {
-        if (value == null) return;
-        SetValue(value);
-    }
+	private void UpdateMemberInputValue(object instance, MetaDataMember member, object? value)
+	{
+		if (value == null) return;
+		SetValue(value);
+	}
 
-    public bool TryRetrieveMember(out object? result)
-    {
-        result = null;
-        if (ValueType == null)
-        {
-            GD.PrintErr("Could not retrieve member, due to no type being set");
-            return false;
-        }
+	public bool TryRetrieveMember(out object? result)
+	{
+		result = null;
+		if (ValueType == null)
+		{
+			GD.PrintErr("Could not retrieve member, due to no type being set");
+			return false;
+		}
 
-        try
-        {
-            result = Convert.ChangeType(GetValue(), ValueType);
-            return true;
-        }
-        catch (Exception e)
-        {
-            GD.PrintErr(e);
-        }
+		try
+		{
+			result = Convert.ChangeType(GetValue(), ValueType);
+			return true;
+		}
+		catch (Exception e)
+		{
+			GD.PrintErr(e);
+		}
 
-        return false;
-    }
+		return false;
+	}
 }
