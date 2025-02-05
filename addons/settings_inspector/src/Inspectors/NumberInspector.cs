@@ -24,9 +24,8 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
 		_spinBox.ValueChanged -= OnNumberChanged;
 	}
 
-	protected override void SetValue(object? value)
+	protected override void SetValue(object value)
 	{
-		if (value == null) return;
 		_spinBox.Value = (double)Convert.ChangeType(value, typeof(double));
 	}
 

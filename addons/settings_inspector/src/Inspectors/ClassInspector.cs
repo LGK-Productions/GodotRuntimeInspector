@@ -36,21 +36,8 @@ public partial class ClassInspector : MemberInspector
 	
 	public static PollingTickProvider TickProvider = new(1);
 
-	protected override void SetValue(object? classInstance)
+	protected override void SetValue(object classInstance)
 	{
-		if (classInstance == null)
-		{
-			GD.Print("classInstance is null. Trying to create new instance.");
-			try
-			{
-				classInstance = Activator.CreateInstance(ValueType);
-			}
-			catch (Exception e)
-			{
-				GD.PrintErr(e);
-				return;
-			}
-		}
 		_instance = classInstance;
 		var inspector = Inspector.Attach(classInstance, TickProvider);
 		var memberCollectionNode = (MemberUiInfo.AllowTabs ? _memberTabCollectionScene : _memberCollectionScene).Instantiate();

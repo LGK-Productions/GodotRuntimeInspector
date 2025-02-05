@@ -1,9 +1,6 @@
-using System;
-using Godot;
-using LgkProductions.Inspector;
-using LgkProductions.Inspector.MetaData;
+using SettingInspector.addons.settings_inspector.src.InputControllers;
 
-namespace SettingInspector.addons.settings_inspector.src.InputControllers;
+namespace SettingInspector.addons.settings_inspector.src.Inspectors;
 
 public partial class DoubleInspector : NumberInspector<double>
 {

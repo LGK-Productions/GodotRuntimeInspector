@@ -41,32 +41,22 @@ public partial class ListInspector : MemberInspector
 		return _list;
 	}
 
-	protected override void SetValue(object? value)
+	protected override void SetValue(object value)
 	{
 		ClearInspectors();
-		if (value == null)
-		{
-			try
-			{
-				value = Activator.CreateInstance(ValueType);
-			}
-			catch (Exception e)
-			{
-				GD.PrintErr(e);
-				return;
-			}
-		}
+		
 		if (value is not IList list) return;
 		_list = list;
 		_listElementType = list.GetType().GetGenericArguments()[0];
 		_listElementScene = MemberInspectorHandler.Instance.GetInputScene(_listElementType);
 		foreach (var obj in _list)
-		{
+        {
+            if (obj == null) continue;
 			AddListElement(obj);
 		}
 	}
 
-	private void AddListElement(object? value)
+	private void AddListElement(object value)
 	{
 		if (_listElementScene == null) return;
 		var memberInstance = _listElementScene.Instantiate<MemberInspector>();

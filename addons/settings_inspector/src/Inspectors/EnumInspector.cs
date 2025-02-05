@@ -29,9 +29,9 @@ public partial class EnumInspector : MemberInspector
 		OnValueChanged();
 	}
 
-	protected override void SetValue(object? value)
+	protected override void SetValue(object value)
 	{
-		if (value == null || Enum.IsDefined(value.GetType(), value) == false || ValueType == null) return;
+		if (Enum.IsDefined(value.GetType(), value) == false || ValueType == null) return;
 		var name = Enum.GetName(ValueType, value);
 		if (name == null) return;
 		_optionButton.Selected = _enumLabels.IndexOf(name);

@@ -26,9 +26,9 @@ public partial class LineInspector : MemberInspector
 		OnValueChanged();
 	}
 
-	protected override void SetValue(object? value)
+	protected override void SetValue(object value)
 	{
-		_lineEdit.Text = value?.ToString();
+		_lineEdit.Text = value.ToString();
 	}
 
 	protected override object? GetValue()
