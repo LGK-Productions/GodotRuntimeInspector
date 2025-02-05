@@ -46,8 +46,7 @@ public partial class ListInspector : MemberInspector
 
 	protected override void SetValue(object value)
 	{
-		ClearInspectors();
-		
+        base.SetValue(value);
 		if (value is not IList list) return;
 		_list = list;
 		_listElementType = list.GetType().GetGenericArguments()[0];
@@ -58,6 +57,20 @@ public partial class ListInspector : MemberInspector
 			AddListElement(obj);
 		}
 	}
+    
+    public override void Clear()
+    {
+        base.Clear();
+        foreach (var inspector in _inspectors)
+        {
+            inspector.ValueChanged -= OnChildValueChanged;
+            inspector.Clear();
+            inspector.QueueFree();
+        }
+        _inspectors.Clear();
+        _listElementType = null;
+        _listElementScene = null;
+    }
 
 	private void AddListElement(object value)
 	{
@@ -103,18 +116,6 @@ public partial class ListInspector : MemberInspector
 			inspector.SetEditable(editable);
 		}
 		_addButton.Disabled = !editable;
-	}
-
-	private void ClearInspectors()
-	{
-		foreach (var inspector in _inspectors)
-		{
-			inspector.ValueChanged -= OnChildValueChanged;
-			inspector.QueueFree();
-		}
-		_inspectors.Clear();
-		_listElementType = null;
-		_listElementScene = null;
 	}
 
 	private void OnChildValueChanged()

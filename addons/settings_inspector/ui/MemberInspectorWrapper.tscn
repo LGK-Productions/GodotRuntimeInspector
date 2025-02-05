@@ -3,7 +3,7 @@
 [ext_resource type="Theme" uid="uid://62r1pqjwqsym" path="res://addons/settings_inspector/themes/inspector_theme.tres" id="1_68bgs"]
 [ext_resource type="Script" path="res://addons/settings_inspector/src/MemberInspectorButtonWrapper.cs" id="2_f5qts"]
 
-[node name="ClassInspectorWrapper" type="Panel" node_paths=PackedStringArray("_nameLabel", "_cancelButton", "_confirmButton", "_inspectorContainer")]
+[node name="ClassInspectorWrapper" type="Panel" node_paths=PackedStringArray("_nameLabel", "_cancelButton", "_confirmButton", "_saveButton", "_loadButton", "_inspectorContainer")]
 clip_contents = true
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,6 +15,8 @@ script = ExtResource("2_f5qts")
 _nameLabel = NodePath("MainMargin/VBoxContainer/MarginContainer/Title")
 _cancelButton = NodePath("MainMargin/VBoxContainer/MarginContainer2/HBoxContainer/Cancel")
 _confirmButton = NodePath("MainMargin/VBoxContainer/MarginContainer2/HBoxContainer/Accept")
+_saveButton = NodePath("MainMargin/VBoxContainer/MarginContainer2/HBoxContainer/Save")
+_loadButton = NodePath("MainMargin/VBoxContainer/MarginContainer2/HBoxContainer/Load")
 _inspectorContainer = NodePath("MainMargin/VBoxContainer/InspectorContentHolder")
 
 [node name="MainMargin" type="MarginContainer" parent="."]
@@ -65,4 +67,14 @@ text = "Cancel
 [node name="Accept" type="Button" parent="MainMargin/VBoxContainer/MarginContainer2/HBoxContainer"]
 layout_mode = 2
 text = "Accept
+"
+
+[node name="Load" type="Button" parent="MainMargin/VBoxContainer/MarginContainer2/HBoxContainer"]
+layout_mode = 2
+text = "Load
+"
+
+[node name="Save" type="Button" parent="MainMargin/VBoxContainer/MarginContainer2/HBoxContainer"]
+layout_mode = 2
+text = "Save
 "

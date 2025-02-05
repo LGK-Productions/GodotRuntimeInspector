@@ -31,6 +31,7 @@ public partial class EnumInspector : MemberInspector
 
 	protected override void SetValue(object value)
 	{
+        base.SetValue(value);
 		if (Enum.IsDefined(value.GetType(), value) == false || ValueType == null) return;
 		var name = Enum.GetName(ValueType, value);
 		if (name == null) return;

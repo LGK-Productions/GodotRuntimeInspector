@@ -38,6 +38,7 @@ public partial class ClassInspector : MemberInspector
 
 	protected override void SetValue(object classInstance)
 	{
+        base.SetValue(classInstance);
 		_instance = classInstance;
 		var inspector = Inspector.Attach(classInstance, TickProvider);
 		var memberCollectionNode = (MemberUiInfo.AllowTabs ? _memberTabCollectionScene : _memberCollectionScene).Instantiate();
@@ -60,7 +61,14 @@ public partial class ClassInspector : MemberInspector
 		}
 	}
 
-	private void ChildValueChanged()
+    public override void Clear()
+    {
+        base.Clear();
+        _instance = null;
+        _memberInspectorCollection?.Clear();
+    }
+
+    private void ChildValueChanged()
 	{
 		OnValueChanged();
 	}

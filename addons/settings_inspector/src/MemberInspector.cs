@@ -17,16 +17,19 @@ public abstract partial class MemberInspector : Control
 
 	protected bool Editable = true;
 	protected MemberUiInfo MemberUiInfo;
+    
+    private InspectorElement? _element;
 
 	public void SetMember(InspectorElement iElement)
 	{
-		_label.Text = iElement.MemberInfo.DisplayName;
-		_label.TooltipText = iElement.MemberInfo.Description;
+        _element = iElement;
+		_label.Text = _element.MemberInfo.DisplayName;
+		_label.TooltipText = _element.MemberInfo.Description;
 
-		SetEditable(!iElement.MemberInfo.IsReadOnly);
-		OnSetMetaData(iElement.MemberInfo);
-		var value = iElement.Value;
-		if (value == null && !TryCreateInstance(iElement.MemberInfo.Type, out value))
+		SetEditable(!_element.MemberInfo.IsReadOnly);
+		OnSetMetaData(_element.MemberInfo);
+		var value = _element.Value;
+		if (value == null && !TryCreateInstance(_element.MemberInfo.Type, out value))
 		{
 			GD.Print("Value is null, could not create instance.");
 			return;
@@ -34,7 +37,7 @@ public abstract partial class MemberInspector : Control
 
 		SetInstance(value!);
 
-		iElement.ValueChanged += UpdateMemberInputValue;
+        _element.ValueChanged += UpdateMemberInputValue;
 	}
 
 	private bool TryCreateInstance(Type type, out object? instance)
@@ -57,10 +60,6 @@ public abstract partial class MemberInspector : Control
 		}
 	}
 
-	/// <summary>
-	/// Sets an input value, removing the name label description, etc
-	/// </summary>
-	/// <param name="value"></param>
 	public void SetInstance(object value, MemberUiInfo memberUiInfo = new())
 	{
 		ValueType = value.GetType();
@@ -77,7 +76,11 @@ public abstract partial class MemberInspector : Control
 	}
 
 	protected abstract object? GetValue();
-	protected abstract void SetValue(object value);
+
+    protected virtual void SetValue(object value)
+    {
+        Clear();
+    }
 
 	public virtual void SetEditable(bool editable)
 	{
@@ -87,6 +90,14 @@ public abstract partial class MemberInspector : Control
 	protected virtual void OnSetMetaData(MetaDataMember member)
 	{
 	}
+
+    public virtual void Clear()
+    {
+        if (_element != null)
+        {
+            _element.ValueChanged -= UpdateMemberInputValue;
+        }
+    }
 
 	public event Action ValueChanged;
 
