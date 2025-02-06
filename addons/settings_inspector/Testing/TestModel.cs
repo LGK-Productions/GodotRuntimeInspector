@@ -1,72 +1,115 @@
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Timers;
 using LgkProductions.Inspector.Attributes;
 
 namespace SettingInspector.addons.settings_inspector.Testing;
 
 internal class TestModel
 {
+    public TestModel()
+    {
+        var timer = new Timer(1000);
+        timer.Elapsed += (sender, args) => TestUpdates++;
+        timer.Start();
+    }
+    
+    #region Primitives
+
+    [TabGroup("Primitives")]
     public bool TestBool { get; set; }
     
-    [Range(0, 10)]
-    public int TestRange {get; set;}
+    [TabGroup("Primitives")]
+    public int TestInt { get; set; }
     
-    public VeryComplexType TestVeryComplex { get; set; }
-
-    [BoxGroup("Group1")]
-    [Range(0, 10)] 
-    public float TestFloat { get; set; } = 3.2f;
+    [TabGroup("Primitives")]
+    public float TestFloat { get; set; }
     
+    [TabGroup("Primitives")]
+    public double TestDouble { get; set; }
+    
+    [TabGroup("Primitives")]
+    public string TestString { get; set; }
+    
+    [TabGroup("Primitives")]
+    public TestEnum TestEnum { get; set; }
+    
+    [TabGroup("Primitives")]
     [Range(0, 10)]
-    public float TestDouble { get; set; } = 20f;
+    public float TestRange { get; set; }
 
-    public TestEnum TestEnum { get; set; } = Testing.TestEnum.Element2;
+    #endregion
 
-    [Display(Name = "Name")]
-    [DisplayName("Name2")]
-    public string TestName { get; set; } = "Name should be \"Name2\"";
+    #region Layouting
 
-    [Display(Description = "Description")]
-    [Description("Description2")]
-    public string TestDescription { get; set; } = "Hover for description";
-
-    [Editable(allowEdit: true)]
-    [ReadOnly(isReadOnly: true)]
-    public string TestReadOnly { get; set; }
-
-    [HideInInspector]
-    [Browsable(false)]
-    public int TestHidden { get; set; }
-
-    [ShowInInspector]
-    [Browsable(true)]
-    private int TestShown { get; set; }
-
-    [PropertyOrder(1_000_000)]
-    [Display(Order = 1)]
-    public string TestOrderFar { get; set; }
-
+    [TabGroup("Layouting")]
+    [BoxGroup("Box Group 1")]
+    public string TestBoxGroup1 { get; set; }
+    
+    [TabGroup("Layouting")]
+    [BoxGroup("Box Group 1")]
+    public string TestBoxGroup2 { get; set; }
+    
+    [TabGroup("Layouting")]
+    [PropertyOrder(1)]
+    public string TestPropertyOrder4 { get; set; } 
+    
+    [TabGroup("Layouting")]
     [PropertyOrder]
-    public string TestOrder1 { get; set; }
-
+    public string TestPropertyOrder2 { get; set; } 
+    
+    [TabGroup("Layouting")]
     [PropertyOrder]
-    public string TestOrder2 { get; set; }
-
+    public string TestPropertyOrder3 { get; set; }
+    
+    [TabGroup("Layouting")]
     [PropertyOrder(-1)]
-    [Display(Order = -1)]
-    public int TestOrder0 { get; set; }
+    public string TestPropertyOrder1 { get; set; } 
 
-    [BoxGroup("Group1")]
-    [Display(GroupName = "Group1")]
-    [Category("Group1")]
-    public int TestGroup1 { get; set; }
+    #endregion
 
-    public int TestDefaultValue { get; set; } = 42;
+    #region Complex Types
+
+    [TabGroup("ComplexTypes")]
+    public VeryComplexType TestInline { get; set; }
+    
+    [TabGroup("ComplexTypes")]
+    public List<int> TestList { get; set; }
+    
+    [TabGroup("ComplexTypes")]
+    public List<VeryComplexType> TestComplexList { get; set; }
+
+    #endregion
+
+    #region Other
+
+    [TabGroup("Other")]
+    public string TestDefaultValue = string.Empty;
+    
+    [TabGroup("Other")]
+    public string TestReadOnly { get; } = "ReadOnly";
+    
+    [TabGroup("Other")]
+    [Description("This is a property with a description")]
+    public string TestDescription;
+    
+    [TabGroup("Other")]
+    [Description("This should count up every second")]
+    [ReadOnly(isReadOnly: true)]
+    public int TestUpdates { get; set; }
+    
+    [TabGroup("Other")]
+    [HideInInspector]
+    [Description("This property should not be visible")]
+    public string TestHidden { get; set; }
+
+    #endregion
 }
 
 public class VeryComplexType
 {
-    public string TestString { get; set; }
+    public string TestReadonlyString { get;}
     public int TestInt { get; set; } = 7;
 }
 

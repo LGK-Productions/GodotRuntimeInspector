@@ -1,3 +1,6 @@
-[gd_resource type="Theme" format=3 uid="uid://62r1pqjwqsym"]
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://62r1pqjwqsym"]
+
+[ext_resource type="StyleBox" uid="uid://baom08lxjma3v" path="res://addons/settings_inspector/themes/BackgroundPanel.tres" id="1_771jr"]
 
 [resource]
+TabContainer/styles/panel = ExtResource("1_771jr")
