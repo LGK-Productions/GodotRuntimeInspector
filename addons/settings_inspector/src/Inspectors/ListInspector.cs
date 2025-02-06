@@ -11,6 +11,7 @@ public partial class ListInspector : MemberInspector
 	[Export] private Button _addButton;
 	[Export] private Button _removeButton;
 	[Export] private Node _memberParent;
+	[Export] private Control _lineContainer;
 
 	private readonly List<MemberInspector> _inspectors = new();
 	private Type? _listElementType;
@@ -71,6 +72,12 @@ public partial class ListInspector : MemberInspector
 		_listElementScene = null;
 	}
 
+	protected override void SetMemberUiInfo(MemberUiInfo memberUiInfo)
+	{
+		base.SetMemberUiInfo(memberUiInfo);
+		_lineContainer.Visible = !memberUiInfo.IsLabelHidden;
+	}
+
 	private void AddListElement(object value)
 	{
 		if (_listElementScene == null) return;
@@ -86,8 +93,8 @@ public partial class ListInspector : MemberInspector
 		try
 		{
 			var value = Activator.CreateInstance(_listElementType);
-            if (value != null)
-			    AddListElement(value);
+			if (value != null)
+				AddListElement(value);
 		}
 		catch (Exception e)
 		{

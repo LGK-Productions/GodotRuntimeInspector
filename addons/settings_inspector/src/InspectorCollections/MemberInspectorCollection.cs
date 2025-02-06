@@ -77,11 +77,11 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
 		_memberGroups.Clear();
 	}
 
-    public void Remove()
-    {
-        Clear();
-        QueueFree();
-    }
+	public void Remove()
+	{
+		Clear();
+		QueueFree();
+	}
 
 	public void SetEditable(bool editable)
 	{

@@ -5,7 +5,7 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w5inr"]
 
-[node name="ListInspector" type="MarginContainer" node_paths=PackedStringArray("_addButton", "_removeButton", "_memberParent", "_label", "_background", "_labelContainer")]
+[node name="ListInspector" type="MarginContainer" node_paths=PackedStringArray("_addButton", "_removeButton", "_memberParent", "_lineContainer", "_label", "_background")]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 92.0
@@ -18,9 +18,9 @@ script = ExtResource("1_oec23")
 _addButton = NodePath("VBoxContainer/MarginContainer2/HBoxContainer/Add")
 _removeButton = NodePath("VBoxContainer/MarginContainer2/HBoxContainer/Remove")
 _memberParent = NodePath("VBoxContainer/MemberParent")
+_lineContainer = NodePath("VBoxContainer/MarginContainer4/MarginContainer3")
 _label = NodePath("VBoxContainer/MarginContainer4/MarginContainer/Label")
 _background = NodePath("PanelContainer")
-_labelContainer = NodePath("VBoxContainer/MarginContainer4")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2

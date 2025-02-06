@@ -1,14 +1,16 @@
-[gd_scene load_steps=7 format=3 uid="uid://cgxsnary7mkam"]
+[gd_scene load_steps=9 format=3 uid="uid://cgxsnary7mkam"]
 
 [ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/ClassInspector.cs" id="1_gh2an"]
 [ext_resource type="PackedScene" uid="uid://dkcox87a5snt0" path="res://addons/settings_inspector/ui/member-input-collections/MemberInspectorTabCollection.tscn" id="2_ki6s4"]
 [ext_resource type="PackedScene" uid="uid://diheksfofmcdc" path="res://addons/settings_inspector/ui/member-input-collections/MemberInspectorCollection.tscn" id="2_m0e18"]
-[ext_resource type="Texture2D" uid="uid://db1o47rcju6sw" path="res://addons/settings_inspector/art/icons/share.png" id="3_oytnm"]
 [ext_resource type="StyleBox" uid="uid://bixi5p37q6grs" path="res://addons/settings_inspector/themes/MemberBackgroundPanel.tres" id="4_f7xsk"]
+[ext_resource type="Texture2D" uid="uid://cc174xw73yt7w" path="res://addons/settings_inspector/art/icons/fluent--save-32-regular.png" id="5_va8p2"]
+[ext_resource type="Texture2D" uid="uid://dc6tjm60uou6b" path="res://addons/settings_inspector/art/icons/fluent--arrow-upload-16-regular.png" id="6_vo5tg"]
+[ext_resource type="Texture2D" uid="uid://dqifa1advp264" path="res://addons/settings_inspector/art/icons/fluent--window-multiple-20-regular.png" id="7_epxcb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w5inr"]
 
-[node name="InlineInspector" type="MarginContainer" node_paths=PackedStringArray("_memberParent", "_unattachButton", "_label", "_background", "_labelContainer")]
+[node name="InlineInspector" type="MarginContainer" node_paths=PackedStringArray("_memberParent", "_unattachButton", "_loadButton", "_saveButton", "_lineContainer", "_label", "_background")]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 57.0
@@ -21,10 +23,12 @@ script = ExtResource("1_gh2an")
 _memberCollectionScene = ExtResource("2_m0e18")
 _memberTabCollectionScene = ExtResource("2_ki6s4")
 _memberParent = NodePath("VBoxContainer/ContentHolder")
-_unattachButton = NodePath("VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/Button")
-_label = NodePath("VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/Label")
+_unattachButton = NodePath("VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer/Detach")
+_loadButton = NodePath("VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer/Load")
+_saveButton = NodePath("VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer/Save")
+_lineContainer = NodePath("VBoxContainer/MarginContainer/VBoxContainer/MarginContainer3")
+_label = NodePath("VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Label")
 _background = NodePath("PanelContainer")
-_labelContainer = NodePath("VBoxContainer/VBoxContainer")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2
@@ -33,10 +37,13 @@ theme_override_styles/panel = ExtResource("4_f7xsk")
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 20
@@ -44,30 +51,46 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 alignment = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 21
 text = "Property Name"
 
-[node name="Button" type="Button" parent="VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer"]
-visible = false
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Save" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
-icon = ExtResource("3_oytnm")
+icon = ExtResource("5_va8p2")
 icon_alignment = 1
 expand_icon = true
 
-[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer/VBoxContainer"]
+[node name="Load" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+icon = ExtResource("6_vo5tg")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Detach" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+icon = ExtResource("7_epxcb")
+icon_alignment = 1
+expand_icon = true
+
+[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_right = 20
 
-[node name="Panel" type="Panel" parent="VBoxContainer/VBoxContainer/MarginContainer3"]
+[node name="Panel" type="Panel" parent="VBoxContainer/MarginContainer/VBoxContainer/MarginContainer3"]
 custom_minimum_size = Vector2(0, 1)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_w5inr")

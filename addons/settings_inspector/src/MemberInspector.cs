@@ -10,7 +10,6 @@ public abstract partial class MemberInspector : Control
 {
 	[Export] private Label _label;
 	[Export] private Control _background;
-	[Export] private Control _labelContainer;
 
 	public Type? ValueType { get; private set; }
 
@@ -72,7 +71,6 @@ public abstract partial class MemberInspector : Control
 	protected virtual void SetMemberUiInfo(MemberUiInfo memberUiInfo)
 	{
 		MemberUiInfo = memberUiInfo;
-		_labelContainer?.SetVisible(!memberUiInfo.IsLabelHidden);
 		_label?.SetVisible(!memberUiInfo.IsLabelHidden);
 		_background?.SetVisible(!memberUiInfo.IsBackgroundHidden);
 	}
@@ -97,16 +95,16 @@ public abstract partial class MemberInspector : Control
 	{
 	}
 
-    public void Remove()
-    {
-        Clear();
-        if (_element != null)
-        {
-            _element.ValueChanged -= UpdateMemberInputValue;
-            _element = null;
-        }
-        QueueFree();
-    }
+	public void Remove()
+	{
+		Clear();
+		if (_element != null)
+		{
+			_element.ValueChanged -= UpdateMemberInputValue;
+			_element = null;
+		}
+		QueueFree();
+	}
 
 	public event Action ValueChanged;
 

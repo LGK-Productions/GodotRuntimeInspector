@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://db1o47rcju6sw"
-path="res://.godot/imported/share.png-e42ac242d16eb32757db456aaaf651fd.ctex"
+uid="uid://dc6tjm60uou6b"
+path="res://.godot/imported/fluent--arrow-upload-16-regular.png-b80d22827e2db9dd3111fba19d5aff78.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/settings_inspector/art/icons/share.png"
-dest_files=["res://.godot/imported/share.png-e42ac242d16eb32757db456aaaf651fd.ctex"]
+source_file="res://addons/settings_inspector/art/icons/fluent--arrow-upload-16-regular.png"
+dest_files=["res://.godot/imported/fluent--arrow-upload-16-regular.png-b80d22827e2db9dd3111fba19d5aff78.ctex"]
 
 [params]
 
