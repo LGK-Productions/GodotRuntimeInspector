@@ -34,7 +34,7 @@ public partial class MemberInspectorButtonWrapper : Control
 		AllowTabs = true, Scrollable = true, IsLabelHidden = true, IsBackgroundHidden = true
 	};
 	
-	private FileDialog _fileDialog = FileDialogFactory.CreateNativeJson();
+	private FileDialog _fileDialog = FileDialogHandler.CreateNative();
 
 	private TaskCompletionSource? _tcs;
 	private MemberInspector? _inspector;
@@ -51,36 +51,25 @@ public partial class MemberInspectorButtonWrapper : Control
 	private void SaveButtonPressed()
 	{
 		_fileDialog.FileMode = FileDialog.FileModeEnum.SaveFile;
+        _fileDialog.Filters = ["*.json"];
 		
-		_fileDialog.FileSelected += FileDialogConfirmed;
-		_fileDialog.PopupCentered();
-		_fileDialog.FileSelected -= FileDialogConfirmed;
-		
-
-		void FileDialogConfirmed(string path)
-		{
-			SaveJson(path);
-		}
+		if (!FileDialogHandler.Popup(_fileDialog, out string filePath)) return;
+        
+        SaveJson(filePath);
 	}
 	private void LoadButtonPressed()
 	{
-		_fileDialog.FileSelected += FileDialogConfirmed;
-		
-		_fileDialog.PopupCentered();
-		
-		_fileDialog.FileSelected -= FileDialogConfirmed;
+        _fileDialog.FileMode = FileDialog.FileModeEnum.OpenFile;
+        _fileDialog.Filters = ["*.json"];
 
+        if (!FileDialogHandler.Popup(_fileDialog, out string filePath)) return;
 
-		
-		void FileDialogConfirmed(string filePath)
-		{
-			if (!File.Exists(filePath))
-			{
-				GD.PrintErr("File not found: " + filePath);
-				return;
-			}
-			LoadJson(File.ReadAllText(filePath));
-		}
+        if (!File.Exists(filePath))
+        {
+            GD.PrintErr("File not found: " + filePath);
+            return;
+        }
+        LoadJson(File.ReadAllText(filePath));
 	}
 
 	private void LoadJson(string json)
