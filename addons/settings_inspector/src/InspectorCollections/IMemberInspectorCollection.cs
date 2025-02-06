@@ -12,7 +12,7 @@ public interface IMemberInspectorCollection : IEnumerable<(InspectorElement, Mem
 
     public void WriteBack();
 
-    public void Clear();
+    public void Remove();
 
     public void SetEditable(bool editable);
 

@@ -43,7 +43,7 @@ public partial class ClassInspector : MemberInspector
 		var inspector = Inspector.Attach(_instance, TickProvider);
 		_memberCollectionNode = (MemberUiInfo.AllowTabs ? _memberTabCollectionScene : _memberCollectionScene).Instantiate();
 		_memberParent.AddChild(_memberCollectionNode);
-        MemberInspectorCollection.SetMemberInspector(inspector);
+        MemberInspectorCollection!.SetMemberInspector(inspector);
         MemberInspectorCollection.SetScrollable(MemberUiInfo.Scrollable);
         MemberInspectorCollection.ValueChanged += OnValueChanged;
 	}
@@ -64,8 +64,7 @@ public partial class ClassInspector : MemberInspector
 	{
 		base.Clear();
 		_instance = null;
-		MemberInspectorCollection?.Clear();
-        _memberCollectionNode?.QueueFree();
+		MemberInspectorCollection?.Remove();
         _memberCollectionNode = null;
 	}
 

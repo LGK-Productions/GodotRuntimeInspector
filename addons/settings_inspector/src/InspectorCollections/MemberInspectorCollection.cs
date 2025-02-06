@@ -62,7 +62,7 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
 		}
 	}
 
-	public void Clear()
+	private void Clear()
 	{
 		foreach (var (_, inspector) in _inspectors)
 		{
@@ -76,6 +76,12 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
 		}
 		_memberGroups.Clear();
 	}
+
+    public void Remove()
+    {
+        Clear();
+        QueueFree();
+    }
 
 	public void SetEditable(bool editable)
 	{

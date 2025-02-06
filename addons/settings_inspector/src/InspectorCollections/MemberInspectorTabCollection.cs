@@ -68,14 +68,20 @@ public partial class MemberInspectorTabCollection : Control, IMemberInspectorCol
 		}
 	}
 
-	public void Clear()
+	private void Clear()
 	{
 		foreach (var (_, collection) in _tabs)
 		{
-			collection.Clear();
+			collection.Remove();
 		}
 		_tabs.Clear();
 	}
+
+    public void Remove()
+    {
+        Clear();
+        QueueFree();
+    }
 
 	public void SetEditable(bool editable)
 	{
