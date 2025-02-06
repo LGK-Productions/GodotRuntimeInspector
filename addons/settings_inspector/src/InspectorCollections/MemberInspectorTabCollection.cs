@@ -1,12 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Godot;
 using LgkProductions.Inspector;
-using SettingInspector.addons.settings_inspector.src.InspectorCollections;
 
-namespace SettingInspector.addons.settings_inspector.src;
+namespace SettingInspector.addons.settings_inspector.src.InspectorCollections;
 
 public partial class MemberInspectorTabCollection : Control, IMemberInspectorCollection
 {

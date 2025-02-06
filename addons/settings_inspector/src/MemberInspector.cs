@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.InteropServices.JavaScript;
 using Godot;
 using LgkProductions.Inspector;
 using LgkProductions.Inspector.MetaData;
@@ -94,13 +93,20 @@ public abstract partial class MemberInspector : Control
 	{
 	}
 
-	public virtual void Clear()
+	protected virtual void Clear()
 	{
-		if (_element != null)
-		{
-			_element.ValueChanged -= UpdateMemberInputValue;
-		}
 	}
+
+    public void Remove()
+    {
+        Clear();
+        if (_element != null)
+        {
+            _element.ValueChanged -= UpdateMemberInputValue;
+            _element = null;
+        }
+        QueueFree();
+    }
 
 	public event Action ValueChanged;
 

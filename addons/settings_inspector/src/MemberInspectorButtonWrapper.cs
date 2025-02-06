@@ -145,7 +145,7 @@ public partial class MemberInspectorButtonWrapper : Control
 		}
 		finally
 		{
-			_inspector.Clear();
+			_inspector.Remove();
 			_inspector = null;
 			_tcs = null;
 		}

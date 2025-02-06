@@ -67,8 +67,7 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
 		foreach (var (_, inspector) in _inspectors)
 		{
 			inspector.ValueChanged -= OnChildValueChanged;
-			inspector.Clear();
-			inspector.QueueFree();
+			inspector.Remove();
 		}
 		_inspectors.Clear();
 		foreach (var (_, group) in _memberGroups)

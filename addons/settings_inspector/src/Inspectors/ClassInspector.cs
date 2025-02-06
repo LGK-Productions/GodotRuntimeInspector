@@ -2,9 +2,8 @@ using System;
 using Godot;
 using LgkProductions.Inspector;
 using SettingInspector.addons.settings_inspector.src.InspectorCollections;
-using SettingInspector.addons.settings_inspector.src.Inspectors;
 
-namespace SettingInspector.addons.settings_inspector.src;
+namespace SettingInspector.addons.settings_inspector.src.Inspectors;
 
 public partial class ClassInspector : MemberInspector
 {
@@ -39,9 +38,9 @@ public partial class ClassInspector : MemberInspector
 
 	protected override void SetValue(object classInstance)
 	{
-		base.SetValue(classInstance);
-		_instance = classInstance;
-		var inspector = Inspector.Attach(classInstance, TickProvider);
+        base.SetValue(classInstance);
+        _instance = classInstance;
+		var inspector = Inspector.Attach(_instance, TickProvider);
 		_memberCollectionNode = (MemberUiInfo.AllowTabs ? _memberTabCollectionScene : _memberCollectionScene).Instantiate();
 		_memberParent.AddChild(_memberCollectionNode);
         MemberInspectorCollection.SetMemberInspector(inspector);
@@ -61,7 +60,7 @@ public partial class ClassInspector : MemberInspector
 		}
 	}
 
-	public override void Clear()
+	protected override void Clear()
 	{
 		base.Clear();
 		_instance = null;

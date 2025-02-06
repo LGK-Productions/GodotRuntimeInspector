@@ -1,9 +1,6 @@
-using System;
-using System.ComponentModel;
-using System.Reflection;
 using Godot;
 
-namespace SettingInspector.addons.settings_inspector.src.InputControllers;
+namespace SettingInspector.addons.settings_inspector.src.Inspectors;
 
 public partial class LineInspector : MemberInspector
 {

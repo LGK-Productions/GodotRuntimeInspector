@@ -1,10 +1,9 @@
 using System;
 using System.Numerics;
 using Godot;
-using LgkProductions.Inspector;
 using LgkProductions.Inspector.MetaData;
 
-namespace SettingInspector.addons.settings_inspector.src.InputControllers;
+namespace SettingInspector.addons.settings_inspector.src.Inspectors;
 
 public partial class NumberInspector<T> : MemberInspector where T : struct, INumber<T>
 {

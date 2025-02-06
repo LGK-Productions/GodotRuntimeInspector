@@ -58,14 +58,13 @@ public partial class ListInspector : MemberInspector
 		}
 	}
 	
-	public override void Clear()
+	protected override void Clear()
 	{
 		base.Clear();
 		foreach (var inspector in _inspectors)
 		{
 			inspector.ValueChanged -= OnChildValueChanged;
-			inspector.Clear();
-			inspector.QueueFree();
+			inspector.Remove();
 		}
 		_inspectors.Clear();
 		_listElementType = null;
@@ -87,7 +86,8 @@ public partial class ListInspector : MemberInspector
 		try
 		{
 			var value = Activator.CreateInstance(_listElementType);
-			AddListElement(value);
+            if (value != null)
+			    AddListElement(value);
 		}
 		catch (Exception e)
 		{
