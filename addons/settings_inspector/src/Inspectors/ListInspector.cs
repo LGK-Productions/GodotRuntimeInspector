@@ -75,7 +75,7 @@ public partial class ListInspector : MemberInspector
 	protected override void SetMemberUiInfo(MemberUiInfo memberUiInfo)
 	{
 		base.SetMemberUiInfo(memberUiInfo);
-		_lineContainer.Visible = !memberUiInfo.IsLabelHidden;
+		_lineContainer?.SetVisible(!memberUiInfo.IsLabelHidden);
 	}
 
 	private void AddListElement(object value)

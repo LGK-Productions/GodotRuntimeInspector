@@ -12,11 +12,12 @@ public partial class ClassInspector : MemberInspector
 {
 	[Export] private PackedScene _memberCollectionScene;
 	[Export] private PackedScene _memberTabCollectionScene;
-	[Export] private Node _memberParent;
+	[Export] private Control _memberParent;
 	[Export] private Button _unattachButton;
 	[Export] private Button _loadButton;
 	[Export] private Button _saveButton;
 	[Export] private Control _lineContainer;
+	[Export] private ToggleButton _expandButton;
 	
 	private object? _instance;
 	private Node? _memberCollectionNode;
@@ -42,6 +43,7 @@ public partial class ClassInspector : MemberInspector
 		_unattachButton.Pressed += UnattachPressed;
 		_loadButton.Pressed += LoadPressed;
 		_saveButton.Pressed += SavePressed;
+		_expandButton.Toggled += ExpandButtonToggled;
 		if (_fileDialog.GetParent() == null)
 			AddChild(_fileDialog);
 	}
@@ -52,6 +54,12 @@ public partial class ClassInspector : MemberInspector
 		_unattachButton.Pressed -= UnattachPressed;
 		_loadButton.Pressed -= LoadPressed;
 		_saveButton.Pressed -= SavePressed;
+		_expandButton.Toggled -= ExpandButtonToggled;
+	}
+
+	private void ExpandButtonToggled(bool on)
+	{
+		_memberParent.Visible = on;
 	}
 
 	private void UnattachPressed()
@@ -160,7 +168,8 @@ public partial class ClassInspector : MemberInspector
 		_loadButton.Visible = !memberUiInfo.HideButtons;
 		_unattachButton.Visible = !memberUiInfo.HideButtons;
 		_saveButton.Visible = !memberUiInfo.HideButtons;
-		_lineContainer.Visible = !memberUiInfo.IsLabelHidden;
+		_lineContainer?.SetVisible(!memberUiInfo.IsLabelHidden);
+        _expandButton?.SetPressed(memberUiInfo.IsExpanded);
 	}
 
 	public override void SetEditable(bool editable)

@@ -59,6 +59,8 @@ public abstract partial class MemberInspector : Control
 	public void SetInstance(object value, MemberUiInfo memberUiInfo)
 	{
 		ValueType = value.GetType();
+		if (_element == null)
+			_label.Text = ValueType.Name;
 		SetMemberUiInfo(memberUiInfo);
 		SetValue(value);
 	}

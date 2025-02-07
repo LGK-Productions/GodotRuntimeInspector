@@ -13,14 +13,13 @@ namespace SettingInspector.addons.settings_inspector.src;
 
 public partial class MemberInspectorButtonWrapper : Control
 {
-	[Export] private Label _nameLabel;
 	[Export] private Button _cancelButton;
 	[Export] private Button _confirmButton;
 	[Export] private Node _inspectorContainer;
 
 	private static readonly MemberUiInfo MemberUiInfo = new ()
 	{
-		AllowTabs = true, Scrollable = true, IsLabelHidden = true, IsBackgroundHidden = true
+		AllowTabs = true, Scrollable = true, IsLabelHidden = false, IsBackgroundHidden = true, IsExpanded = true
 	};
 	
 	private TaskCompletionSource? _tcs;
@@ -46,7 +45,6 @@ public partial class MemberInspectorButtonWrapper : Control
 		}
 		
 		_tcs = new TaskCompletionSource();
-		_nameLabel.Text = typeof(T).Name;
 
 		var inspector = MemberInspectorHandler.Instance.GetInputScene(typeof(T)).Instantiate<MemberInspector>();
 		_inspectorContainer.AddChild(inspector);

@@ -11,6 +11,7 @@ public partial class MemberInspectorHandler : Control
 	[Export] private Control _classInspectorContainer;
 	[Export] private PackedScene _memberInspectorWrapperScene;
 	[Export] private PackedScene _classWindowScene;
+	[Export] private bool _showTestingClass;
 	
 	[Export] public PackedScene DefaultInspectorScene;
 	[Export] public Godot.Collections.Array<PackedScene> InspectorScenes;
@@ -30,7 +31,8 @@ public partial class MemberInspectorHandler : Control
 
 	public override void _Ready()
 	{
-		InspectorTesting();
+		if (_showTestingClass)
+			InspectorTesting();
 	}
 
 	private async void InspectorTesting()

@@ -8,7 +8,7 @@
 [node name="MemberGroup" type="MarginContainer" node_paths=PackedStringArray("_groupNameLabel", "_background", "_lineContainer", "_memberParent")]
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 57.0
+offset_bottom = 44.0
 grow_horizontal = 2
 script = ExtResource("1_rbvno")
 _groupNameLabel = NodePath("MarginContainer/VBoxContainer/Label")
@@ -36,6 +36,7 @@ theme_override_font_sizes/font_size = 21
 text = "Group Name"
 
 [node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(0, 1)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_w5inr")

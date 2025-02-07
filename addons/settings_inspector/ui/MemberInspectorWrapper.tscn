@@ -33,6 +33,7 @@ theme_override_constants/margin_bottom = 5
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="MainMargin/VBoxContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_bottom = 5
