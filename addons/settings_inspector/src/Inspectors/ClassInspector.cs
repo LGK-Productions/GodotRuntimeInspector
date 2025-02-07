@@ -169,7 +169,7 @@ public partial class ClassInspector : MemberInspector
 		_unattachButton.Visible = !memberUiInfo.HideButtons;
 		_saveButton.Visible = !memberUiInfo.HideButtons;
 		_lineContainer?.SetVisible(!memberUiInfo.IsLabelHidden);
-        _expandButton?.SetPressed(memberUiInfo.IsExpanded);
+		_expandButton?.SetPressed(memberUiInfo.IsExpanded);
 	}
 
 	public override void SetEditable(bool editable)

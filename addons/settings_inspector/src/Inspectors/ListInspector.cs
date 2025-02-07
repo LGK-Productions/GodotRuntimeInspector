@@ -10,8 +10,8 @@ public partial class ListInspector : MemberInspector
 {
 	[Export] private Button _addButton;
 	[Export] private Button _removeButton;
-	[Export] private Node _memberParent;
-	[Export] private Control _lineContainer;
+	[Export] private Button _expandButton;
+	[Export] private Control _memberParent;
 
 	private readonly List<MemberInspector> _inspectors = new();
 	private Type? _listElementType;
@@ -24,6 +24,7 @@ public partial class ListInspector : MemberInspector
 		base._EnterTree();
 		_addButton.Pressed += AppendNewListElement;
 		_removeButton.Pressed += RemoveLastListElement;
+		_expandButton.Toggled += ExpandButtonToggled;
 	}
 
 	public override void _ExitTree()
@@ -31,6 +32,12 @@ public partial class ListInspector : MemberInspector
 		base._ExitTree();
 		_addButton.Pressed -= AppendNewListElement;
 		_removeButton.Pressed -= RemoveLastListElement;
+		_expandButton.Toggled -= ExpandButtonToggled;
+	}
+
+	private void ExpandButtonToggled(bool on)
+	{
+		_memberParent.Visible = on;
 	}
 
 	protected override object? GetValue()
@@ -52,6 +59,7 @@ public partial class ListInspector : MemberInspector
 		_list = list;
 		_listElementType = list.GetType().GetGenericArguments()[0];
 		_listElementScene = MemberInspectorHandler.Instance.GetInputScene(_listElementType);
+        
 		foreach (var obj in _list)
 		{
 			if (obj == null) continue;
@@ -70,12 +78,6 @@ public partial class ListInspector : MemberInspector
 		_inspectors.Clear();
 		_listElementType = null;
 		_listElementScene = null;
-	}
-
-	protected override void SetMemberUiInfo(MemberUiInfo memberUiInfo)
-	{
-		base.SetMemberUiInfo(memberUiInfo);
-		_lineContainer?.SetVisible(!memberUiInfo.IsLabelHidden);
 	}
 
 	private void AddListElement(object value)
