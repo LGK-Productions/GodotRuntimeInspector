@@ -96,6 +96,9 @@ internal class TestModel
     public List<int> TestList { get; set; }
     
     [TabGroup("ComplexTypes")]
+    public List<List<int>> TestListList { get; set; }
+    
+    [TabGroup("ComplexTypes")]
     public List<VeryComplexType> TestComplexList { get; set; }
 
     #endregion
@@ -121,6 +124,10 @@ internal class TestModel
     [HideInInspector]
     [Description("This property should not be visible")]
     public string TestHidden { get; set; }
+    
+    [TabGroup("Other")]
+    [FilePath]
+    public string TestFilePath { get; set; }
 
     #endregion
 }

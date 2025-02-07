@@ -7,7 +7,7 @@ public static class FileDialogHandler
     public static FileDialog CreateNative()
     {
         var fileDialog = new FileDialog();
-        fileDialog.FileMode = FileDialog.FileModeEnum.OpenFile;
+        fileDialog.FileMode = FileDialog.FileModeEnum.OpenAny;
         fileDialog.Access = FileDialog.AccessEnum.Filesystem;
         fileDialog.CurrentDir = ProjectSettings.GlobalizePath("res://");
         fileDialog.UseNativeDialog = true;
@@ -20,7 +20,9 @@ public static class FileDialogHandler
         path = string.Empty;
         string? result = null;
         fileDialog.FileSelected += SetPath;
+        fileDialog.DirSelected += SetPath;
         fileDialog.Popup();
+        fileDialog.DirSelected -= SetPath;
         fileDialog.FileSelected -= SetPath;
         if (result == null) return false;
         path = result;
