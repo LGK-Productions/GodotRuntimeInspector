@@ -15,6 +15,7 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 57.0
 grow_horizontal = 2
+size_flags_horizontal = 3
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
@@ -60,6 +61,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 21
 text = "Property Name"
+clip_text = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2

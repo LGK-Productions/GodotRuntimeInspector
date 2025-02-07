@@ -3,6 +3,8 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Timers;
 using LgkProductions.Inspector.Attributes;
+using SettingInspector.addons.settings_inspector.src.Attributes;
+using SettingInspector.addons.settings_inspector.src.InspectorCollections;
 
 namespace SettingInspector.addons.settings_inspector.Testing;
 
@@ -66,6 +68,22 @@ internal class TestModel
     [TabGroup("Layouting")]
     [PropertyOrder(-1)]
     public string TestPropertyOrder1 { get; set; } 
+    
+    [TabGroup("Layouting")]
+    [LabelSize(0.3f)]
+    public string TestLabelSize { get; set; }
+    
+    [TabGroup("Layouting")]
+    [HorizontalGroup("HorizontalGroup1")]
+    public int TestHVal1 { get; set; }
+    
+    [TabGroup("Layouting")]
+    [HorizontalGroup("HorizontalGroup1")]
+    public int TestHVal2 { get; set; }
+    
+    [TabGroup("Layouting")]
+    [HorizontalGroup("HorizontalGroup1")]
+    public int TestHVal3 { get; set; }
 
     #endregion
 

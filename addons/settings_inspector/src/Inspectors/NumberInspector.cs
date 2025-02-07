@@ -47,6 +47,7 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
 
 	protected override void OnSetMetaData(MetaDataMember member)
 	{
+        base.OnSetMetaData(member);
 		if (member.MaxValue != null)
 			_spinBox.MaxValue = (double)Convert.ChangeType(member.MaxValue, typeof(double));
 		else

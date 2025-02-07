@@ -50,6 +50,7 @@ public partial class EnumInspector : MemberInspector
 
 	protected override void OnSetMetaData(MetaDataMember member)
 	{
+		base.OnSetMetaData(member);
 		foreach (var label in Enum.GetNames(member.Type))
 		{
 			_optionButton.AddItem(label);

@@ -21,10 +21,6 @@ public abstract partial class MemberInspector : Control
 	public void SetMember(InspectorElement iElement)
 	{
 		_element = iElement;
-		_label.Text = _element.MemberInfo.DisplayName;
-		_label.TooltipText = _element.MemberInfo.Description;
-
-		SetEditable(!_element.MemberInfo.IsReadOnly);
 		OnSetMetaData(_element.MemberInfo);
 		var value = _element.Value;
 		if (value == null && !TryCreateInstance(_element.MemberInfo.Type, out value))
@@ -89,6 +85,12 @@ public abstract partial class MemberInspector : Control
 
 	protected virtual void OnSetMetaData(MetaDataMember member)
 	{
+		_label.Text = _element.MemberInfo.DisplayName;
+		_label.TooltipText = _element.MemberInfo.Description;
+		if (member.CustomMetaData.TryGetValue("LabelSize", out var value) && value is float labelSizeMultiplier)
+			_label.SizeFlagsStretchRatio = labelSizeMultiplier;
+
+		SetEditable(!_element.MemberInfo.IsReadOnly);
 	}
 
 	protected virtual void Clear()

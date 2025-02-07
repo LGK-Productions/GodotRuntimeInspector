@@ -131,6 +131,7 @@ public partial class ListInspector : MemberInspector
 	}
 	protected override void OnSetMetaData(MetaDataMember member)
 	{
+		base.OnSetMetaData(member);
 		_addButton.Disabled = member.IsReadOnly;
 	}
 }
