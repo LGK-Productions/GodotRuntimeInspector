@@ -40,7 +40,6 @@ theme_override_constants/separation = 0
 layout_mode = 2
 size_flags_vertical = 3
 icon = ExtResource("1_dyhqa")
-flat = true
 icon_alignment = 1
 expand_icon = true
 
@@ -48,7 +47,6 @@ expand_icon = true
 layout_mode = 2
 size_flags_vertical = 3
 icon = ExtResource("2_yvnkf")
-flat = true
 icon_alignment = 1
 expand_icon = true
 

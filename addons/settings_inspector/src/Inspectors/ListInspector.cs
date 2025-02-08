@@ -10,13 +10,14 @@ namespace SettingInspector.addons.settings_inspector.src.Inspectors;
 public partial class ListInspector : MemberInspector
 {
 	[Export] private Button _addButton;
+	[Export] private MenuButton _addMenuButton;
 	[Export] private PackedScene _listElementScene;
 	[Export] private Button _expandButton;
 	[Export] private Control _memberParent;
-	[Export] private PopupMenu _popupMenu;
 
-	private readonly List<MemberInspector> _inspectors = new();
+	private readonly List<ListElement> _listElements = new();
 	private Type? _listElementType;
+	private List<Type>? _assignableTypes;
 	private PackedScene? _listInspectorScene;
 
 	private IList? _list;
@@ -26,6 +27,7 @@ public partial class ListInspector : MemberInspector
 		base._EnterTree();
 		_addButton.Pressed += AppendNewListElement;
 		_expandButton.Toggled += ExpandButtonToggled;
+		_addMenuButton.GetPopup().IndexPressed += AppendListElement;
 	}
 
 	public override void _ExitTree()
@@ -33,6 +35,7 @@ public partial class ListInspector : MemberInspector
 		base._ExitTree();
 		_addButton.Pressed -= AppendNewListElement;
 		_expandButton.Toggled -= ExpandButtonToggled;
+		_addMenuButton.GetPopup().IndexPressed -= AppendListElement;
 	}
 
 	private void ExpandButtonToggled(bool on)
@@ -44,7 +47,7 @@ public partial class ListInspector : MemberInspector
 	{
 		if (_list is null) return null;
 		_list.Clear();
-		foreach (var inspector in _inspectors)
+		foreach (var inspector in _listElements)
 		{
 			if (inspector.TryRetrieveMember(out var value))
 				_list.Add(value);
@@ -59,99 +62,100 @@ public partial class ListInspector : MemberInspector
 		if (value is not IList list) return;
 		_list = list;
 		_listElementType = list.GetType().GetGenericArguments()[0];
+		_addButton.Visible = !(_listElementType.IsAbstract || _listElementType.IsInterface);
+		_addMenuButton.Visible = _listElementType.IsAbstract || _listElementType.IsInterface;
+		if (_listElementType.IsAbstract || _listElementType.IsInterface)
+		{
+			var popupMenu = _addMenuButton.GetPopup();
+			popupMenu.Clear();
+			_assignableTypes = GetAssignableTypes(_listElementType).ToList();
+			foreach (var type in _assignableTypes)
+			{
+				popupMenu.AddItem(type.Name);
+			}
+		}
 		_listInspectorScene = MemberInspectorHandler.Instance.GetInputScene(_listElementType);
 
 		foreach (var obj in _list)
 		{
 			if (obj == null) continue;
-			AddListElement(obj);
+			AppendListElement(obj);
 		}
 	}
 
 	protected override void Clear()
 	{
 		base.Clear();
-		foreach (var inspector in _inspectors)
+		foreach (var element in _listElements)
 		{
-			inspector.ValueChanged -= OnChildValueChanged;
-			inspector.Remove();
+			element.ValueChanged -= OnChildValueChanged;
+			element.Remove();
 		}
 
-		_inspectors.Clear();
+		_listElements.Clear();
 		_listElementType = null;
 		_listInspectorScene = null;
 	}
 
-	private void AddListElement(object value)
+	private void AppendListElement(object value)
 	{
 		if (_listInspectorScene == null) return;
 		var memberInstance = _listInspectorScene.Instantiate<MemberInspector>();
 		var listElementInstance = _listElementScene.Instantiate<ListElement>();
-		memberInstance.SetInstance(value, new MemberUiInfo() { IsLabelHidden = true });
-		listElementInstance.SetUi(memberInstance);
+		memberInstance.SetInstance(value, MemberUiInfo.Default);
+		listElementInstance.SetMemberInspector(memberInstance, this);
 		_memberParent.AddChild(listElementInstance);
-		_inspectors.Add(memberInstance);
+		_listElements.Add(listElementInstance);
 	}
 
-	private void AppendNewListElement()
+	private void AppendListElement(Type? type)
 	{
-		if (_listElementType == null) return;
+		if (type == null) return;
 		try
-		{
-			object? value = null;
-			if (_listElementType.IsInterface || _listElementType.IsAbstract)
-			{
-				_popupMenu.Clear();
-				var types = GetAssignableTypes(_listElementType).ToList();
-				foreach (var type in types)
-				{
-					_popupMenu.AddItem(type.Name);
-				}
-
-				_popupMenu.Position = (Vector2I)GetScreenPosition() + new Vector2I(0, (int)Size.Y);
-				_popupMenu.IndexPressed += IndexPressed;
-				_popupMenu.Popup();
-
-				void IndexPressed(long index)
-				{
-					_popupMenu.IndexPressed -= IndexPressed;
-					if (types.Count <= index) return;
-					AddElement(types[(int)index]);
-				}
-			}
-			else
-				AddElement(_listElementType);
-		}
-		catch (Exception e)
-		{
-			GD.PrintErr(e.ToString());
-		}
-
-		void AddElement(Type type)
 		{
 			var value = Activator.CreateInstance(type);
 			if (value != null)
-				AddListElement(value);
+				AppendListElement(value);
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e);
+			throw;
 		}
 	}
 
-	private void RemoveListElement(int index)
+	private void AppendNewListElement() => AppendListElement(_listElementType);
+
+	private void AppendListElement(long index)
 	{
-		if (_inspectors.Count <= index || index < 0) return;
-		var inspector = _inspectors[index];
-		_inspectors.RemoveAt(index);
-		inspector.QueueFree();
+		if (_assignableTypes == null) return;
+		if (index < 0 || index >= _assignableTypes.Count) return;
+		AppendListElement(_assignableTypes[(int)index]);
 	}
 
-	private void RemoveLastListElement()
+	public void RemoveListElement(ListElement element)
 	{
-		RemoveListElement(_inspectors.Count - 1);
+		var index = _listElements.IndexOf(element);
+		if (index < 0) return;
+		_listElements.RemoveAt(index);
+		element.Remove();
+	}
+
+	public void MoveElement(ListElement element, bool up)
+	{
+		var index = _listElements.IndexOf(element);
+		if (index < 0) return;
+		var targetIndex = index + (up ? 1 : -1);
+		if (targetIndex >= _listElements.Count || targetIndex < 0) return;
+		_listElements.RemoveAt(index);
+		_listElements.Insert(targetIndex, element);
+		_memberParent.MoveChild(element, targetIndex);
 	}
 
 	public override void SetEditable(bool editable)
 	{
 		base.SetEditable(editable);
-		foreach (var inspector in _inspectors)
+		foreach (var inspector in _listElements)
 		{
 			inspector.SetEditable(editable);
 		}

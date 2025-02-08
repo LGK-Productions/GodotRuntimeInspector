@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://bwrwptoimsk2e" path="res://addons/settings_inspector/art/icons/fluent--triangle-down-12-filled.png" id="5_t4o06"]
 [ext_resource type="Texture2D" uid="uid://disp4d0dg0lq8" path="res://addons/settings_inspector/art/icons/fluent--add-12-regular.png" id="6_h4yhc"]
 
-[node name="ListInspector" type="MarginContainer" node_paths=PackedStringArray("_addButton", "_expandButton", "_memberParent", "_popupMenu", "_label", "_background")]
+[node name="ListInspector" type="MarginContainer" node_paths=PackedStringArray("_addButton", "_addMenuButton", "_expandButton", "_memberParent", "_popupMenu", "_label", "_background")]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 44.0
@@ -16,6 +16,7 @@ grow_horizontal = 2
 size_flags_horizontal = 3
 script = ExtResource("1_oec23")
 _addButton = NodePath("MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/Add")
+_addMenuButton = NodePath("MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/Add2")
 _listElementScene = ExtResource("2_hafwm")
 _expandButton = NodePath("MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/Button")
 _memberParent = NodePath("MarginContainer/VBoxContainer/MemberParent")
@@ -68,7 +69,14 @@ custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 icon = ExtResource("6_h4yhc")
 expand_icon = true
-script = ExtResource("4_nua4t")
+
+[node name="Add2" type="MenuButton" parent="MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+icon = ExtResource("6_h4yhc")
+flat = false
+expand_icon = true
 
 [node name="MemberParent" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
