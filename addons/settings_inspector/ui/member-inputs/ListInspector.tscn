@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://bwrwptoimsk2e" path="res://addons/settings_inspector/art/icons/fluent--triangle-down-12-filled.png" id="5_t4o06"]
 [ext_resource type="Texture2D" uid="uid://disp4d0dg0lq8" path="res://addons/settings_inspector/art/icons/fluent--add-12-regular.png" id="6_h4yhc"]
 
-[node name="ListInspector" type="MarginContainer" node_paths=PackedStringArray("_addButton", "_addMenuButton", "_expandButton", "_memberParent", "_popupMenu", "_label", "_background")]
+[node name="ListInspector" type="MarginContainer" node_paths=PackedStringArray("_addButton", "_addMenuButton", "_expandButton", "_memberParent", "_label", "_background")]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 44.0
@@ -20,7 +20,6 @@ _addMenuButton = NodePath("MarginContainer/VBoxContainer/MarginContainer4/HBoxCo
 _listElementScene = ExtResource("2_hafwm")
 _expandButton = NodePath("MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/Button")
 _memberParent = NodePath("MarginContainer/VBoxContainer/MemberParent")
-_popupMenu = NodePath("")
 _label = NodePath("MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/Label")
 _background = NodePath("PanelContainer")
 

@@ -125,6 +125,7 @@ public partial class ClassInspector : MemberInspector
 		base.SetValue(classInstance);
 		_instance = classInstance;
 		var inspector = Inspector.Attach(_instance, TickProvider);
+		_expandButton.Visible = inspector.Elements.Count > 0;
 		_memberCollectionNode = (MemberUiInfo.AllowTabs ? _memberTabCollectionScene : _memberCollectionScene).Instantiate();
 		_memberParent.AddChild(_memberCollectionNode);
 		MemberInspectorCollection!.SetMemberInspector(inspector);

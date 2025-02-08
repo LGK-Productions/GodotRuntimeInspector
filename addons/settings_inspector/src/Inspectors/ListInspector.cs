@@ -64,6 +64,7 @@ public partial class ListInspector : MemberInspector
 		_listElementType = list.GetType().GetGenericArguments()[0];
 		_addButton.Visible = !(_listElementType.IsAbstract || _listElementType.IsInterface);
 		_addMenuButton.Visible = _listElementType.IsAbstract || _listElementType.IsInterface;
+		_expandButton.Visible = false;
 		if (_listElementType.IsAbstract || _listElementType.IsInterface)
 		{
 			var popupMenu = _addMenuButton.GetPopup();
@@ -106,6 +107,7 @@ public partial class ListInspector : MemberInspector
 		listElementInstance.SetMemberInspector(memberInstance, this);
 		_memberParent.AddChild(listElementInstance);
 		_listElements.Add(listElementInstance);
+		_expandButton.Visible = _listElements.Count > 0;
 	}
 
 	private void AppendListElement(Type? type)
@@ -139,6 +141,7 @@ public partial class ListInspector : MemberInspector
 		if (index < 0) return;
 		_listElements.RemoveAt(index);
 		element.Remove();
+		_expandButton.Visible = _listElements.Count > 0;
 	}
 
 	public void MoveElement(ListElement element, bool up)
