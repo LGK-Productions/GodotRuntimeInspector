@@ -1,22 +1,25 @@
-[gd_scene load_steps=6 format=3 uid="uid://ts8gnglujv7i"]
+[gd_scene load_steps=8 format=3 uid="uid://ts8gnglujv7i"]
 
 [ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/ListInspector.cs" id="1_oec23"]
 [ext_resource type="StyleBox" uid="uid://bixi5p37q6grs" path="res://addons/settings_inspector/themes/MemberBackgroundPanel.tres" id="2_80gxu"]
+[ext_resource type="PackedScene" uid="uid://co1cn8deb2dsh" path="res://addons/settings_inspector/ui/member-input-collections/ListElement.tscn" id="2_hafwm"]
 [ext_resource type="Texture2D" uid="uid://bongwtucroeq4" path="res://addons/settings_inspector/art/icons/fluent--triangle-right-12-filled.png" id="3_wawn4"]
 [ext_resource type="Script" path="res://addons/settings_inspector/src/ToggleButton.cs" id="4_nua4t"]
 [ext_resource type="Texture2D" uid="uid://bwrwptoimsk2e" path="res://addons/settings_inspector/art/icons/fluent--triangle-down-12-filled.png" id="5_t4o06"]
+[ext_resource type="Texture2D" uid="uid://disp4d0dg0lq8" path="res://addons/settings_inspector/art/icons/fluent--add-12-regular.png" id="6_h4yhc"]
 
-[node name="ListInspector" type="MarginContainer" node_paths=PackedStringArray("_addButton", "_removeButton", "_expandButton", "_memberParent", "_label", "_background")]
+[node name="ListInspector" type="MarginContainer" node_paths=PackedStringArray("_addButton", "_expandButton", "_memberParent", "_popupMenu", "_label", "_background")]
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 84.0
+offset_bottom = 44.0
 grow_horizontal = 2
 size_flags_horizontal = 3
 script = ExtResource("1_oec23")
-_addButton = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Add")
-_removeButton = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Remove")
+_addButton = NodePath("MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/Add")
+_listElementScene = ExtResource("2_hafwm")
 _expandButton = NodePath("MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/Button")
 _memberParent = NodePath("MarginContainer/VBoxContainer/MemberParent")
+_popupMenu = NodePath("")
 _label = NodePath("MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/Label")
 _background = NodePath("PanelContainer")
 
@@ -60,18 +63,12 @@ theme_override_font_sizes/font_size = 21
 text = "Property Name"
 clip_text = true
 
+[node name="Add" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+icon = ExtResource("6_h4yhc")
+expand_icon = true
+script = ExtResource("4_nua4t")
+
 [node name="MemberParent" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Add" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Add Element"
-
-[node name="Remove" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Remove Element"

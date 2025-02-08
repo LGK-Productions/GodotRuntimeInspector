@@ -75,6 +75,7 @@ internal class TestModel
     
     [TabGroup("Layouting")]
     [HorizontalGroup("HorizontalGroup1")]
+    [GroupStyle(GroupStyleMode.NoTitle)]
     public int TestHVal1 { get; set; }
     
     [TabGroup("Layouting")]
@@ -100,13 +101,16 @@ internal class TestModel
     
     [TabGroup("ComplexTypes")]
     public List<VeryComplexType> TestComplexList { get; set; }
+    
+    [TabGroup("ComplexTypes")]
+    public List<TestingInterface> TestPolymorphicList { get; set; }
 
     #endregion
 
     #region Other
 
     [TabGroup("Other")]
-    public string TestDefaultValue = string.Empty;
+    public string TestDefaultValue { get; set; } = "Default";
     
     [TabGroup("Other")]
     public string TestReadOnly { get; } = "ReadOnly";
@@ -136,6 +140,21 @@ public class VeryComplexType
 {
     public string TestReadonlyString { get;}
     public int TestInt { get; set; } = 7;
+}
+
+public class InterfaceType1 : TestingInterface
+{
+    public string TestSInterface1 { get; }
+}
+
+public class InterfaceType2 : TestingInterface
+{
+    public string TestSInterface2 { get; }
+}
+
+public interface TestingInterface
+{
+    
 }
 
 public enum TestEnum
