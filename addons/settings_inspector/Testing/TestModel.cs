@@ -47,7 +47,7 @@ internal class TestModel
     #region Layouting
 
     [Tab("Layouting")]
-    [BoxGroup("Box Group 1")]
+    [BoxGroup("Box Group 1", IsFoldable = true)]
     public string TestBoxGroup1 { get; set; }
     
     [Tab("Layouting")]
