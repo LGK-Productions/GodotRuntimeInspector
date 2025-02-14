@@ -1,11 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://xv7egcd3b18l"]
+[gd_scene load_steps=4 format=3 uid="uid://kiod2cinjril"]
 
 [ext_resource type="Script" path="res://addons/settings_inspector/src/InspectorCollections/MemberGroup.cs" id="1_rbvno"]
 [ext_resource type="StyleBox" uid="uid://bixi5p37q6grs" path="res://addons/settings_inspector/themes/MemberBackgroundPanel.tres" id="2_07n0f"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w5inr"]
 
-[node name="MemberGroup" type="MarginContainer" node_paths=PackedStringArray("_groupNameLabel", "_background", "_lineContainer", "_memberParent")]
+[node name="MemberGroup" type="MarginContainer" node_paths=PackedStringArray("_groupNameLabel", "_background", "_lineContainer")]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 44.0
@@ -14,7 +14,6 @@ script = ExtResource("1_rbvno")
 _groupNameLabel = NodePath("MarginContainer/VBoxContainer/Label")
 _background = NodePath("PanelContainer")
 _lineContainer = NodePath("MarginContainer/VBoxContainer/Panel")
-_memberParent = NodePath("MarginContainer/VBoxContainer/MemberParentContainer")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2

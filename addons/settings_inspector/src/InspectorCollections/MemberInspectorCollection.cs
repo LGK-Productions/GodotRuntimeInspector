@@ -10,7 +10,6 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
 {
 	[Export] private Node _memberInspectorParent;
 	[Export] private PackedScene _boxGroupScene;
-	[Export] private PackedScene _horizontalGroupScene;
 	[Export] private ScrollContainer _scrollContainer;
 
 	private readonly List<(InspectorElement, MemberInspector)> _inspectors = new();
@@ -31,33 +30,23 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
 		var memberInspector = (MemberInspector)scene.Instantiate();
 
 		//Grouping Logic
-		string? groupName = element.MemberInfo.GroupName;
+		GroupLayout? groupLayout = element.MemberInfo.Group;
 		PackedScene groupScene = _boxGroupScene;
-		if (groupName == null && element.MemberInfo.CustomMetaData.TryGetValue("HorizontalGroupName", out var value) &&
-			value is string hGroupName)
-		{
-			groupName = hGroupName;
-			groupScene = _horizontalGroupScene;
-		}
 
-		if (groupName == null)
+		if (groupLayout == null)
 			_memberInspectorParent.AddChild(memberInspector);
 		else
 		{
-			MemberGroup? group = null;
-			if (!_memberGroups.TryGetValue(groupName, out group))
+			if (!_memberGroups.TryGetValue(groupLayout.Title, out var group))
 			{
 				var memberGroupNode = groupScene.Instantiate();
 				_memberInspectorParent.AddChild(memberGroupNode);
 				group = (MemberGroup)memberGroupNode;
-				group.SetGroup(groupName);
-				_memberGroups.Add(groupName, group);
+				group.SetGroup(groupLayout);
+				_memberGroups.Add(groupLayout.Title, group);
 			}
 
 			group.AddMember(memberInspector);
-			if (element.MemberInfo.CustomMetaData.TryGetValue("GroupStyleMode", out var val) &&
-				val is GroupStyleMode styleMode)
-				group.SetStyleMode(styleMode);
 		}
 
 		memberInspector.SetMember(element);

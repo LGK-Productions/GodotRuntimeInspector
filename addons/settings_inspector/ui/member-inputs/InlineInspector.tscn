@@ -13,7 +13,7 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w5inr"]
 
-[node name="InlineInspector" type="MarginContainer" node_paths=PackedStringArray("_memberParent", "_unattachButton", "_loadButton", "_saveButton", "_lineContainer", "_expandButton", "_label", "_background")]
+[node name="InlineInspector" type="MarginContainer" node_paths=PackedStringArray("_memberParent", "_unattachButton", "_loadButton", "_saveButton", "_expandButton", "_label", "_background")]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 44.0
@@ -26,7 +26,6 @@ _memberParent = NodePath("MarginContainer/VBoxContainer/ContentHolder")
 _unattachButton = NodePath("MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer/Detach")
 _loadButton = NodePath("MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer/Load")
 _saveButton = NodePath("MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer/Save")
-_lineContainer = NodePath("")
 _expandButton = NodePath("MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/Button")
 _label = NodePath("MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/Label")
 _background = NodePath("PanelContainer")

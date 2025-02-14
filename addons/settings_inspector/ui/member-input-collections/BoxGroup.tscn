@@ -5,7 +5,7 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w5inr"]
 
-[node name="MemberGroup" type="MarginContainer" node_paths=PackedStringArray("_groupNameLabel", "_background", "_lineContainer", "_memberParent")]
+[node name="MemberGroup" type="MarginContainer" node_paths=PackedStringArray("_groupNameLabel", "_background", "_lineContainer", "_memberParentHorizontal", "_memberParentVertical")]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 44.0
@@ -14,7 +14,8 @@ script = ExtResource("1_5q4wf")
 _groupNameLabel = NodePath("MarginContainer/VBoxContainer/Label")
 _background = NodePath("PanelContainer")
 _lineContainer = NodePath("MarginContainer/VBoxContainer/Panel")
-_memberParent = NodePath("MarginContainer/VBoxContainer/MemberParentContainer")
+_memberParentHorizontal = NodePath("MarginContainer/VBoxContainer/HMemberParentContainer")
+_memberParentVertical = NodePath("MarginContainer/VBoxContainer/VMemberParentContainer")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2
@@ -41,5 +42,8 @@ custom_minimum_size = Vector2(0, 1)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_w5inr")
 
-[node name="MemberParentContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="VMemberParentContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HMemberParentContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2

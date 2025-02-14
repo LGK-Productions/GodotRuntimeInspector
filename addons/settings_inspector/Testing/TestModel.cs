@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Timers;
+using LgkProductions.Inspector;
 using LgkProductions.Inspector.Attributes;
 using SettingInspector.addons.settings_inspector.src.Attributes;
 using SettingInspector.addons.settings_inspector.src.InspectorCollections;
@@ -19,25 +20,25 @@ internal class TestModel
     
     #region Primitives
 
-    [TabGroup("Primitives")]
+    [Tab("Primitives")]
     public bool TestBool { get; set; }
     
-    [TabGroup("Primitives")]
+    [Tab("Primitives")]
     public int TestInt { get; set; }
     
-    [TabGroup("Primitives")]
+    [Tab("Primitives")]
     public float TestFloat { get; set; }
     
-    [TabGroup("Primitives")]
+    [Tab("Primitives")]
     public double TestDouble { get; set; }
     
-    [TabGroup("Primitives")]
+    [Tab("Primitives")]
     public string TestString { get; set; }
     
-    [TabGroup("Primitives")]
+    [Tab("Primitives")]
     public TestEnum TestEnum { get; set; }
     
-    [TabGroup("Primitives")]
+    [Tab("Primitives")]
     [Range(0, 10)]
     public float TestRange { get; set; }
 
@@ -45,91 +46,90 @@ internal class TestModel
 
     #region Layouting
 
-    [TabGroup("Layouting")]
+    [Tab("Layouting")]
     [BoxGroup("Box Group 1")]
     public string TestBoxGroup1 { get; set; }
     
-    [TabGroup("Layouting")]
+    [Tab("Layouting")]
     [BoxGroup("Box Group 1")]
     public string TestBoxGroup2 { get; set; }
     
-    [TabGroup("Layouting")]
+    [Tab("Layouting")]
     [PropertyOrder(1)]
     public string TestPropertyOrder4 { get; set; } 
     
-    [TabGroup("Layouting")]
+    [Tab("Layouting")]
     [PropertyOrder]
     public string TestPropertyOrder2 { get; set; } 
     
-    [TabGroup("Layouting")]
+    [Tab("Layouting")]
     [PropertyOrder]
     public string TestPropertyOrder3 { get; set; }
     
-    [TabGroup("Layouting")]
+    [Tab("Layouting")]
     [PropertyOrder(-1)]
     public string TestPropertyOrder1 { get; set; } 
     
-    [TabGroup("Layouting")]
+    [Tab("Layouting")]
     [LabelSize(0.3f)]
     public string TestLabelSize { get; set; }
     
-    [TabGroup("Layouting")]
-    [HorizontalGroup("HorizontalGroup1")]
-    [GroupStyle(GroupStyleMode.NoTitle)]
+    [Tab("Layouting")]
+    [BoxGroup("HorizontalGroup1", Orientation = Orientation.Horizontal, HasFrame = false)]
     public int TestHVal1 { get; set; }
     
-    [TabGroup("Layouting")]
-    [HorizontalGroup("HorizontalGroup1")]
+    [Tab("Layouting")]
+    [BoxGroup("HorizontalGroup1")]
     public int TestHVal2 { get; set; }
     
-    [TabGroup("Layouting")]
-    [HorizontalGroup("HorizontalGroup1")]
+    [Tab("Layouting")]
+    [BoxGroup("HorizontalGroup1")]
     public int TestHVal3 { get; set; }
 
     #endregion
 
     #region Complex Types
 
-    [TabGroup("ComplexTypes")]
+    [Tab("ComplexTypes")]
     public VeryComplexType TestInline { get; set; }
     
-    [TabGroup("ComplexTypes")]
+    [Tab("ComplexTypes")]
     public List<int> TestList { get; set; }
     
-    [TabGroup("ComplexTypes")]
+    [Tab("ComplexTypes")]
     public List<List<int>> TestListList { get; set; }
     
-    [TabGroup("ComplexTypes")]
+    [Tab("ComplexTypes")]
     public List<VeryComplexType> TestComplexList { get; set; }
     
-    [TabGroup("ComplexTypes")]
+    [Tab("ComplexTypes")]
     public List<TestingInterface> TestPolymorphicList { get; set; }
 
     #endregion
 
     #region Other
 
-    [TabGroup("Other")]
+    [Tab("Other")]
     public string TestDefaultValue { get; set; } = "Default";
     
-    [TabGroup("Other")]
+    [Tab("Other")]
     public string TestReadOnly { get; } = "ReadOnly";
     
-    [TabGroup("Other")]
+    [Tab("Other")]
     [Description("This is a property with a description")]
     public string TestDescription;
     
-    [TabGroup("Other")]
+    [Tab("Other")]
     [Description("This should count up every second")]
     [ReadOnly(isReadOnly: true)]
     public int TestUpdates { get; set; }
     
-    [TabGroup("Other")]
+    [Tab("Other")]
     [HideInInspector]
     [Description("This property should not be visible")]
     public string TestHidden { get; set; }
     
-    [TabGroup("Other")]
+    [Tab("Other")]
     [FilePath]
     public string TestFilePath { get; set; }
 

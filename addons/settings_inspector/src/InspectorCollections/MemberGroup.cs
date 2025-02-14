@@ -1,4 +1,6 @@
 using Godot;
+using LgkProductions.Inspector;
+using Orientation = LgkProductions.Inspector.Orientation;
 
 namespace SettingInspector.addons.settings_inspector.src.InspectorCollections;
 
@@ -7,33 +9,27 @@ public partial class MemberGroup : Control
 	[Export] private Label _groupNameLabel;
 	[Export] private Control _background;
 	[Export] private Control _lineContainer;
-	[Export] private Node _memberParent;
+	[Export] private HBoxContainer _memberParentHorizontal;
+	[Export] private VBoxContainer _memberParentVertical;
 
-	public void SetGroup(string groupName)
+	private BoxContainer _memberParent;
+	public void SetGroup(GroupLayout groupLayout)
 	{
-		_groupNameLabel.Text = groupName;
+		_memberParent = groupLayout.Orientation switch
+		{
+			Orientation.Vertical => _memberParentVertical,
+			Orientation.Horizontal => _memberParentHorizontal,
+			_ => _memberParent
+		};
+
+		_groupNameLabel.Text = groupLayout.Title;
+		_groupNameLabel.Visible = groupLayout.HasFrame;
+		_background.Visible = groupLayout.HasFrame;
 	}
 
 	public void AddMember(MemberInspector memberInspector)
 	{
 		_memberParent.AddChild(memberInspector);
-	}
-
-	public void SetStyleMode(GroupStyleMode mode)
-	{
-		switch (mode)
-		{
-			case GroupStyleMode.HasTitle:
-				_background.Visible = true;
-				_lineContainer.Visible = true;
-				_groupNameLabel.Visible = true;
-				break;
-			case GroupStyleMode.NoTitle:
-				_background.Visible = false;
-				_lineContainer.Visible = false;
-				_groupNameLabel.Visible = false;
-				break;
-		}
 	}
 }
 
