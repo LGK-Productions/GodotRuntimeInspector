@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -5,10 +6,10 @@ using System.Timers;
 using LgkProductions.Inspector;
 using LgkProductions.Inspector.Attributes;
 using SettingInspector.addons.settings_inspector.src.Attributes;
-using SettingInspector.addons.settings_inspector.src.InspectorCollections;
 
 namespace SettingInspector.addons.settings_inspector.Testing;
 
+[Serializable]
 internal class TestModel
 {
     public TestModel()
@@ -55,7 +56,7 @@ internal class TestModel
     public string TestBoxGroup2 { get; set; }
     
     [Tab("Layouting")]
-    [PropertyOrder(1)]
+    [PropertyOrder(1000)]
     public string TestPropertyOrder4 { get; set; } 
     
     [Tab("Layouting")]

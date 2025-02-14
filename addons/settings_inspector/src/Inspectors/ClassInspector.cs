@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Godot;
@@ -18,7 +19,6 @@ public partial class ClassInspector : MemberInspector
 	[Export] private Button _unattachButton;
 	[Export] private Button _loadButton;
 	[Export] private Button _saveButton;
-	[Export] private Control _lineContainer;
 	[Export] private ToggleButton _expandButton;
 	
 	private object? _instance;
@@ -126,6 +126,9 @@ public partial class ClassInspector : MemberInspector
 		_instance = classInstance;
 		var inspector = Inspector.Attach(_instance, TickProvider);
 		_expandButton.Visible = inspector.Elements.Count > 0;
+		bool serializable = classInstance.GetType().GetCustomAttributes<SerializableAttribute>().Any();
+		_saveButton.Visible = serializable;
+		_loadButton.Visible = serializable;
 		_memberCollectionNode = (MemberUiInfo.AllowTabs ? _memberTabCollectionScene : _memberCollectionScene).Instantiate();
 		_memberParent.AddChild(_memberCollectionNode);
 		MemberInspectorCollection!.SetMemberInspector(inspector);
@@ -168,10 +171,6 @@ public partial class ClassInspector : MemberInspector
 	protected override void SetMemberUiInfo(MemberUiInfo memberUiInfo)
 	{
 		base.SetMemberUiInfo(memberUiInfo);
-		_loadButton.Visible = !memberUiInfo.HideButtons;
-		_unattachButton.Visible = !memberUiInfo.HideButtons;
-		_saveButton.Visible = !memberUiInfo.HideButtons;
-		_lineContainer?.SetVisible(!memberUiInfo.IsLabelHidden);
 		_expandButton?.SetPressed(memberUiInfo.IsExpanded);
 	}
 

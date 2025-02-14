@@ -93,6 +93,7 @@ icon_alignment = 1
 expand_icon = true
 
 [node name="Detach" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 icon = ExtResource("7_epxcb")
