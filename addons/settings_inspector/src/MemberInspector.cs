@@ -12,11 +12,11 @@ public abstract partial class MemberInspector : Control
 	[Export] private Label _label;
 	[Export] private Control _background;
 
-	public Type? ValueType { get; private set; }
+	public Type? ValueType { get; protected set; }
 
 	protected bool Editable = true;
 	protected MemberUiInfo MemberUiInfo;
-	
+
 	private InspectorElement? _element;
 
 	public void SetMember(InspectorElement iElement)
@@ -24,21 +24,21 @@ public abstract partial class MemberInspector : Control
 		_element = iElement;
 		OnSetMetaData(_element.MemberInfo);
         var memberUiInfo = MemberUiInfo.Default;
-        var targetType = iElement.MemberInfo.Type;
-        var isAssignableType = targetType.IsAbstract || targetType.IsInterface;
+        ValueType = iElement.MemberInfo.Type;
+        var isAssignableType = ValueType.IsAbstract || ValueType.IsInterface;
         if (isAssignableType)
         {
             memberUiInfo = memberUiInfo with {parentType = iElement.MemberInfo.Type};
-            var availableTypes = Util.GetAssignableTypes(targetType).ToArray();
+            var availableTypes = Util.GetAssignableTypes(ValueType).ToArray();
             if (availableTypes.Length > 0)
             {
-                targetType = availableTypes[0];
+                ValueType = availableTypes[0];
             }
         }
-        
-        
+
+
 		var value = _element.Value;
-		if (value == null && !Util.TryCreateInstance(targetType, out value))
+		if (value == null && !Util.TryCreateInstance(ValueType, out value))
 		{
 			GD.Print("Value is null, could not create instance.");
 			return;

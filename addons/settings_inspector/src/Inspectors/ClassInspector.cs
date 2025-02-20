@@ -206,6 +206,7 @@ public partial class ClassInspector : MemberInspector
     {
         if (_assignables == null || index < 0 || index >= _assignables.Length) return;
         if (!Util.TryCreateInstance(_assignables[index], out var instance)) return;
+        ValueType = instance.GetType();
         SetValue(instance);
     }
 
