@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Godot;
 using LgkProductions.Inspector;
 using LgkProductions.Inspector.MetaData;
@@ -22,36 +23,30 @@ public abstract partial class MemberInspector : Control
 	{
 		_element = iElement;
 		OnSetMetaData(_element.MemberInfo);
+        var memberUiInfo = MemberUiInfo.Default;
+        var targetType = iElement.MemberInfo.Type;
+        var isAssignableType = targetType.IsAbstract || targetType.IsInterface;
+        if (isAssignableType)
+        {
+            memberUiInfo = memberUiInfo with {parentType = iElement.MemberInfo.Type};
+            var availableTypes = Util.GetAssignableTypes(targetType).ToArray();
+            if (availableTypes.Length > 0)
+            {
+                targetType = availableTypes[0];
+            }
+        }
+        
+        
 		var value = _element.Value;
-		if (value == null && !TryCreateInstance(_element.MemberInfo.Type, out value))
+		if (value == null && !Util.TryCreateInstance(targetType, out value))
 		{
 			GD.Print("Value is null, could not create instance.");
 			return;
 		}
 
-		SetInstance(value!);
+		SetInstance(value!, memberUiInfo);
 
 		_element.ValueChanged += UpdateMemberInputValue;
-	}
-
-	private bool TryCreateInstance(Type type, out object? instance)
-	{
-		instance = null;
-		if (type == typeof(string))
-		{
-			instance = string.Empty;
-			return true;
-		}
-
-		try
-		{
-			instance = Activator.CreateInstance(type);
-			return true;
-		}
-		catch (Exception e)
-		{
-			return false;
-		}
 	}
 
 	public void SetInstance(object value) => SetInstance(value, MemberUiInfo.Default);

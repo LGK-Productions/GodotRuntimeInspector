@@ -13,170 +13,201 @@ namespace SettingInspector.addons.settings_inspector.src.Inspectors;
 
 public partial class ClassInspector : MemberInspector
 {
-	[Export] private PackedScene _memberCollectionScene;
-	[Export] private PackedScene _memberTabCollectionScene;
-	[Export] private Control _memberParent;
-	[Export] private Button _unattachButton;
-	[Export] private Button _loadButton;
-	[Export] private Button _saveButton;
-	[Export] private ToggleButton _expandButton;
-	
-	private object? _instance;
-	private Node? _memberCollectionNode;
-	private IMemberInspectorCollection? MemberInspectorCollection => (IMemberInspectorCollection)_memberCollectionNode;
-	
-	private FileDialog _fileDialog = FileDialogHandler.CreateNative();
-	
-	private static readonly JsonSerializerOptions SerializerOptions = new()
-	{
-		WriteIndented = true
-	};
-	private static readonly JsonSerializerOptions DeserializerOptions = new()
-	{
-		PreferredObjectCreationHandling = JsonObjectCreationHandling.Replace
-	};
+    [Export] private PackedScene _memberCollectionScene;
+    [Export] private PackedScene _memberTabCollectionScene;
+    [Export] private Control _memberParent;
+    [Export] private Button _unattachButton;
+    [Export] private Button _loadButton;
+    [Export] private Button _saveButton;
+    [Export] private ToggleButton _expandButton;
+    [Export] private OptionButton _typeChooser;
+
+    private object? _instance;
+    private Type[]? _assignables;
+    private Node? _memberCollectionNode;
+    private IMemberInspectorCollection? MemberInspectorCollection => (IMemberInspectorCollection)_memberCollectionNode;
+
+    private FileDialog _fileDialog = FileDialogHandler.CreateNative();
+
+    private static readonly JsonSerializerOptions SerializerOptions = new()
+    {
+        WriteIndented = true
+    };
+
+    private static readonly JsonSerializerOptions DeserializerOptions = new()
+    {
+        PreferredObjectCreationHandling = JsonObjectCreationHandling.Replace
+    };
 
 
-	private static PollingTickProvider TickProvider = new(1);
+    private static PollingTickProvider TickProvider = new(1);
 
-	public override void _EnterTree()
-	{
-		base._EnterTree();
-		_unattachButton.Pressed += UnattachPressed;
-		_loadButton.Pressed += LoadPressed;
-		_saveButton.Pressed += SavePressed;
-		_expandButton.Toggled += ExpandButtonToggled;
-		if (_fileDialog.GetParent() == null)
-			AddChild(_fileDialog);
-	}
+    public override void _EnterTree()
+    {
+        base._EnterTree();
+        _unattachButton.Pressed += UnattachPressed;
+        _loadButton.Pressed += LoadPressed;
+        _saveButton.Pressed += SavePressed;
+        _expandButton.Toggled += ExpandButtonToggled;
+        _typeChooser.IndexSelected += TypeIndexSelected;
+        if (_fileDialog.GetParent() == null)
+            AddChild(_fileDialog);
+    }
 
-	public override void _ExitTree()
-	{
-		base._ExitTree();
-		_unattachButton.Pressed -= UnattachPressed;
-		_loadButton.Pressed -= LoadPressed;
-		_saveButton.Pressed -= SavePressed;
-		_expandButton.Toggled -= ExpandButtonToggled;
-	}
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+        _unattachButton.Pressed -= UnattachPressed;
+        _loadButton.Pressed -= LoadPressed;
+        _saveButton.Pressed -= SavePressed;
+        _expandButton.Toggled -= ExpandButtonToggled;
+        _typeChooser.IndexSelected += TypeIndexSelected;
+    }
 
-	private void ExpandButtonToggled(bool on)
-	{
-		_memberParent.Visible = on;
-	}
+    protected override void SetValue(object classInstance)
+    {
+        base.SetValue(classInstance);
+        _instance = classInstance;
+        var inspector = Inspector.Attach(_instance, TickProvider);
+        bool serializable = classInstance.GetType().GetCustomAttributes<SerializableAttribute>().Any();
 
-	private void UnattachPressed()
-	{
-		if (_instance == null) return;
-		MemberInspectorHandler.Instance.OpenClassInspector(_instance, true, !Editable);
-	}
+        _expandButton.Visible = inspector.Elements.Count > 0;
+        _saveButton.Visible = serializable;
+        _loadButton.Visible = serializable;
+        if (_assignables != null)
+            _typeChooser.SetSelectedIndex(Array.IndexOf(_assignables, classInstance.GetType()));
 
-	private void SavePressed()
-	{
-		_fileDialog.FileMode = FileDialog.FileModeEnum.SaveFile;
-		_fileDialog.Filters = ["*.json"];
-		
-		if (!FileDialogHandler.Popup(_fileDialog, out string filePath)) return;
-		
-		if (ValueType == null) return;
-		
-		try
-		{
-			if (!TryRetrieveMember(out var value)) return;
-			var json = JsonSerializer.Serialize(value, ValueType, SerializerOptions);
-			File.WriteAllText(filePath, json);
-		}
-		catch (Exception e)
-		{
-			GD.PrintErr(e);
-		}
-	}
+        _memberCollectionNode =
+            (MemberUiInfo.AllowTabs ? _memberTabCollectionScene : _memberCollectionScene).Instantiate();
+        _memberParent.AddChild(_memberCollectionNode);
+        MemberInspectorCollection!.SetMemberInspector(inspector);
+        MemberInspectorCollection.SetScrollable(MemberUiInfo.Scrollable);
+        MemberInspectorCollection.ValueChanged += OnValueChanged;
+    }
 
-	private void LoadPressed()
-	{
-		_fileDialog.FileMode = FileDialog.FileModeEnum.OpenFile;
-		_fileDialog.Filters = ["*.json"];
+    public sealed class PollingTickProvider : ITickProvider
+    {
+        public event Action? Tick;
 
-		if (!FileDialogHandler.Popup(_fileDialog, out string filePath)) return;
+        public PollingTickProvider(float pollingRate)
+        {
+            var timer = new System.Timers.Timer(1 / pollingRate);
+            timer.Elapsed += (_, __) => Callable.From(() => Tick?.Invoke()).CallDeferred();
+            timer.Start();
+        }
+    }
 
-		if (!File.Exists(filePath))
-		{
-			GD.PrintErr("File not found: " + filePath);
-			return;
-		}
-		
-		var json = File.ReadAllText(filePath);
-		
-		if (ValueType == null) return;
-		try
-		{
-			var value = JsonSerializer.Deserialize(json, ValueType, DeserializerOptions);
-			if (value is not null)
-				SetInstance(value, MemberUiInfo);
-		}
-		catch (Exception e)
-		{
-			GD.PrintErr(e);
-		}
-	}
-	
+    protected override void Clear()
+    {
+        base.Clear();
+        _instance = null;
+        MemberInspectorCollection?.Remove();
+        _memberCollectionNode = null;
+    }
 
-	protected override void SetValue(object classInstance)
-	{
-		base.SetValue(classInstance);
-		_instance = classInstance;
-		var inspector = Inspector.Attach(_instance, TickProvider);
-		_expandButton.Visible = inspector.Elements.Count > 0;
-		bool serializable = classInstance.GetType().GetCustomAttributes<SerializableAttribute>().Any();
-		_saveButton.Visible = serializable;
-		_loadButton.Visible = serializable;
-		_memberCollectionNode = (MemberUiInfo.AllowTabs ? _memberTabCollectionScene : _memberCollectionScene).Instantiate();
-		_memberParent.AddChild(_memberCollectionNode);
-		MemberInspectorCollection!.SetMemberInspector(inspector);
-		MemberInspectorCollection.SetScrollable(MemberUiInfo.Scrollable);
-		MemberInspectorCollection.ValueChanged += OnValueChanged;
-	}
+    private void ChildValueChanged()
+    {
+        OnValueChanged();
+    }
 
-	public sealed class PollingTickProvider : ITickProvider
-	{
-		public event Action? Tick;
+    protected override object? GetValue()
+    {
+        //Write values back
+        MemberInspectorCollection?.WriteBack();
+        return _instance;
+    }
 
-		public PollingTickProvider(float pollingRate)
-		{
-			var timer = new System.Timers.Timer(1/pollingRate);
-			timer.Elapsed += (_, __) => Callable.From(() => Tick?.Invoke()).CallDeferred();
-			timer.Start();
-		}
-	}
+    protected override void SetMemberUiInfo(MemberUiInfo memberUiInfo)
+    {
+        base.SetMemberUiInfo(memberUiInfo);
+        _expandButton?.SetPressed(memberUiInfo.IsExpanded);
+        if (MemberUiInfo.parentType != null)
+            SetParentType(MemberUiInfo.parentType);
+        else
+            _assignables = null;
+    }
 
-	protected override void Clear()
-	{
-		base.Clear();
-		_instance = null;
-		MemberInspectorCollection?.Remove();
-		_memberCollectionNode = null;
-	}
+    private void SetParentType(Type parentType)
+    {
+        _assignables = Util.GetAssignableTypes(parentType).ToArray();
+        _typeChooser.SetOptions(_assignables.Select(t => t.Name));
+    }
 
-	private void ChildValueChanged()
-	{
-		OnValueChanged();
-	}
+    public override void SetEditable(bool editable)
+    {
+        base.SetEditable(editable);
+        MemberInspectorCollection?.SetEditable(editable);
+    }
 
-	protected override object? GetValue()
-	{
-		//Write values back
-		MemberInspectorCollection?.WriteBack();
-		return _instance;
-	}
+    #region Buttons
 
-	protected override void SetMemberUiInfo(MemberUiInfo memberUiInfo)
-	{
-		base.SetMemberUiInfo(memberUiInfo);
-		_expandButton?.SetPressed(memberUiInfo.IsExpanded);
-	}
+    private void ExpandButtonToggled(bool on)
+    {
+        _memberParent.Visible = on;
+        _typeChooser.Visible = MemberUiInfo.parentType != null && on;
+    }
 
-	public override void SetEditable(bool editable)
-	{
-		base.SetEditable(editable);
-		MemberInspectorCollection?.SetEditable(editable);
-	}
+    private void UnattachPressed()
+    {
+        if (_instance == null) return;
+        MemberInspectorHandler.Instance.OpenClassInspector(_instance, true, !Editable);
+    }
+
+    private void SavePressed()
+    {
+        _fileDialog.FileMode = FileDialog.FileModeEnum.SaveFile;
+        _fileDialog.Filters = ["*.json"];
+
+        if (!FileDialogHandler.Popup(_fileDialog, out string filePath)) return;
+
+        if (ValueType == null) return;
+
+        try
+        {
+            if (!TryRetrieveMember(out var value)) return;
+            var json = JsonSerializer.Serialize(value, ValueType, SerializerOptions);
+            File.WriteAllText(filePath, json);
+        }
+        catch (Exception e)
+        {
+            GD.PrintErr(e);
+        }
+    }
+
+    private void LoadPressed()
+    {
+        _fileDialog.FileMode = FileDialog.FileModeEnum.OpenFile;
+        _fileDialog.Filters = ["*.json"];
+
+        if (!FileDialogHandler.Popup(_fileDialog, out string filePath)) return;
+
+        if (!File.Exists(filePath))
+        {
+            GD.PrintErr("File not found: " + filePath);
+            return;
+        }
+
+        var json = File.ReadAllText(filePath);
+
+        if (ValueType == null) return;
+        try
+        {
+            var value = JsonSerializer.Deserialize(json, ValueType, DeserializerOptions);
+            if (value is not null)
+                SetInstance(value, MemberUiInfo);
+        }
+        catch (Exception e)
+        {
+            GD.PrintErr(e);
+        }
+    }
+
+    private void TypeIndexSelected(int index)
+    {
+        if (_assignables == null || index < 0 || index >= _assignables.Length) return;
+        if (!Util.TryCreateInstance(_assignables[index], out var instance)) return;
+        SetValue(instance);
+    }
+
+    #endregion
 }

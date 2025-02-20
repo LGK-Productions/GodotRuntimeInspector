@@ -69,7 +69,7 @@ public partial class ListInspector : MemberInspector
 		{
 			var popupMenu = _addMenuButton.GetPopup();
 			popupMenu.Clear();
-			_assignableTypes = GetAssignableTypes(_listElementType).ToList();
+			_assignableTypes = Util.GetAssignableTypes(_listElementType).ToList();
 			foreach (var type in _assignableTypes)
 			{
 				popupMenu.AddItem(type.Name);
@@ -103,7 +103,10 @@ public partial class ListInspector : MemberInspector
 		if (_listInspectorScene == null) return;
 		var memberInstance = _listInspectorScene.Instantiate<MemberInspector>();
 		var listElementInstance = _listElementScene.Instantiate<ListElement>();
-		memberInstance.SetInstance(value, MemberUiInfo.Default);
+        var memberUiInfo = MemberUiInfo.Default;
+        if (value.GetType() != _listElementType)
+            memberUiInfo = memberUiInfo with {parentType = _listElementType};
+		memberInstance.SetInstance(value, memberUiInfo);
 		listElementInstance.SetMemberInspector(memberInstance, this);
 		_memberParent.AddChild(listElementInstance);
 		_listElements.Add(listElementInstance);
@@ -112,18 +115,9 @@ public partial class ListInspector : MemberInspector
 
 	private void AppendListElement(Type? type)
 	{
-		if (type == null) return;
-		try
-		{
-			var value = Activator.CreateInstance(type);
-			if (value != null)
-				AppendListElement(value);
-		}
-		catch (Exception e)
-		{
-			Console.WriteLine(e);
-			throw;
-		}
+		if (type == null || _listElementType == null || !Util.TryCreateInstance(type, out var instance)) return;
+		if (!_listElementType.IsAssignableFrom(type)) return;
+		AppendListElement(instance);
 	}
 
 	private void AppendNewListElement() => AppendListElement(_listElementType);
@@ -175,11 +169,5 @@ public partial class ListInspector : MemberInspector
 	{
 		base.OnSetMetaData(member);
 		_addButton.Disabled = member.IsReadOnly;
-	}
-
-	private IEnumerable<Type> GetAssignableTypes(Type type)
-	{
-		return AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes())
-			.Where(p => p is { IsAbstract: false, IsInterface: false } && type.IsAssignableFrom(p));
 	}
 }

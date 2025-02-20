@@ -10,13 +10,12 @@
 [ext_resource type="Texture2D" uid="uid://dc6tjm60uou6b" path="res://addons/settings_inspector/art/icons/fluent--arrow-upload-16-regular.png" id="6_vo5tg"]
 [ext_resource type="Texture2D" uid="uid://dqifa1advp264" path="res://addons/settings_inspector/art/icons/fluent--window-multiple-20-regular.png" id="7_epxcb"]
 [ext_resource type="Texture2D" uid="uid://bwrwptoimsk2e" path="res://addons/settings_inspector/art/icons/fluent--triangle-down-12-filled.png" id="7_g5ya0"]
+[ext_resource type="Script" path="res://addons/settings_inspector/src/OptionButton.cs" id="11_3flad"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w5inr"]
-
-[node name="InlineInspector" type="MarginContainer" node_paths=PackedStringArray("_memberParent", "_unattachButton", "_loadButton", "_saveButton", "_expandButton", "_label", "_background")]
+[node name="InlineInspector" type="MarginContainer" node_paths=PackedStringArray("_memberParent", "_unattachButton", "_loadButton", "_saveButton", "_expandButton", "_typeChooser", "_label", "_background")]
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 44.0
+offset_bottom = 40.0
 grow_horizontal = 2
 size_flags_horizontal = 3
 script = ExtResource("1_gh2an")
@@ -27,6 +26,7 @@ _unattachButton = NodePath("MarginContainer/VBoxContainer/VBoxContainer/HBoxCont
 _loadButton = NodePath("MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer/Load")
 _saveButton = NodePath("MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer/Save")
 _expandButton = NodePath("MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/Button")
+_typeChooser = NodePath("MarginContainer/VBoxContainer/VBoxContainer/TypeChooser")
 _label = NodePath("MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/Label")
 _background = NodePath("PanelContainer")
 
@@ -100,11 +100,33 @@ icon = ExtResource("7_epxcb")
 icon_alignment = 1
 expand_icon = true
 
-[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="TypeChooser" type="MarginContainer" parent="MarginContainer/VBoxContainer/VBoxContainer" node_paths=PackedStringArray("optionButton")]
 visible = false
-custom_minimum_size = Vector2(0, 1)
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_w5inr")
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 5
+script = ExtResource("11_3flad")
+optionButton = NodePath("HBoxContainer/OptionButton")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/TypeChooser"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/TypeChooser/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+mouse_filter = 0
+text = "Type"
+vertical_alignment = 1
+clip_text = true
+
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBoxContainer/VBoxContainer/TypeChooser/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="ContentHolder" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
 visible = false

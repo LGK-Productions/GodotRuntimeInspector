@@ -93,6 +93,8 @@ internal class TestModel
 
     [Tab("ComplexTypes")]
     public VeryComplexType TestInline { get; set; }
+
+    [Tab("ComplexTypes")] public TestingInterface TestInterface { get; set; } = new InterfaceType2();
     
     [Tab("ComplexTypes")]
     public List<int> TestList { get; set; }

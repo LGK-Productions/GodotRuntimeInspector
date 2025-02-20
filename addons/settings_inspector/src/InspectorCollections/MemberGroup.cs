@@ -14,13 +14,13 @@ public partial class MemberGroup : Control
 
 	private BoxContainer? _memberParent;
 
-    public override void _EnterTree()
-    {
-        base._EnterTree();
-        _expandButton.Toggled += ExpandButtonToggled;
-    }
+	public override void _EnterTree()
+	{
+		base._EnterTree();
+		_expandButton.Toggled += ExpandButtonToggled;
+	}
 
-    public override void _ExitTree()
+	public override void _ExitTree()
 	{
 		base._ExitTree();
 		_expandButton.Toggled -= ExpandButtonToggled;
@@ -28,8 +28,8 @@ public partial class MemberGroup : Control
 
 	private void ExpandButtonToggled(bool on)
 	{
-        if (_memberParent != null)
-		    _memberParent.Visible = on;
+		if (_memberParent != null)
+			_memberParent.Visible = on;
 	}
 
 	public void SetGroup(GroupLayout groupLayout)
@@ -40,9 +40,9 @@ public partial class MemberGroup : Control
 			Orientation.Horizontal => _memberParentHorizontal,
 			_ => _memberParent
 		};
-        
+		
 		_expandButton.Visible = groupLayout.IsFoldable && groupLayout.HasFrame;
-        ExpandButtonToggled(true);
+		ExpandButtonToggled(true);
 
 		_groupNameLabel.Text = groupLayout.Title;
 		_groupNameLabel.Visible = groupLayout.HasFrame;

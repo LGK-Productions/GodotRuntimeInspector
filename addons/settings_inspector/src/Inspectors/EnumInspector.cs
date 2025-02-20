@@ -7,7 +7,7 @@ namespace SettingInspector.addons.settings_inspector.src.Inspectors;
 
 public partial class EnumInspector : MemberInspector
 {
-	[Export] private OptionButton _optionButton;
+	[Export] private Godot.OptionButton _optionButton;
 	
 	private readonly List<string> _enumLabels = new();
 	
