@@ -71,7 +71,7 @@ public partial class ClassInspector : MemberInspector
         var inspector = Inspector.Attach(_instance, TickProvider);
         bool serializable = classInstance.GetType().GetCustomAttributes<SerializableAttribute>().Any();
 
-        _expandButton.Visible = inspector.Elements.Count > 0 || MemberUiInfo.parentType != null;
+        _expandButton.Visible = !MemberUiInfo.HideExpanded && (inspector.Elements.Count > 0 || MemberUiInfo.parentType != null);
         _saveButton.Visible = serializable;
         _loadButton.Visible = serializable;
         if (_assignables != null)
@@ -207,7 +207,7 @@ public partial class ClassInspector : MemberInspector
         if (_assignables == null || index < 0 || index >= _assignables.Length) return;
         if (!Util.TryCreateInstance(_assignables[index], out var instance)) return;
         ValueType = instance.GetType();
-        SetInstance(instance, MemberUiInfo);
+        SetInstance(instance, MemberUiInfo with {IsExpanded = _expandButton.ButtonPressed});
     }
 
     #endregion

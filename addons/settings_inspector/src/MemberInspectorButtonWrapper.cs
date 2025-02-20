@@ -19,7 +19,7 @@ public partial class MemberInspectorButtonWrapper : Control
 
 	private static readonly MemberUiInfo MemberUiInfo = new ()
 	{
-		AllowTabs = true, Scrollable = true, IsLabelHidden = false, IsBackgroundHidden = true, IsExpanded = true
+		AllowTabs = true, Scrollable = true, IsLabelHidden = false, IsBackgroundHidden = true, IsExpanded = true, HideExpanded = true
 	};
 	
 	private TaskCompletionSource? _tcs;
