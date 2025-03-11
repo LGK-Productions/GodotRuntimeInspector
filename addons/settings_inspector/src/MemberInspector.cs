@@ -16,6 +16,7 @@ public abstract partial class MemberInspector : Control
 
 	protected bool Editable = true;
 	protected MemberUiInfo MemberUiInfo;
+	protected LayoutFlags LayoutFlags;
 
 	private InspectorElement? _element;
 
@@ -69,6 +70,7 @@ public abstract partial class MemberInspector : Control
 
     protected virtual void SetLayoutFlags(LayoutFlags flags)
     {
+	    LayoutFlags = flags;
         _label?.SetVisible(!flags.IsSet(LayoutFlags.NoLabel));
         _background?.SetVisible(!flags.IsSet(LayoutFlags.NoBackground));
     }

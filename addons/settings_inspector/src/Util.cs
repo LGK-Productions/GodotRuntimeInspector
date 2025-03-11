@@ -37,4 +37,9 @@ public static class Util
     {
         return (flags & flag) != 0;
     }
+
+    public static LayoutFlags Set(this LayoutFlags flags, LayoutFlags flag, bool value)
+    {
+        return value ? flags | flag : flags & ~flag;
+    }
 }

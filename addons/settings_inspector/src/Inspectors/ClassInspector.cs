@@ -73,7 +73,7 @@ public partial class ClassInspector : MemberInspector
         var inspector = Inspector.Attach(_instance, TickProvider);
         bool serializable = classInstance.GetType().GetCustomAttributes<SerializableAttribute>().Any();
 
-        _expandButton?.SetVisible(_expandButton.Visible && inspector.Elements.Count > 0);
+        _expandButton?.SetVisible(_expandButton.Visible && (inspector.Elements.Count > 0 || MemberUiInfo.parentType != null));
         _saveButton?.SetVisible(_saveButton.Visible && serializable);
         _loadButton?.SetVisible(_loadButton.Visible && serializable);
         _unattachButton?.SetVisible(_unattachButton.Visible && AllowUnattach);
@@ -220,8 +220,7 @@ public partial class ClassInspector : MemberInspector
     {
         if (_assignables == null || index < 0 || index >= _assignables.Length) return;
         if (!Util.TryCreateInstance(_assignables[index], out var instance)) return;
-        ValueType = instance.GetType();
-        SetValue(instance);
+        SetInstance(instance, MemberUiInfo, LayoutFlags.Set(LayoutFlags.ExpandedInitially, _expandButton.ButtonPressed));
     }
 
     #endregion

@@ -23,8 +23,6 @@ public partial class ListInspector : MemberInspector
 
 	private IList? _list;
 	
-	private bool _foldableFlag;
-
 	public override void _EnterTree()
 	{
 		base._EnterTree();
@@ -113,7 +111,7 @@ public partial class ListInspector : MemberInspector
 		listElementInstance.SetMemberInspector(memberInstance, this);
 		_memberParent.AddChild(listElementInstance);
 		_listElements.Add(listElementInstance);
-		_expandButton?.SetVisible(_listElements.Count > 0 && _foldableFlag);
+		_expandButton?.SetVisible(_listElements.Count > 0 && !LayoutFlags.IsSet(LayoutFlags.NotFoldable));
 	}
 
 	private void AppendListElement(Type? type)
@@ -138,7 +136,7 @@ public partial class ListInspector : MemberInspector
 		if (index < 0) return;
 		_listElements.RemoveAt(index);
 		element.Remove();
-		_expandButton?.SetVisible(_listElements.Count > 0 && _foldableFlag);
+		_expandButton?.SetVisible(_listElements.Count > 0 && !LayoutFlags.IsSet(LayoutFlags.NotFoldable));
 	}
 
 	public void MoveElement(ListElement element, bool up)
@@ -150,12 +148,6 @@ public partial class ListInspector : MemberInspector
 		_listElements.RemoveAt(index);
 		_listElements.Insert(targetIndex, element);
 		_memberParent.MoveChild(element, targetIndex);
-	}
-
-	protected override void SetLayoutFlags(LayoutFlags flags)
-	{
-		base.SetLayoutFlags(flags);
-		_foldableFlag = !flags.IsSet(LayoutFlags.NotFoldable);
 	}
 
 	public override void SetEditable(bool editable)
