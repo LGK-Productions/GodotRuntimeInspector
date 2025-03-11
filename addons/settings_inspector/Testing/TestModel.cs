@@ -48,7 +48,7 @@ internal class TestModel
     #region Layouting
 
     [Tab("Layouting")]
-    [BoxGroup("Box Group 1", IsFoldable = true)]
+    [BoxGroup("Box Group 1", LayoutFlags = LayoutFlags.ExpandedInitially)]
     public string TestBoxGroup1 { get; set; }
     
     [Tab("Layouting")]
@@ -76,7 +76,7 @@ internal class TestModel
     public string TestLabelSize { get; set; }
     
     [Tab("Layouting")]
-    [BoxGroup("HorizontalGroup1", Orientation = Orientation.Horizontal, HasFrame = false)]
+    [BoxGroup("HorizontalGroup1", LayoutFlags = LayoutFlags.NotFoldable | LayoutFlags.NoBackground | LayoutFlags.NoLabel, Orientation = Orientation.Horizontal)]
     public int TestHVal1 { get; set; }
     
     [Tab("Layouting")]

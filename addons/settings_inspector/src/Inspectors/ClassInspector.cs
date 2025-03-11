@@ -16,11 +16,13 @@ public partial class ClassInspector : MemberInspector
     [Export] private PackedScene _memberCollectionScene;
     [Export] private PackedScene _memberTabCollectionScene;
     [Export] private Control _memberParent;
-    [Export] private Button _unattachButton;
-    [Export] private Button _loadButton;
-    [Export] private Button _saveButton;
-    [Export] private ToggleButton _expandButton;
+    [Export] private Button? _unattachButton;
+    [Export] private Button? _loadButton;
+    [Export] private Button? _saveButton;
+    [Export] private ToggleButton? _expandButton;
     [Export] private OptionButton _typeChooser;
+    
+    private const bool AllowUnattach = false;
 
     private object? _instance;
     private Type[]? _assignables;
@@ -71,9 +73,10 @@ public partial class ClassInspector : MemberInspector
         var inspector = Inspector.Attach(_instance, TickProvider);
         bool serializable = classInstance.GetType().GetCustomAttributes<SerializableAttribute>().Any();
 
-        _expandButton.Visible = inspector.Elements.Count > 0;
-        _saveButton.Visible = serializable;
-        _loadButton.Visible = serializable;
+        _expandButton?.SetVisible(_expandButton.Visible && inspector.Elements.Count > 0);
+        _saveButton?.SetVisible(_saveButton.Visible && serializable);
+        _loadButton?.SetVisible(_loadButton.Visible && serializable);
+        _unattachButton?.SetVisible(_unattachButton.Visible && AllowUnattach);
         if (_assignables != null)
             _typeChooser.SetSelectedIndex(Array.IndexOf(_assignables, classInstance.GetType()));
 
@@ -117,10 +120,21 @@ public partial class ClassInspector : MemberInspector
         return _instance;
     }
 
+    protected override void SetLayoutFlags(LayoutFlags flags)
+    {
+        base.SetLayoutFlags(flags);
+        _expandButton?.SetPressed(flags.IsSet(LayoutFlags.ExpandedInitially));
+        _expandButton?.SetVisible(!flags.IsSet(LayoutFlags.NotFoldable));
+
+        var elementsVisible = !flags.IsSet(LayoutFlags.NoElements);
+        _loadButton?.SetVisible(elementsVisible);
+        _saveButton?.SetVisible(elementsVisible);
+        _unattachButton?.SetVisible(elementsVisible);
+    }
+
     protected override void SetMemberUiInfo(MemberUiInfo memberUiInfo)
     {
         base.SetMemberUiInfo(memberUiInfo);
-        _expandButton?.SetPressed(memberUiInfo.IsExpanded);
         if (MemberUiInfo.parentType != null)
             SetParentType(MemberUiInfo.parentType);
         else
