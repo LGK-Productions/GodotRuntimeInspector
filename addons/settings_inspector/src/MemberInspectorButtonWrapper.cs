@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Godot;
+using LgkProductions.Inspector;
 using SettingInspector.addons.settings_inspector.src.Inspectors;
 
 namespace SettingInspector.addons.settings_inspector.src;
@@ -19,7 +20,7 @@ public partial class MemberInspectorButtonWrapper : Control
 
 	private static readonly MemberUiInfo MemberUiInfo = new ()
 	{
-		AllowTabs = true, Scrollable = true, IsLabelHidden = false, IsBackgroundHidden = true, IsExpanded = true, HideExpanded = true
+		AllowTabs = true, Scrollable = true
 	};
 	
 	private TaskCompletionSource? _tcs;
@@ -30,7 +31,7 @@ public partial class MemberInspectorButtonWrapper : Control
 		_confirmButton.Pressed += () => _tcs?.SetResult();
 	}
 
-	public async Task<T> SetInspector<T>(T instance, bool readOnly = false)
+	public async Task<T> SetInspector<T>(T instance)
 	{
 		if (_tcs != null)
 		{
@@ -49,7 +50,7 @@ public partial class MemberInspectorButtonWrapper : Control
 		var inspector = MemberInspectorHandler.Instance.GetInputScene(typeof(T)).Instantiate<MemberInspector>();
 		_inspectorContainer.AddChild(inspector);
 
-		inspector.SetInstance(instance, MemberUiInfo);
+		inspector.SetInstance(instance, MemberUiInfo, LayoutFlags.NotFoldable | LayoutFlags.NoBackground);
 		try
 		{
 			await _tcs.Task;

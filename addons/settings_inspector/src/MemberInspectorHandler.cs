@@ -72,7 +72,7 @@ public partial class MemberInspectorHandler : Control
 		
 		try
 		{
-			return await inspector.SetInspector(instance, readOnly);
+			return await inspector.SetInspector(instance);
 		}
 		finally
 		{

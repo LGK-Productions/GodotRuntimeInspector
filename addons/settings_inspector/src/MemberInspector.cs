@@ -43,20 +43,21 @@ public abstract partial class MemberInspector : Control
 			GD.Print("Value is null, could not create instance.");
 			return;
 		}
-
-		SetInstance(value!, memberUiInfo);
+        
+		SetInstance(value!, memberUiInfo, iElement.MemberInfo.LayoutFlags);
 
 		_element.ValueChanged += UpdateMemberInputValue;
 	}
 
 	public void SetInstance(object value) => SetInstance(value, MemberUiInfo.Default);
 
-	public void SetInstance(object value, MemberUiInfo memberUiInfo)
+	public void SetInstance(object value, MemberUiInfo memberUiInfo, LayoutFlags flags = LayoutFlags.Default)
 	{
 		ValueType = value.GetType();
 		if (_element == null)
 			_label.Text = ValueType.Name;
-		SetMemberUiInfo(memberUiInfo);
+        SetMemberUiInfo(memberUiInfo);
+        SetLayoutFlags(flags);
 		SetValue(value);
 	}
 
@@ -64,9 +65,13 @@ public abstract partial class MemberInspector : Control
 	protected virtual void SetMemberUiInfo(MemberUiInfo memberUiInfo)
 	{
 		MemberUiInfo = memberUiInfo;
-		_label?.SetVisible(!memberUiInfo.IsLabelHidden);
-		_background?.SetVisible(!memberUiInfo.IsBackgroundHidden);
 	}
+
+    protected virtual void SetLayoutFlags(LayoutFlags flags)
+    {
+        _label?.SetVisible(!flags.IsSet(LayoutFlags.NoLabel));
+        _background?.SetVisible(!flags.IsSet(LayoutFlags.NoBackground));
+    }
 
 	protected abstract object? GetValue();
 

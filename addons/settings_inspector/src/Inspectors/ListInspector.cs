@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using LgkProductions.Inspector;
 using LgkProductions.Inspector.MetaData;
 
 namespace SettingInspector.addons.settings_inspector.src.Inspectors;
@@ -12,7 +13,7 @@ public partial class ListInspector : MemberInspector
 	[Export] private Button _addButton;
 	[Export] private MenuButton _addMenuButton;
 	[Export] private PackedScene _listElementScene;
-	[Export] private Button _expandButton;
+	[Export] private Button? _expandButton;
 	[Export] private Control _memberParent;
 
 	private readonly List<ListElement> _listElements = new();
@@ -21,6 +22,8 @@ public partial class ListInspector : MemberInspector
 	private PackedScene? _listInspectorScene;
 
 	private IList? _list;
+	
+	private bool _foldableFlag;
 
 	public override void _EnterTree()
 	{
@@ -64,7 +67,7 @@ public partial class ListInspector : MemberInspector
 		_listElementType = list.GetType().GetGenericArguments()[0];
 		_addButton.Visible = !(_listElementType.IsAbstract || _listElementType.IsInterface);
 		_addMenuButton.Visible = _listElementType.IsAbstract || _listElementType.IsInterface;
-		_expandButton.Visible = false;
+		_expandButton?.SetVisible(false);
 		if (_listElementType.IsAbstract || _listElementType.IsInterface)
 		{
 			var popupMenu = _addMenuButton.GetPopup();
@@ -110,7 +113,7 @@ public partial class ListInspector : MemberInspector
 		listElementInstance.SetMemberInspector(memberInstance, this);
 		_memberParent.AddChild(listElementInstance);
 		_listElements.Add(listElementInstance);
-		_expandButton.Visible = _listElements.Count > 0 && !MemberUiInfo.HideExpanded;
+		_expandButton?.SetVisible(_listElements.Count > 0 && _foldableFlag);
 	}
 
 	private void AppendListElement(Type? type)
@@ -135,7 +138,7 @@ public partial class ListInspector : MemberInspector
 		if (index < 0) return;
 		_listElements.RemoveAt(index);
 		element.Remove();
-		_expandButton.Visible = _listElements.Count > 0 && !MemberUiInfo.HideExpanded;
+		_expandButton?.SetVisible(_listElements.Count > 0 && _foldableFlag);
 	}
 
 	public void MoveElement(ListElement element, bool up)
@@ -147,6 +150,12 @@ public partial class ListInspector : MemberInspector
 		_listElements.RemoveAt(index);
 		_listElements.Insert(targetIndex, element);
 		_memberParent.MoveChild(element, targetIndex);
+	}
+
+	protected override void SetLayoutFlags(LayoutFlags flags)
+	{
+		base.SetLayoutFlags(flags);
+		_foldableFlag = !flags.IsSet(LayoutFlags.NotFoldable);
 	}
 
 	public override void SetEditable(bool editable)

@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LgkProductions.Inspector;
 
 namespace SettingInspector.addons.settings_inspector.src;
 
-public class Util
+public static class Util
 {
     public static IEnumerable<Type> GetAssignableTypes(Type type)
     {
@@ -30,5 +31,10 @@ public class Util
         {
             return false;
         }
+    }
+
+    public static bool IsSet(this LayoutFlags flags, LayoutFlags flag)
+    {
+        return (flags & flag) != 0;
     }
 }
