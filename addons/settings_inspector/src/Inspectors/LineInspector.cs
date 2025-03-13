@@ -10,16 +10,14 @@ public partial class LineInspector : MemberInspector
 	
 	private FileDialog _fileDialog = FileDialogHandler.CreateNative();
 
-	public override void _EnterTree()
+	protected override void OnInitialize()
 	{
-		base._EnterTree();
 		_lineEdit.TextChanged += OnTextChanged;
 		_filePathButton.Pressed += OnFilePathButtonPressed;
 	}
 
-	public override void _ExitTree()
+	protected override void OnRemove()
 	{
-		base._ExitTree();
 		_lineEdit.TextChanged -= OnTextChanged;
 		_filePathButton.Pressed -= OnFilePathButtonPressed;
 	}

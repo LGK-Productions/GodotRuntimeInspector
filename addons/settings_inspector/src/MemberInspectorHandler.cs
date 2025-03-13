@@ -2,15 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
+using LgkProductions.Inspector;
 using SettingInspector.addons.settings_inspector.Testing;
 
 namespace SettingInspector.addons.settings_inspector.src;
 
 public partial class MemberInspectorHandler : Control
 {
-	[Export] private Control _classInspectorContainer;
-	[Export] private PackedScene _memberInspectorWrapperScene;
-	[Export] private PackedScene _classWindowScene;
+	[Export] private PackedScene _memberInspectorWindowScene;
 	[Export] private bool _showTestingClass;
 	
 	[Export] public PackedScene DefaultInspectorScene;
@@ -35,52 +34,24 @@ public partial class MemberInspectorHandler : Control
 			InspectorTesting();
 	}
 
-	private async void InspectorTesting()
+	private void InspectorTesting()
 	{
 		TestModel model = new();
-		while (true)
-		{
-			try
-			{
-				model = await OpenClassInspector(model, true);
-				break;
-			}
-			catch (OperationCanceledException e)
-			{
-				GD.Print("editor cancelled");
-			}
-		}
+		OpenClassInspector(model);
 	}
 
-	public Task<T> OpenClassInspector<T>() where T : new()
+	public MemberInspectorHandle<T> OpenClassInspector<T>() where T : new()
 	{
 		return OpenClassInspector<T>(new T());
 	}
 	
-	public async Task<T> OpenClassInspector<T>(T instance, bool asWindow = false, bool readOnly = false)
+	public MemberInspectorHandle<T> OpenClassInspector<T>(T instance)
 	{
-		var inspector = _memberInspectorWrapperScene.Instantiate<MemberInspectorButtonWrapper>();
-		Window inspectorWindow = null;
-		if (!asWindow)
-			_classInspectorContainer.AddChild(inspector);
-		else
-		{
-			inspectorWindow = _classWindowScene.Instantiate<Window>();
-			AddChild(inspectorWindow);
-			inspectorWindow.AddChild(inspector);
-		}
-		
-		try
-		{
-			return await inspector.SetInspector(instance);
-		}
-		finally
-		{
-			if (!asWindow)
-				_classInspectorContainer.RemoveChild(inspector);
-			else 
-				inspectorWindow!.QueueFree();
-		}
+		var inspectorWindow = _memberInspectorWindowScene.Instantiate<MemberInspectorWrapper>();
+		AddChild(inspectorWindow);
+		var handle = new MemberInspectorHandle<T>(instance);
+		inspectorWindow.SetHandle(handle);
+		return handle;
 	}
 	
 	public PackedScene GetInputScene(Type inputType)
@@ -124,4 +95,38 @@ public partial class MemberInspectorHandler : Control
 
 		return DefaultInspectorScene;
 	}
+}
+
+public class MemberInspectorHandle<T> : IInspectorHandle
+{
+	public event Action<T>? OnApply;
+	public event Action? OnClose;
+	
+	public MemberInspector RootInspector { get; }
+	
+	public MemberInspectorHandle(T instance)
+	{
+		RootInspector = MemberInspectorHandler.Instance.GetInputScene(typeof(T)).Instantiate<MemberInspector>();
+		RootInspector.SetInstance(instance, new () { AllowTabs = true, Scrollable = true }, LayoutFlags.NotFoldable | LayoutFlags.NoBackground);
+	}
+	public void Apply()
+	{
+		if (RootInspector.TryRetrieveMember(out var val))
+			OnApply?.Invoke((T)val!);
+	}
+
+	public void Close()
+	{
+		OnClose?.Invoke();
+	}
+}
+
+public interface IInspectorHandle
+{
+	public void Apply();
+	public void Close();
+	
+	public event Action? OnClose;
+	
+	public MemberInspector RootInspector { get; }
 }

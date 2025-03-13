@@ -1,8 +1,6 @@
-[gd_scene load_steps=12 format=3 uid="uid://lnfsq1glnxff"]
+[gd_scene load_steps=10 format=3 uid="uid://lnfsq1glnxff"]
 
 [ext_resource type="Script" path="res://addons/settings_inspector/src/MemberInspectorHandler.cs" id="1_lw1hq"]
-[ext_resource type="PackedScene" uid="uid://cy2pkb0dun2c7" path="res://addons/settings_inspector/ui/MemberInspectorWrapper.tscn" id="2_yoyhv"]
-[ext_resource type="PackedScene" uid="uid://b1sxcktro3xif" path="res://addons/settings_inspector/ui/MemberInspectorWindow.tscn" id="3_gutww"]
 [ext_resource type="PackedScene" uid="uid://edq00o2jrvbw" path="res://addons/settings_inspector/ui/member-inputs/LineInspector.tscn" id="4_vim35"]
 [ext_resource type="PackedScene" uid="uid://je1rbey7jxnq" path="res://addons/settings_inspector/ui/member-inputs/ToggleInspector.tscn" id="5_ovw4k"]
 [ext_resource type="PackedScene" uid="uid://c2os26issvvje" path="res://addons/settings_inspector/ui/member-inputs/IntInspector.tscn" id="6_eanj8"]
@@ -12,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://cgxsnary7mkam" path="res://addons/settings_inspector/ui/member-inputs/InlineInspector.tscn" id="10_n0ah6"]
 [ext_resource type="PackedScene" uid="uid://ts8gnglujv7i" path="res://addons/settings_inspector/ui/member-inputs/ListInspector.tscn" id="11_d3yan"]
 
-[node name="ClassInspector" type="Control" node_paths=PackedStringArray("_classInspectorContainer")]
+[node name="ClassInspector" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,9 +18,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_lw1hq")
-_classInspectorContainer = NodePath("Container")
-_memberInspectorWrapperScene = ExtResource("2_yoyhv")
-_classWindowScene = ExtResource("3_gutww")
 DefaultInspectorScene = ExtResource("4_vim35")
 InspectorScenes = Array[PackedScene]([ExtResource("5_ovw4k"), ExtResource("6_eanj8"), ExtResource("7_8lgo8"), ExtResource("8_jtcy8"), ExtResource("9_vpbcg"), ExtResource("10_n0ah6"), ExtResource("11_d3yan")])
 

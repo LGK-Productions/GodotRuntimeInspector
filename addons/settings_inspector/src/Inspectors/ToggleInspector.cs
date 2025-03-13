@@ -6,15 +6,13 @@ public partial class ToggleInspector : MemberInspector
 {
 	[Export] CheckBox _checkbox;
 
-	public override void _EnterTree()
+	protected override void OnInitialize()
 	{
-		base._EnterTree();
 		_checkbox.Pressed += OnPressed;
 	}
 
-	public override void _ExitTree()
+	protected override void OnRemove()
 	{
-		base._ExitTree();
 		_checkbox.Pressed -= OnPressed;
 	}
 

@@ -44,9 +44,8 @@ public partial class ClassInspector : MemberInspector
 
     private static PollingTickProvider TickProvider = new(1);
 
-    public override void _EnterTree()
+    protected override void OnInitialize()
     {
-        base._EnterTree();
         _unattachButton.Pressed += UnattachPressed;
         _loadButton.Pressed += LoadPressed;
         _saveButton.Pressed += SavePressed;
@@ -56,9 +55,8 @@ public partial class ClassInspector : MemberInspector
             AddChild(_fileDialog);
     }
 
-    public override void _ExitTree()
+    protected override void OnRemove()
     {
-        base._ExitTree();
         _unattachButton.Pressed -= UnattachPressed;
         _loadButton.Pressed -= LoadPressed;
         _saveButton.Pressed -= SavePressed;
@@ -123,7 +121,9 @@ public partial class ClassInspector : MemberInspector
     protected override void SetLayoutFlags(LayoutFlags flags)
     {
         base.SetLayoutFlags(flags);
-        _expandButton?.SetPressed(flags.IsSet(LayoutFlags.ExpandedInitially));
+        
+        var expanded = flags.IsSet(LayoutFlags.ExpandedInitially);
+        _expandButton?.SetPressed(expanded);
         _expandButton?.SetVisible(!flags.IsSet(LayoutFlags.NotFoldable));
 
         var elementsVisible = !flags.IsSet(LayoutFlags.NoElements);
@@ -164,7 +164,7 @@ public partial class ClassInspector : MemberInspector
     private void UnattachPressed()
     {
         if (_instance == null) return;
-        MemberInspectorHandler.Instance.OpenClassInspector(_instance, true, !Editable);
+        MemberInspectorHandler.Instance.OpenClassInspector(_instance);
     }
 
     private void SavePressed()

@@ -11,21 +11,19 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
 
 	protected virtual double StepSize { get; } = 1;
 
-	public override void _EnterTree()
+	protected override void OnInitialize()
 	{
-		base._EnterTree();
 		_spinBox.ValueChanged += OnNumberChanged;
 	}
 
-	public override void _ExitTree()
+	protected override void OnRemove()
 	{
-		base._ExitTree();
 		_spinBox.ValueChanged -= OnNumberChanged;
 	}
 
 	protected override void SetValue(object value)
 	{
-        base.SetValue(value);
+		base.SetValue(value);
 		_spinBox.Value = (double)Convert.ChangeType(value, typeof(double));
 	}
 
@@ -36,7 +34,7 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
 
 	public override void SetEditable(bool editable)
 	{
-        base.SetEditable(editable);
+		base.SetEditable(editable);
 		_spinBox.Editable = editable;
 	}
 
@@ -47,7 +45,7 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
 
 	protected override void OnSetMetaData(MetaDataMember member)
 	{
-        base.OnSetMetaData(member);
+		base.OnSetMetaData(member);
 		if (member.MaxValue != null)
 			_spinBox.MaxValue = (double)Convert.ChangeType(member.MaxValue, typeof(double));
 		else

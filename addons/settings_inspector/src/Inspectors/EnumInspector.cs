@@ -11,15 +11,13 @@ public partial class EnumInspector : MemberInspector
 	
 	private readonly List<string> _enumLabels = new();
 	
-	public override void _EnterTree()
+	protected override void OnInitialize()
 	{
-		base._EnterTree();
 		_optionButton.ItemSelected += OnItemSelected;
 	}
 
-	public override void _ExitTree()
+	protected override void OnRemove()
 	{
-		base._ExitTree();
 		_optionButton.ItemSelected -= OnItemSelected;
 	}
 

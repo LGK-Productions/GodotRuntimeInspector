@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://diheksfofmcdc"]
 
 [ext_resource type="Script" path="res://addons/settings_inspector/src/InspectorCollections/MemberInspectorCollection.cs" id="1_gai4g"]
-[ext_resource type="PackedScene" uid="uid://bckaf08f4qymh" path="res://addons/settings_inspector/ui/member-input-collections/BoxGroup.tscn" id="2_3m6fy"]
+[ext_resource type="PackedScene" path="res://addons/settings_inspector/ui/member-input-collections/BoxGroup.tscn" id="2_3m6fy"]
 
 [node name="MarginContainer" type="MarginContainer" node_paths=PackedStringArray("_memberInspectorParent", "_scrollContainer")]
 offset_right = 1152.0

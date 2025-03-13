@@ -23,17 +23,15 @@ public partial class ListInspector : MemberInspector
 
 	private IList? _list;
 	
-	public override void _EnterTree()
+    protected override void OnInitialize()
 	{
-		base._EnterTree();
 		_addButton.Pressed += AppendNewListElement;
 		_expandButton.Toggled += ExpandButtonToggled;
 		_addMenuButton.GetPopup().IndexPressed += AppendListElement;
 	}
 
-	public override void _ExitTree()
+    protected override void OnRemove()
 	{
-		base._ExitTree();
 		_addButton.Pressed -= AppendNewListElement;
 		_expandButton.Toggled -= ExpandButtonToggled;
 		_addMenuButton.GetPopup().IndexPressed -= AppendListElement;
