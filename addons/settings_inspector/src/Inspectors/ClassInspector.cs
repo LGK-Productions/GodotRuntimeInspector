@@ -13,215 +13,217 @@ namespace SettingInspector.addons.settings_inspector.src.Inspectors;
 
 public partial class ClassInspector : MemberInspector
 {
-    [Export] private PackedScene _memberCollectionScene;
-    [Export] private PackedScene _memberTabCollectionScene;
-    [Export] private Control _memberParent;
-    [Export] private Button? _unattachButton;
-    [Export] private Button? _loadButton;
-    [Export] private Button? _saveButton;
-    [Export] private ToggleButton? _expandButton;
-    [Export] private OptionButton _typeChooser;
-    
-    private const bool AllowUnattach = false;
+	[Export] private PackedScene _memberCollectionScene;
+	[Export] private PackedScene _memberTabCollectionScene;
+	[Export] private Control _memberParent;
+	[Export] private Button? _unattachButton;
+	[Export] private Button? _loadButton;
+	[Export] private Button? _saveButton;
+	[Export] private ToggleButton? _expandButton;
+	[Export] private OptionButton _typeChooser;
 
-    private object? _instance;
-    private Type[]? _assignables;
-    private Node? _memberCollectionNode;
-    private IMemberInspectorCollection? MemberInspectorCollection => (IMemberInspectorCollection)_memberCollectionNode;
+	private const bool AllowUnattach = false;
 
-    private FileDialog _fileDialog = FileDialogHandler.CreateNative();
+	private object? _instance;
+	private Type[]? _assignables;
+	private Node? _memberCollectionNode;
+	private IMemberInspectorCollection? MemberInspectorCollection => (IMemberInspectorCollection)_memberCollectionNode;
 
-    private static readonly JsonSerializerOptions SerializerOptions = new()
-    {
-        WriteIndented = true
-    };
+	private FileDialog _fileDialog = FileDialogHandler.CreateNative();
 
-    private static readonly JsonSerializerOptions DeserializerOptions = new()
-    {
-        PreferredObjectCreationHandling = JsonObjectCreationHandling.Replace
-    };
+	private static readonly JsonSerializerOptions SerializerOptions = new()
+	{
+		WriteIndented = true
+	};
+
+	private static readonly JsonSerializerOptions DeserializerOptions = new()
+	{
+		PreferredObjectCreationHandling = JsonObjectCreationHandling.Replace
+	};
 
 
-    private static PollingTickProvider TickProvider = new(1);
+	private static PollingTickProvider TickProvider = new(1);
 
-    protected override void OnInitialize()
-    {
-        _unattachButton.Pressed += UnattachPressed;
-        _loadButton.Pressed += LoadPressed;
-        _saveButton.Pressed += SavePressed;
-        _expandButton.Toggled += ExpandButtonToggled;
-        _typeChooser.IndexSelected += TypeIndexSelected;
-        if (_fileDialog.GetParent() == null)
-            AddChild(_fileDialog);
-    }
+	protected override void OnInitialize()
+	{
+		_unattachButton.Pressed += UnattachPressed;
+		_loadButton.Pressed += LoadPressed;
+		_saveButton.Pressed += SavePressed;
+		_expandButton.Toggled += ExpandButtonToggled;
+		_typeChooser.IndexSelected += TypeIndexSelected;
+		if (_fileDialog.GetParent() == null)
+			AddChild(_fileDialog);
+	}
 
-    protected override void OnRemove()
-    {
-        _unattachButton.Pressed -= UnattachPressed;
-        _loadButton.Pressed -= LoadPressed;
-        _saveButton.Pressed -= SavePressed;
-        _expandButton.Toggled -= ExpandButtonToggled;
-        _typeChooser.IndexSelected += TypeIndexSelected;
-    }
+	protected override void OnRemove()
+	{
+		_unattachButton.Pressed -= UnattachPressed;
+		_loadButton.Pressed -= LoadPressed;
+		_saveButton.Pressed -= SavePressed;
+		_expandButton.Toggled -= ExpandButtonToggled;
+		_typeChooser.IndexSelected += TypeIndexSelected;
+	}
 
-    protected override void SetValue(object classInstance)
-    {
-        base.SetValue(classInstance);
-        _instance = classInstance;
-        var inspector = Inspector.Attach(_instance, TickProvider);
-        bool serializable = classInstance.GetType().GetCustomAttributes<SerializableAttribute>().Any();
+	protected override void SetValue(object classInstance)
+	{
+		base.SetValue(classInstance);
+		_instance = classInstance;
+		var inspector = Inspector.Attach(_instance, TickProvider);
+		bool serializable = classInstance.GetType().GetCustomAttributes<SerializableAttribute>().Any();
 
-        _expandButton?.SetVisible(_expandButton.Visible && (inspector.Elements.Count > 0 || MemberUiInfo.parentType != null));
-        _saveButton?.SetVisible(_saveButton.Visible && serializable);
-        _loadButton?.SetVisible(_loadButton.Visible && serializable);
-        _unattachButton?.SetVisible(_unattachButton.Visible && AllowUnattach);
-        if (_assignables != null)
-            _typeChooser.SetSelectedIndex(Array.IndexOf(_assignables, classInstance.GetType()));
+		_expandButton?.SetVisible(_expandButton.Visible &&
+								  (inspector.Elements.Count > 0 || MemberUiInfo.parentType != null));
+		_saveButton?.SetVisible(_saveButton.Visible && serializable);
+		_loadButton?.SetVisible(_loadButton.Visible && serializable);
+		_unattachButton?.SetVisible(_unattachButton.Visible && AllowUnattach);
+		if (_assignables != null)
+			_typeChooser.SetSelectedIndex(Array.IndexOf(_assignables, classInstance.GetType()));
 
-        _memberCollectionNode =
-            (MemberUiInfo.AllowTabs ? _memberTabCollectionScene : _memberCollectionScene).Instantiate();
-        _memberParent.AddChild(_memberCollectionNode);
-        MemberInspectorCollection!.SetMemberInspector(inspector);
-        MemberInspectorCollection.SetScrollable(MemberUiInfo.Scrollable);
-        MemberInspectorCollection.ValueChanged += OnValueChanged;
-    }
+		_memberCollectionNode =
+			(MemberUiInfo.AllowTabs ? _memberTabCollectionScene : _memberCollectionScene).Instantiate();
+		_memberParent.AddChild(_memberCollectionNode);
+		MemberInspectorCollection!.SetMemberInspector(inspector);
+		MemberInspectorCollection.SetScrollable(MemberUiInfo.Scrollable);
+		MemberInspectorCollection.ValueChanged += OnValueChanged;
+	}
 
-    public sealed class PollingTickProvider : ITickProvider
-    {
-        public event Action? Tick;
+	public sealed class PollingTickProvider : ITickProvider
+	{
+		public event Action? Tick;
 
-        public PollingTickProvider(float pollingRate)
-        {
-            var timer = new System.Timers.Timer(1 / pollingRate);
-            timer.Elapsed += (_, __) => Callable.From(() => Tick?.Invoke()).CallDeferred();
-            timer.Start();
-        }
-    }
+		public PollingTickProvider(float pollingRate)
+		{
+			var timer = new System.Timers.Timer(1 / pollingRate);
+			timer.Elapsed += (_, __) => Callable.From(() => Tick?.Invoke()).CallDeferred();
+			timer.Start();
+		}
+	}
 
-    protected override void Clear()
-    {
-        base.Clear();
-        _instance = null;
-        MemberInspectorCollection?.Remove();
-        _memberCollectionNode = null;
-    }
+	protected override void Clear()
+	{
+		base.Clear();
+		_instance = null;
+		MemberInspectorCollection?.Remove();
+		_memberCollectionNode = null;
+	}
 
-    private void ChildValueChanged()
-    {
-        OnValueChanged();
-    }
+	private void ChildValueChanged()
+	{
+		OnValueChanged();
+	}
 
-    protected override object? GetValue()
-    {
-        //Write values back
-        MemberInspectorCollection?.WriteBack();
-        return _instance;
-    }
+	protected override object? GetValue()
+	{
+		//Write values back
+		MemberInspectorCollection?.WriteBack();
+		return _instance;
+	}
 
-    protected override void SetLayoutFlags(LayoutFlags flags)
-    {
-        base.SetLayoutFlags(flags);
-        
-        var expanded = flags.IsSet(LayoutFlags.ExpandedInitially);
-        _expandButton?.SetPressed(expanded);
-        _expandButton?.SetVisible(!flags.IsSet(LayoutFlags.NotFoldable));
+	protected override void SetLayoutFlags(LayoutFlags flags)
+	{
+		base.SetLayoutFlags(flags);
 
-        var elementsVisible = !flags.IsSet(LayoutFlags.NoElements);
-        _loadButton?.SetVisible(elementsVisible);
-        _saveButton?.SetVisible(elementsVisible);
-        _unattachButton?.SetVisible(elementsVisible);
-    }
+		var expanded = flags.IsSet(LayoutFlags.ExpandedInitially);
+		_expandButton?.SetPressed(expanded);
+		_expandButton?.SetVisible(!flags.IsSet(LayoutFlags.NotFoldable));
 
-    protected override void SetMemberUiInfo(MemberUiInfo memberUiInfo)
-    {
-        base.SetMemberUiInfo(memberUiInfo);
-        if (MemberUiInfo.parentType != null)
-            SetParentType(MemberUiInfo.parentType);
-        else
-            _assignables = null;
-    }
+		var elementsVisible = !flags.IsSet(LayoutFlags.NoElements);
+		_loadButton?.SetVisible(elementsVisible);
+		_saveButton?.SetVisible(elementsVisible);
+		_unattachButton?.SetVisible(elementsVisible);
+	}
 
-    private void SetParentType(Type parentType)
-    {
-        _assignables = Util.GetAssignableTypes(parentType).ToArray();
-        _typeChooser.SetOptions(_assignables.Select(t => t.Name));
-    }
+	protected override void SetMemberUiInfo(MemberUiInfo memberUiInfo)
+	{
+		base.SetMemberUiInfo(memberUiInfo);
+		if (MemberUiInfo.parentType != null)
+			SetParentType(MemberUiInfo.parentType);
+		else
+			_assignables = null;
+	}
 
-    public override void SetEditable(bool editable)
-    {
-        base.SetEditable(editable);
-        MemberInspectorCollection?.SetEditable(editable);
-    }
+	private void SetParentType(Type parentType)
+	{
+		_assignables = Util.GetAssignableTypes(parentType).ToArray();
+		_typeChooser.SetOptions(_assignables.Select(t => t.Name));
+	}
 
-    #region Buttons
+	public override void SetEditable(bool editable)
+	{
+		base.SetEditable(editable);
+		MemberInspectorCollection?.SetEditable(editable);
+	}
 
-    private void ExpandButtonToggled(bool on)
-    {
-        _memberParent.Visible = on;
-        _typeChooser.Visible = MemberUiInfo.parentType != null && on;
-    }
+	#region Buttons
 
-    private void UnattachPressed()
-    {
-        if (_instance == null) return;
-        MemberInspectorHandler.Instance.OpenClassInspector(_instance);
-    }
+	private void ExpandButtonToggled(bool on)
+	{
+		_memberParent.Visible = on;
+		_typeChooser.Visible = MemberUiInfo.parentType != null && on;
+	}
 
-    private void SavePressed()
-    {
-        _fileDialog.FileMode = FileDialog.FileModeEnum.SaveFile;
-        _fileDialog.Filters = ["*.json"];
+	private void UnattachPressed()
+	{
+		if (_instance == null) return;
+		MemberInspectorHandler.Instance.OpenClassInspector(_instance);
+	}
 
-        if (!FileDialogHandler.Popup(_fileDialog, out string filePath)) return;
+	private void SavePressed()
+	{
+		_fileDialog.FileMode = FileDialog.FileModeEnum.SaveFile;
+		_fileDialog.Filters = ["*.json"];
 
-        if (ValueType == null) return;
+		if (!FileDialogHandler.Popup(_fileDialog, out string filePath)) return;
 
-        try
-        {
-            if (!TryRetrieveMember(out var value)) return;
-            var json = JsonSerializer.Serialize(value, ValueType, SerializerOptions);
-            File.WriteAllText(filePath, json);
-        }
-        catch (Exception e)
-        {
-            GD.PrintErr(e);
-        }
-    }
+		if (ValueType == null) return;
 
-    private void LoadPressed()
-    {
-        _fileDialog.FileMode = FileDialog.FileModeEnum.OpenFile;
-        _fileDialog.Filters = ["*.json"];
+		try
+		{
+			if (!TryRetrieveMember(out var value)) return;
+			var json = JsonSerializer.Serialize(value, ValueType, SerializerOptions);
+			File.WriteAllText(filePath, json);
+		}
+		catch (Exception e)
+		{
+			GD.PrintErr(e);
+		}
+	}
 
-        if (!FileDialogHandler.Popup(_fileDialog, out string filePath)) return;
+	private void LoadPressed()
+	{
+		_fileDialog.FileMode = FileDialog.FileModeEnum.OpenFile;
+		_fileDialog.Filters = ["*.json"];
 
-        if (!File.Exists(filePath))
-        {
-            GD.PrintErr("File not found: " + filePath);
-            return;
-        }
+		if (!FileDialogHandler.Popup(_fileDialog, out string filePath)) return;
 
-        var json = File.ReadAllText(filePath);
+		if (!File.Exists(filePath))
+		{
+			GD.PrintErr("File not found: " + filePath);
+			return;
+		}
 
-        if (ValueType == null) return;
-        try
-        {
-            var value = JsonSerializer.Deserialize(json, ValueType, DeserializerOptions);
-            if (value is not null)
-                SetInstance(value, MemberUiInfo);
-        }
-        catch (Exception e)
-        {
-            GD.PrintErr(e);
-        }
-    }
+		var json = File.ReadAllText(filePath);
 
-    private void TypeIndexSelected(int index)
-    {
-        if (_assignables == null || index < 0 || index >= _assignables.Length) return;
-        if (!Util.TryCreateInstance(_assignables[index], out var instance)) return;
-        SetInstance(instance, MemberUiInfo, LayoutFlags.Set(LayoutFlags.ExpandedInitially, _expandButton.ButtonPressed));
-    }
+		if (ValueType == null) return;
+		try
+		{
+			var value = JsonSerializer.Deserialize(json, ValueType, DeserializerOptions);
+			if (value is not null)
+				SetInstance(value, MemberUiInfo);
+		}
+		catch (Exception e)
+		{
+			GD.PrintErr(e);
+		}
+	}
 
-    #endregion
+	private void TypeIndexSelected(int index)
+	{
+		if (_assignables == null || index < 0 || index >= _assignables.Length) return;
+		if (!Util.TryCreateInstance(_assignables[index], out var instance)) return;
+		SetInstance(instance, MemberUiInfo,
+			LayoutFlags.Set(LayoutFlags.ExpandedInitially, _expandButton.ButtonPressed));
+	}
+
+	#endregion
 }

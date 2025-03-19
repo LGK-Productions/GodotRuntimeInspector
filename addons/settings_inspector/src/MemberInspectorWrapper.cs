@@ -13,8 +13,8 @@ public partial class MemberInspectorWrapper : Node
 	public void SetHandle(IInspectorHandle handle, bool destroyOnClosed = true)
 	{
 		ResetInspector();
-		handle.RootInspector.GetParent()?.RemoveChild(handle.RootInspector);
-		_inspectorContainer.AddChild(handle.RootInspector);
+		handle.RootInspectorWrapper.GetParent()?.RemoveChild(handle.RootInspectorWrapper);
+		_inspectorContainer.AddChild(handle.RootInspectorWrapper);
 		_currentInspector = handle;
 		_closeButton.Pressed += _currentInspector.Close;
 		_applyButton.Pressed += _currentInspector.Apply;
@@ -27,7 +27,7 @@ public partial class MemberInspectorWrapper : Node
 		_closeButton.Pressed -= _currentInspector.Close;
 		_applyButton.Pressed -= _currentInspector.Apply;
 		_currentInspector.OnClose -= ResetInspector;
-		_currentInspector.RootInspector.Remove();
+		_currentInspector.RootInspectorWrapper.MemberInspector.Remove();
 		_currentInspector = null;
 	}
 
@@ -38,7 +38,7 @@ public partial class MemberInspectorWrapper : Node
 			_closeButton.Pressed -= _currentInspector.Close;
 			_applyButton.Pressed -= _currentInspector.Apply;
 			_currentInspector.OnClose -= CloseInspector;
-			_currentInspector.RootInspector.Remove();
+			_currentInspector.RootInspectorWrapper.MemberInspector.Remove();
 			_currentInspector = null;
 		}
 		QueueFree();

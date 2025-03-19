@@ -4,7 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://diheksfofmcdc" path="res://addons/settings_inspector/ui/member-input-collections/MemberInspectorCollection.tscn" id="2_x7ov5"]
 
 [node name="MarginContainer" type="MarginContainer" node_paths=PackedStringArray("_tabContainer")]
-offset_right = 1152.0
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
 size_flags_horizontal = 3
 script = ExtResource("1_mnbf8")
 _tabContainer = NodePath("TabContainer")

@@ -1,14 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://lnfsq1glnxff"]
+[gd_scene load_steps=4 format=3 uid="uid://lnfsq1glnxff"]
 
 [ext_resource type="Script" path="res://addons/settings_inspector/src/MemberInspectorHandler.cs" id="1_lw1hq"]
-[ext_resource type="PackedScene" uid="uid://edq00o2jrvbw" path="res://addons/settings_inspector/ui/member-inputs/LineInspector.tscn" id="4_vim35"]
-[ext_resource type="PackedScene" uid="uid://je1rbey7jxnq" path="res://addons/settings_inspector/ui/member-inputs/ToggleInspector.tscn" id="5_ovw4k"]
-[ext_resource type="PackedScene" uid="uid://c2os26issvvje" path="res://addons/settings_inspector/ui/member-inputs/IntInspector.tscn" id="6_eanj8"]
-[ext_resource type="PackedScene" uid="uid://fy86nlnhnwa4" path="res://addons/settings_inspector/ui/member-inputs/FloatInspector.tscn" id="7_8lgo8"]
-[ext_resource type="PackedScene" uid="uid://b6d0uqwp7g3k" path="res://addons/settings_inspector/ui/member-inputs/DoubleInspector.tscn" id="8_jtcy8"]
-[ext_resource type="PackedScene" uid="uid://q2rqrwwx2811" path="res://addons/settings_inspector/ui/member-inputs/EnumInspector.tscn" id="9_vpbcg"]
-[ext_resource type="PackedScene" uid="uid://cgxsnary7mkam" path="res://addons/settings_inspector/ui/member-inputs/InlineInspector.tscn" id="10_n0ah6"]
-[ext_resource type="PackedScene" uid="uid://ts8gnglujv7i" path="res://addons/settings_inspector/ui/member-inputs/ListInspector.tscn" id="11_d3yan"]
+[ext_resource type="PackedScene" uid="uid://b1sxcktro3xif" path="res://addons/settings_inspector/ui/MemberInspectorWindow.tscn" id="2_rubim"]
+[ext_resource type="PackedScene" uid="uid://duar7vh55goxk" path="res://addons/settings_inspector/ui/member-inputs/MemberWrapper.tscn" id="3_ayew8"]
 
 [node name="ClassInspector" type="Control"]
 layout_mode = 3
@@ -18,8 +12,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_lw1hq")
-DefaultInspectorScene = ExtResource("4_vim35")
-InspectorScenes = Array[PackedScene]([ExtResource("5_ovw4k"), ExtResource("6_eanj8"), ExtResource("7_8lgo8"), ExtResource("8_jtcy8"), ExtResource("9_vpbcg"), ExtResource("10_n0ah6"), ExtResource("11_d3yan")])
+_memberInspectorWindowScene = ExtResource("2_rubim")
+MemberWrapperScene = ExtResource("3_ayew8")
 
 [node name="Container" type="Control" parent="."]
 layout_mode = 1

@@ -86,6 +86,10 @@ internal class TestModel
     [Tab("Layouting")]
     [BoxGroup("HorizontalGroup1")]
     public int TestHVal3 { get; set; }
+    
+    [Tab("Layouting")]
+    [Space(30)]
+    public int TestSpace { get; set; }
 
     #endregion
 

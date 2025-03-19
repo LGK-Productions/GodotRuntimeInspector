@@ -12,6 +12,11 @@ public partial class ToggleButton : Button
 		Toggled += SetTexture;
 	}
 
+    public override void _ExitTree()
+    {
+        Toggled -= SetTexture;
+    }
+
 	private void SetTexture(bool on)
 	{
 		Icon = on ? _onTexture : _offTexture;

@@ -19,18 +19,17 @@ public partial class ListInspector : MemberInspector
 	private readonly List<ListElement> _listElements = new();
 	private Type? _listElementType;
 	private List<Type>? _assignableTypes;
-	private PackedScene? _listInspectorScene;
 
 	private IList? _list;
-	
-    protected override void OnInitialize()
+
+	protected override void OnInitialize()
 	{
 		_addButton.Pressed += AppendNewListElement;
 		_expandButton.Toggled += ExpandButtonToggled;
 		_addMenuButton.GetPopup().IndexPressed += AppendListElement;
 	}
 
-    protected override void OnRemove()
+	protected override void OnRemove()
 	{
 		_addButton.Pressed -= AppendNewListElement;
 		_expandButton.Toggled -= ExpandButtonToggled;
@@ -74,7 +73,6 @@ public partial class ListInspector : MemberInspector
 				popupMenu.AddItem(type.Name);
 			}
 		}
-		_listInspectorScene = MemberInspectorHandler.Instance.GetInputScene(_listElementType);
 
 		foreach (var obj in _list)
 		{
@@ -94,19 +92,19 @@ public partial class ListInspector : MemberInspector
 
 		_listElements.Clear();
 		_listElementType = null;
-		_listInspectorScene = null;
 	}
 
 	private void AppendListElement(object value)
 	{
-		if (_listInspectorScene == null) return;
-		var memberInstance = _listInspectorScene.Instantiate<MemberInspector>();
+		if (_listElementType == null) return;
+		var memberWrapper = MemberInspectorHandler.Instance?.MemberWrapperScene?.Instantiate<MemberWrapper>();
+		memberWrapper.SetMemberType(_listElementType);
 		var listElementInstance = _listElementScene.Instantiate<ListElement>();
-        var memberUiInfo = MemberUiInfo.Default;
-        if (value.GetType() != _listElementType)
-            memberUiInfo = memberUiInfo with {parentType = _listElementType};
-		memberInstance.SetInstance(value, memberUiInfo);
-		listElementInstance.SetMemberInspector(memberInstance, this);
+		var memberUiInfo = MemberUiInfo.Default;
+		if (value.GetType() != _listElementType)
+			memberUiInfo = memberUiInfo with { parentType = _listElementType };
+		memberWrapper.MemberInspector.SetInstance(value, memberUiInfo);
+		listElementInstance.SetMemberInspector(memberWrapper.MemberInspector, this);
 		_memberParent.AddChild(listElementInstance);
 		_listElements.Add(listElementInstance);
 		_expandButton?.SetVisible(_listElements.Count > 0 && !LayoutFlags.IsSet(LayoutFlags.NotFoldable));
