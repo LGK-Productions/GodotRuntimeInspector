@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://lnfsq1glnxff"]
+[gd_scene load_steps=3 format=3 uid="uid://lnfsq1glnxff"]
 
 [ext_resource type="Script" path="res://addons/settings_inspector/src/MemberInspectorHandler.cs" id="1_lw1hq"]
 [ext_resource type="PackedScene" uid="uid://b1sxcktro3xif" path="res://addons/settings_inspector/ui/MemberInspectorWindow.tscn" id="2_rubim"]
-[ext_resource type="PackedScene" uid="uid://duar7vh55goxk" path="res://addons/settings_inspector/ui/member-inputs/MemberWrapper.tscn" id="3_ayew8"]
 
 [node name="ClassInspector" type="Control"]
 layout_mode = 3
@@ -13,7 +12,6 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_lw1hq")
 _memberInspectorWindowScene = ExtResource("2_rubim")
-MemberWrapperScene = ExtResource("3_ayew8")
 
 [node name="Container" type="Control" parent="."]
 layout_mode = 1

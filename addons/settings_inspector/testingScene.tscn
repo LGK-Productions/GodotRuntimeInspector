@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://c5arwoo0i6up5"]
+[gd_scene load_steps=3 format=3 uid="uid://c5arwoo0i6up5"]
 
 [ext_resource type="PackedScene" uid="uid://lnfsq1glnxff" path="res://addons/settings_inspector/ui/MemberInspectorHandler.tscn" id="1_4q30c"]
+[ext_resource type="PackedScene" uid="uid://duar7vh55goxk" path="res://addons/settings_inspector/ui/member-inputs/MemberWrapper.tscn" id="2_0ywbe"]
 
 [node name="TestingScene" type="Node3D"]
 
@@ -8,3 +9,4 @@
 
 [node name="ClassInspector" parent="." instance=ExtResource("1_4q30c")]
 _showTestingClass = true
+MemberWrapperScene = ExtResource("2_0ywbe")

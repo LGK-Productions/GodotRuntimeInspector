@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bckaf08f4qymh"]
+[gd_scene load_steps=6 format=3 uid="uid://cxu8tdbkv5g84"]
 
 [ext_resource type="Script" path="res://addons/settings_inspector/src/InspectorCollections/MemberGroup.cs" id="1_5q4wf"]
 [ext_resource type="StyleBox" uid="uid://bixi5p37q6grs" path="res://addons/settings_inspector/themes/MemberBackgroundPanel.tres" id="2_8mdlt"]
@@ -11,32 +11,33 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 40.0
 grow_horizontal = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_right = 5
 script = ExtResource("1_5q4wf")
-_groupNameLabel = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Label")
+_groupNameLabel = NodePath("VBoxContainer/MarginContainer/HBoxContainer/Label")
 _background = NodePath("PanelContainer")
-_memberParentHorizontal = NodePath("MarginContainer/VBoxContainer/HMemberParentContainer")
-_memberParentVertical = NodePath("MarginContainer/VBoxContainer/VMemberParentContainer")
-_expandButton = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Button")
+_memberParentHorizontal = NodePath("VBoxContainer/HMemberParentContainer")
+_memberParentVertical = NodePath("VBoxContainer/VMemberParentContainer")
+_expandButton = NodePath("VBoxContainer/MarginContainer/HBoxContainer/Button")
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="PanelContainer" type="Panel" parent="."]
 layout_mode = 2
 theme_override_styles/panel = ExtResource("2_8mdlt")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
-theme_override_constants/margin_left = 20
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 20
+theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-visible = false
+[node name="Button" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 size_flags_vertical = 4
@@ -47,18 +48,17 @@ expand_icon = true
 script = ExtResource("4_uoych")
 _onTexture = ExtResource("5_7urnb")
 _offTexture = ExtResource("3_lh86o")
-_startState = true
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 21
 text = "Group Name"
 
-[node name="VMemberParentContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="VMemberParentContainer" type="VBoxContainer" parent="VBoxContainer"]
 visible = false
 layout_mode = 2
 
-[node name="HMemberParentContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HMemberParentContainer" type="HBoxContainer" parent="VBoxContainer"]
 visible = false
 layout_mode = 2

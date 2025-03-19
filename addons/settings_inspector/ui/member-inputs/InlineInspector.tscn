@@ -23,36 +23,41 @@ size_flags_vertical = 3
 script = ExtResource("1_gh2an")
 _memberCollectionScene = ExtResource("2_m0e18")
 _memberTabCollectionScene = ExtResource("2_ki6s4")
-_memberParent = NodePath("VBoxContainer/ContentHolder")
-_unattachButton = NodePath("VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer/Detach")
-_loadButton = NodePath("VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer/Load")
-_saveButton = NodePath("VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer/Save")
-_expandButton = NodePath("VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/Button")
-_typeChooser = NodePath("VBoxContainer/VBoxContainer/TypeChooser")
-_label = NodePath("VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/Label")
-_background = NodePath("")
+_memberParent = NodePath("MarginContainer/VBoxContainer/ContentHolder")
+_unattachButton = NodePath("MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer/Detach")
+_loadButton = NodePath("MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer/Load")
+_saveButton = NodePath("MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer/Save")
+_expandButton = NodePath("MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/Button")
+_typeChooser = NodePath("MarginContainer/VBoxContainer/VBoxContainer/TypeChooser")
+_label = NodePath("MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/Label")
+_background = NodePath("PanelContainer")
 
 [node name="PanelContainer" type="Panel" parent="."]
 layout_mode = 2
 theme_override_styles/panel = ExtResource("4_f7xsk")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 2
-alignment = 1
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_right = 5
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 alignment = 1
 
-[node name="Button" type="Button" parent="VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 size_flags_vertical = 4
@@ -65,22 +70,22 @@ script = ExtResource("6_s4qxm")
 _onTexture = ExtResource("7_g5ya0")
 _offTexture = ExtResource("5_ufwhm")
 
-[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 21
 text = "Property Name"
 clip_text = true
 
-[node name="Stretcher" type="MarginContainer" parent="VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="Stretcher" type="MarginContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.01
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="Save" type="Button" parent="VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer"]
+[node name="Save" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 focus_mode = 0
@@ -88,7 +93,7 @@ icon = ExtResource("5_va8p2")
 icon_alignment = 1
 expand_icon = true
 
-[node name="Load" type="Button" parent="VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer"]
+[node name="Load" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 focus_mode = 0
@@ -96,7 +101,7 @@ icon = ExtResource("6_vo5tg")
 icon_alignment = 1
 expand_icon = true
 
-[node name="Detach" type="Button" parent="VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer"]
+[node name="Detach" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer"]
 visible = false
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
@@ -105,7 +110,7 @@ icon = ExtResource("7_epxcb")
 icon_alignment = 1
 expand_icon = true
 
-[node name="TypeChooser" type="MarginContainer" parent="VBoxContainer/VBoxContainer" node_paths=PackedStringArray("optionButton")]
+[node name="TypeChooser" type="MarginContainer" parent="MarginContainer/VBoxContainer/VBoxContainer" node_paths=PackedStringArray("optionButton")]
 visible = false
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
@@ -117,10 +122,10 @@ theme_override_constants/margin_bottom = 5
 script = ExtResource("11_3flad")
 optionButton = NodePath("HBoxContainer/OptionButton")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/TypeChooser"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/TypeChooser"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/TypeChooser/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/TypeChooser/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -129,12 +134,12 @@ text = "Type"
 vertical_alignment = 1
 clip_text = true
 
-[node name="OptionButton" type="OptionButton" parent="VBoxContainer/VBoxContainer/TypeChooser/HBoxContainer"]
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBoxContainer/VBoxContainer/TypeChooser/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 
-[node name="ContentHolder" type="MarginContainer" parent="VBoxContainer"]
+[node name="ContentHolder" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
