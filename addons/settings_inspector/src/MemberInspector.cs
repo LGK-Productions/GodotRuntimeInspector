@@ -117,11 +117,13 @@ public abstract partial class MemberInspector : Control
 	}
 
 	protected virtual void OnInitialize()
-	{
-	}
+    {
+        _initialized = true;
+    }
 
 	protected virtual void OnRemove()
 	{
+        _initialized = false;
 	}
 
 	public void Remove()
@@ -132,8 +134,9 @@ public abstract partial class MemberInspector : Control
 			_element.ValueChanged -= UpdateMemberInputValue;
 			_element = null;
 		}
-
-		OnRemove();
+        
+        if (_initialized)
+		    OnRemove();
 		QueueFree();
 	}
 
