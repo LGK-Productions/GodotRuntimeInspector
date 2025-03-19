@@ -53,10 +53,12 @@ alignment = 1
 
 [node name="Close" type="Button" parent="ClassInspectorWrapper/MainMargin/VBoxContainer/MarginContainer2/HBoxContainer"]
 layout_mode = 2
+focus_mode = 0
 text = "Close
 "
 
 [node name="Apply" type="Button" parent="ClassInspectorWrapper/MainMargin/VBoxContainer/MarginContainer2/HBoxContainer"]
 layout_mode = 2
+focus_mode = 0
 text = "Apply
 "

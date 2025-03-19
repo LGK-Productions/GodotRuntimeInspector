@@ -16,7 +16,7 @@ bg_color = Color(1, 1, 1, 1)
 [node name="MemberWrapper" type="MarginContainer" node_paths=PackedStringArray("_memberContainer")]
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 83.0
+offset_bottom = 82.0
 grow_horizontal = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -44,5 +44,6 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_pcvqt")
 
 [node name="MemberInspectorContainer" type="MarginContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3

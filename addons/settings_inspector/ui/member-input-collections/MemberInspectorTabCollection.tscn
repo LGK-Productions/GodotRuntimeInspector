@@ -14,3 +14,4 @@ _memberCollectionScene = ExtResource("2_x7ov5")
 
 [node name="TabContainer" type="TabContainer" parent="."]
 layout_mode = 2
+tab_focus_mode = 0

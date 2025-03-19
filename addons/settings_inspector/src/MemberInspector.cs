@@ -101,8 +101,8 @@ public abstract partial class MemberInspector : Control
 		_label.TooltipText = _element.MemberInfo.Description;
 		if (member.TryGetMetaData(new MetaDataKey<float>("LabelSize"), out var labelSizeMultiplier))
 			_label.SizeFlagsStretchRatio = labelSizeMultiplier;
-		//_wrapper?.SetMargin((int)member.Spacing.Top, (int)member.Spacing.Botton, (int)member.Spacing.Left,
-			//(int)member.Spacing.Right);
+		_wrapper?.SetMargin((int)member.Spacing.Top, (int)member.Spacing.Botton, (int)member.Spacing.Left,
+			(int)member.Spacing.Right);
 
 		SetEditable(!_element.MemberInfo.IsReadOnly);
 	}

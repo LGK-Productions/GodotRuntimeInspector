@@ -4,7 +4,7 @@ namespace SettingInspector.addons.settings_inspector.src.Inspectors;
 
 public partial class ToggleInspector : MemberInspector
 {
-	[Export] CheckBox _checkbox;
+	[Export] Button _checkbox;
 
 	protected override void OnInitialize()
 	{

@@ -18,15 +18,16 @@ public partial class MemberWrapper : MarginContainer
 	{
 		MemberInspector = GetInputScene(type)!.Instantiate<MemberInspector>();
 		_memberContainer?.AddChild(MemberInspector);
+        MemberInspector.SetWrapper(this);
 		return MemberInspector;
 	}
 
 	public void SetMargin(int top, int bottom, int left, int right)
 	{
-		AddThemeConstantOverride("margin_top", top);
-		AddThemeConstantOverride("margin_bottom", bottom);
-		AddThemeConstantOverride("margin_left", left);
-		AddThemeConstantOverride("margin_right", right);
+		_memberContainer.AddThemeConstantOverride("margin_top", top);
+		_memberContainer.AddThemeConstantOverride("margin_bottom", bottom);
+		_memberContainer.AddThemeConstantOverride("margin_left", left);
+		_memberContainer.AddThemeConstantOverride("margin_right", right);
 	}
 	
 	private PackedScene? GetInputScene(Type inputType)
