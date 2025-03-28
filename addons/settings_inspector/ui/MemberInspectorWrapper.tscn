@@ -3,7 +3,7 @@
 [ext_resource type="Theme" uid="uid://62r1pqjwqsym" path="res://addons/settings_inspector/themes/inspector_theme.tres" id="1_68bgs"]
 [ext_resource type="Script" path="res://addons/settings_inspector/src/MemberInspectorWrapper.cs" id="2_kp0n3"]
 
-[node name="ClassInspectorWrapper" type="Panel" node_paths=PackedStringArray("_closeButton", "_applyButton", "_inspectorContainer")]
+[node name="ClassInspectorWrapper" type="Panel" node_paths=PackedStringArray("_applyButton", "_closeButton", "_inspectorContainer")]
 clip_contents = true
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,8 +12,8 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_68bgs")
 script = ExtResource("2_kp0n3")
-_closeButton = NodePath("MainMargin/VBoxContainer/MarginContainer2/HBoxContainer/Close")
 _applyButton = NodePath("MainMargin/VBoxContainer/MarginContainer2/HBoxContainer/Apply")
+_closeButton = NodePath("MainMargin/VBoxContainer/MarginContainer2/HBoxContainer/Close")
 _inspectorContainer = NodePath("MainMargin/VBoxContainer/InspectorContentHolder")
 
 [node name="MainMargin" type="MarginContainer" parent="."]

@@ -1,14 +1,14 @@
 using Godot;
 using LgkProductions.Inspector.MetaData;
+using SettingInspector.addons.settings_inspector.src.Attributes;
 
 namespace SettingInspector.addons.settings_inspector.src.Inspectors;
 
 public partial class LineInspector : MemberInspector
 {
-	[Export] private LineEdit _lineEdit;
-	[Export] private Button _filePathButton;
-	
 	private FileDialog _fileDialog = FileDialogHandler.CreateNative();
+	[Export] private Button _filePathButton;
+	[Export] private LineEdit _lineEdit;
 
 	protected override void OnInitialize()
 	{
@@ -26,10 +26,7 @@ public partial class LineInspector : MemberInspector
 	{
 		_fileDialog.FileMode = FileDialog.FileModeEnum.OpenAny;
 
-		if (FileDialogHandler.Popup(_fileDialog, out string path))
-		{
-			SetValue(path);
-		}
+		if (FileDialogHandler.Popup(_fileDialog, out var path)) SetValue(path);
 	}
 
 	private void OnTextChanged(string newValue)
@@ -47,7 +44,7 @@ public partial class LineInspector : MemberInspector
 	{
 		base.OnSetMetaData(member);
 		_filePathButton.Visible =
-			member.CustomMetaData.TryGetValue("FilePath", out var value) && value is bool and true;
+			member.CustomMetaData.TryGetValue(FilePathAttribute.MetadataKey, out var value) && value is bool and true;
 	}
 
 	protected override object? GetValue()

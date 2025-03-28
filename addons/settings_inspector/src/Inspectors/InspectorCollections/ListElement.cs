@@ -1,24 +1,23 @@
-using Godot;
 using System;
-using System.Linq;
-using SettingInspector.addons.settings_inspector.src;
-using SettingInspector.addons.settings_inspector.src.Inspectors;
+using Godot;
+
+namespace SettingInspector.addons.settings_inspector.src.Inspectors.InspectorCollections;
 
 public partial class ListElement : Control
 {
-	[Export] private Button _upButton;
-	[Export] private Button _downButton;
 	[Export] private Button _deleteButton;
-	[Export] private Control _inspectorContainer;
-	
+	[Export] private Button _downButton;
+
 	private MemberInspector? _inspector;
+	[Export] private Control _inspectorContainer;
 	private ListInspector? _listInspector;
+	[Export] private Button _upButton;
 
 	public void SetMemberInspector(MemberInspector inspector, ListInspector listInspector)
 	{
 		_inspector = inspector;
 		_listInspector = listInspector;
-		
+
 		if (_inspector.GetParent() != null)
 			_inspector.Reparent(_inspectorContainer);
 		else
@@ -27,7 +26,7 @@ public partial class ListElement : Control
 		_inspector.AddThemeConstantOverride("margin_left", 0);
 		_inspector.AddThemeConstantOverride("margin_right", 0);
 		_inspector.AddThemeConstantOverride("margin_bottom", 0);
-		
+
 		_inspector.ValueChanged += OnMemberValueChanged;
 		_upButton.Pressed += OnUpPressed;
 		_downButton.Pressed += OnDownPressed;
@@ -48,7 +47,7 @@ public partial class ListElement : Control
 	{
 		_listInspector?.RemoveListElement(this);
 	}
-	
+
 	public bool TryRetrieveMember(out object? value)
 	{
 		value = null;
@@ -79,6 +78,6 @@ public partial class ListElement : Control
 	{
 		ValueChanged?.Invoke();
 	}
-	
+
 	public event Action ValueChanged;
 }

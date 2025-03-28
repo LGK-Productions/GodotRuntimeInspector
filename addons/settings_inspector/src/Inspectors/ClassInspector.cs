@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -7,29 +6,14 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Godot;
 using LgkProductions.Inspector;
-using SettingInspector.addons.settings_inspector.src.InspectorCollections;
+using SettingInspector.addons.settings_inspector.src.Inspectors.InspectorCollections;
+using Timer = System.Timers.Timer;
 
 namespace SettingInspector.addons.settings_inspector.src.Inspectors;
 
 public partial class ClassInspector : MemberInspector
 {
-	[Export] private PackedScene _memberCollectionScene;
-	[Export] private PackedScene _memberTabCollectionScene;
-	[Export] private Control _memberParent;
-	[Export] private Button? _unattachButton;
-	[Export] private Button? _loadButton;
-	[Export] private Button? _saveButton;
-	[Export] private ToggleButton? _expandButton;
-	[Export] private OptionButton _typeChooser;
-
 	private const bool AllowUnattach = false;
-
-	private object? _instance;
-	private Type[]? _assignables;
-	private Node? _memberCollectionNode;
-	private IMemberInspectorCollection? MemberInspectorCollection => (IMemberInspectorCollection)_memberCollectionNode;
-
-	private FileDialog _fileDialog = FileDialogHandler.CreateNative();
 
 	private static readonly JsonSerializerOptions SerializerOptions = new()
 	{
@@ -42,7 +26,22 @@ public partial class ClassInspector : MemberInspector
 	};
 
 
-	private static PollingTickProvider TickProvider = new(1);
+	private static readonly PollingTickProvider TickProvider = new(1);
+	private Type[]? _assignables;
+	[Export] private ToggleButton? _expandButton;
+
+	private FileDialog _fileDialog = FileDialogHandler.CreateNative();
+
+	private object? _instance;
+	[Export] private Button? _loadButton;
+	private Node? _memberCollectionNode;
+	[Export] private PackedScene _memberCollectionScene;
+	[Export] private Control _memberParent;
+	[Export] private PackedScene _memberTabCollectionScene;
+	[Export] private Button? _saveButton;
+	[Export] private OptionButton _typeChooser;
+	[Export] private Button? _unattachButton;
+	private IMemberInspectorCollection? MemberInspectorCollection => (IMemberInspectorCollection)_memberCollectionNode;
 
 	protected override void OnInitialize()
 	{
@@ -69,7 +68,7 @@ public partial class ClassInspector : MemberInspector
 		base.SetValue(classInstance);
 		_instance = classInstance;
 		var inspector = Inspector.Attach(_instance, TickProvider);
-		bool serializable = classInstance.GetType().GetCustomAttributes<SerializableAttribute>().Any();
+		var serializable = classInstance.GetType().GetCustomAttributes<SerializableAttribute>().Any();
 
 		_expandButton?.SetVisible(_expandButton.Visible &&
 								  (inspector.Elements.Count > 0 || MemberUiInfo.parentType != null));
@@ -85,18 +84,6 @@ public partial class ClassInspector : MemberInspector
 		MemberInspectorCollection!.SetMemberInspector(inspector);
 		MemberInspectorCollection.SetScrollable(MemberUiInfo.Scrollable);
 		MemberInspectorCollection.ValueChanged += OnValueChanged;
-	}
-
-	public sealed class PollingTickProvider : ITickProvider
-	{
-		public event Action? Tick;
-
-		public PollingTickProvider(float pollingRate)
-		{
-			var timer = new System.Timers.Timer(1 / pollingRate);
-			timer.Elapsed += (_, __) => Callable.From(() => Tick?.Invoke()).CallDeferred();
-			timer.Start();
-		}
 	}
 
 	protected override void Clear()
@@ -154,6 +141,18 @@ public partial class ClassInspector : MemberInspector
 		MemberInspectorCollection?.SetEditable(editable);
 	}
 
+	public sealed class PollingTickProvider : ITickProvider
+	{
+		public PollingTickProvider(float pollingRate)
+		{
+			var timer = new Timer(1 / pollingRate);
+			timer.Elapsed += (_, __) => Callable.From(() => Tick?.Invoke()).CallDeferred();
+			timer.Start();
+		}
+
+		public event Action? Tick;
+	}
+
 	#region Buttons
 
 	private void ExpandButtonToggled(bool on)
@@ -173,7 +172,7 @@ public partial class ClassInspector : MemberInspector
 		_fileDialog.FileMode = FileDialog.FileModeEnum.SaveFile;
 		_fileDialog.Filters = ["*.json"];
 
-		if (!FileDialogHandler.Popup(_fileDialog, out string filePath)) return;
+		if (!FileDialogHandler.Popup(_fileDialog, out var filePath)) return;
 
 		if (ValueType == null) return;
 
@@ -194,7 +193,7 @@ public partial class ClassInspector : MemberInspector
 		_fileDialog.FileMode = FileDialog.FileModeEnum.OpenFile;
 		_fileDialog.Filters = ["*.json"];
 
-		if (!FileDialogHandler.Popup(_fileDialog, out string filePath)) return;
+		if (!FileDialogHandler.Popup(_fileDialog, out var filePath)) return;
 
 		if (!File.Exists(filePath))
 		{
@@ -222,7 +221,7 @@ public partial class ClassInspector : MemberInspector
 		if (_assignables == null || index < 0 || index >= _assignables.Length) return;
 		if (!Util.TryCreateInstance(_assignables[index], out var instance)) return;
 		SetInstance(instance, MemberUiInfo,
-			LayoutFlags.Set(LayoutFlags.ExpandedInitially, _expandButton.ButtonPressed));
+			LayoutFlags.Set(LayoutFlags | LayoutFlags.ExpandedInitially, _expandButton.ButtonPressed));
 	}
 
 	#endregion

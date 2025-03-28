@@ -8,18 +8,18 @@
 [ext_resource type="Texture2D" uid="uid://bwrwptoimsk2e" path="res://addons/settings_inspector/art/icons/fluent--triangle-down-12-filled.png" id="5_t4o06"]
 [ext_resource type="Texture2D" uid="uid://disp4d0dg0lq8" path="res://addons/settings_inspector/art/icons/fluent--add-12-regular.png" id="6_h4yhc"]
 
-[node name="ListInspector" type="MarginContainer" node_paths=PackedStringArray("_addButton", "_addMenuButton", "_expandButton", "_memberParent", "_label", "_background")]
+[node name="ListInspector" type="MarginContainer" node_paths=PackedStringArray("_addButton", "_addMenuButton", "_expandButton", "_memberParent", "_background", "_label")]
 custom_minimum_size = Vector2(0, 40)
 offset_right = 1152.0
 offset_bottom = 40.0
 script = ExtResource("1_oec23")
 _addButton = NodePath("VBoxContainer/MarginContainer/HBoxContainer/Add")
 _addMenuButton = NodePath("VBoxContainer/MarginContainer/HBoxContainer/Add2")
-_listElementScene = ExtResource("2_hafwm")
 _expandButton = NodePath("VBoxContainer/MarginContainer/HBoxContainer/Button")
+_listElementScene = ExtResource("2_hafwm")
 _memberParent = NodePath("VBoxContainer/MemberParent")
-_label = NodePath("VBoxContainer/MarginContainer/HBoxContainer/Label")
 _background = NodePath("Panel")
+_label = NodePath("VBoxContainer/MarginContainer/HBoxContainer/Label")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 2
@@ -47,8 +47,8 @@ icon = ExtResource("3_wawn4")
 flat = true
 expand_icon = true
 script = ExtResource("4_nua4t")
-_onTexture = ExtResource("5_t4o06")
 _offTexture = ExtResource("3_wawn4")
+_onTexture = ExtResource("5_t4o06")
 
 [node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2

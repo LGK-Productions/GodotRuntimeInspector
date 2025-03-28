@@ -7,10 +7,9 @@ namespace SettingInspector.addons.settings_inspector.src.Inspectors;
 
 public partial class EnumInspector : MemberInspector
 {
-	[Export] private Godot.OptionButton _optionButton;
-	
 	private readonly List<string> _enumLabels = new();
-	
+	[Export] private Godot.OptionButton _optionButton;
+
 	protected override void OnInitialize()
 	{
 		_optionButton.ItemSelected += OnItemSelected;
@@ -55,5 +54,4 @@ public partial class EnumInspector : MemberInspector
 			_enumLabels.Add(label);
 		}
 	}
-
 }

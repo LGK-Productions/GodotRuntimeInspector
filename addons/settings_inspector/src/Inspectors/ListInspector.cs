@@ -10,17 +10,16 @@ namespace SettingInspector.addons.settings_inspector.src.Inspectors;
 
 public partial class ListInspector : MemberInspector
 {
+	private readonly List<InspectorCollections.ListElement> _listElements = new();
 	[Export] private Button _addButton;
 	[Export] private MenuButton _addMenuButton;
-	[Export] private PackedScene _listElementScene;
-	[Export] private Button? _expandButton;
-	[Export] private Control _memberParent;
-
-	private readonly List<ListElement> _listElements = new();
-	private Type? _listElementType;
 	private List<Type>? _assignableTypes;
+	[Export] private Button? _expandButton;
 
 	private IList? _list;
+	[Export] private PackedScene _listElementScene;
+	private Type? _listElementType;
+	[Export] private Control _memberParent;
 
 	protected override void OnInitialize()
 	{
@@ -46,10 +45,8 @@ public partial class ListInspector : MemberInspector
 		if (_list is null) return null;
 		_list.Clear();
 		foreach (var inspector in _listElements)
-		{
 			if (inspector.TryRetrieveMember(out var value))
 				_list.Add(value);
-		}
 
 		return _list;
 	}
@@ -68,10 +65,7 @@ public partial class ListInspector : MemberInspector
 			var popupMenu = _addMenuButton.GetPopup();
 			popupMenu.Clear();
 			_assignableTypes = Util.GetAssignableTypes(_listElementType).ToList();
-			foreach (var type in _assignableTypes)
-			{
-				popupMenu.AddItem(type.Name);
-			}
+			foreach (var type in _assignableTypes) popupMenu.AddItem(type.Name);
 		}
 
 		foreach (var obj in _list)
@@ -99,7 +93,7 @@ public partial class ListInspector : MemberInspector
 		if (_listElementType == null) return;
 		var memberWrapper = MemberInspectorHandler.Instance?.MemberWrapperScene?.Instantiate<MemberWrapper>();
 		memberWrapper.SetMemberType(_listElementType);
-		var listElementInstance = _listElementScene.Instantiate<ListElement>();
+		var listElementInstance = _listElementScene.Instantiate<InspectorCollections.ListElement>();
 		var memberUiInfo = MemberUiInfo.Default;
 		if (value.GetType() != _listElementType)
 			memberUiInfo = memberUiInfo with { parentType = _listElementType };
@@ -117,7 +111,10 @@ public partial class ListInspector : MemberInspector
 		AppendListElement(instance);
 	}
 
-	private void AppendNewListElement() => AppendListElement(_listElementType);
+	private void AppendNewListElement()
+	{
+		AppendListElement(_listElementType);
+	}
 
 	private void AppendListElement(long index)
 	{
@@ -126,7 +123,7 @@ public partial class ListInspector : MemberInspector
 		AppendListElement(_assignableTypes[(int)index]);
 	}
 
-	public void RemoveListElement(ListElement element)
+	public void RemoveListElement(InspectorCollections.ListElement element)
 	{
 		var index = _listElements.IndexOf(element);
 		if (index < 0) return;
@@ -135,7 +132,7 @@ public partial class ListInspector : MemberInspector
 		_expandButton?.SetVisible(_listElements.Count > 0 && !LayoutFlags.IsSet(LayoutFlags.NotFoldable));
 	}
 
-	public void MoveElement(ListElement element, bool up)
+	public void MoveElement(InspectorCollections.ListElement element, bool up)
 	{
 		var index = _listElements.IndexOf(element);
 		if (index < 0) return;
@@ -149,10 +146,7 @@ public partial class ListInspector : MemberInspector
 	public override void SetEditable(bool editable)
 	{
 		base.SetEditable(editable);
-		foreach (var inspector in _listElements)
-		{
-			inspector.SetEditable(editable);
-		}
+		foreach (var inspector in _listElements) inspector.SetEditable(editable);
 
 		_addButton.Disabled = !editable;
 	}

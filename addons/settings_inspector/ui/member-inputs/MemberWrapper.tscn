@@ -13,7 +13,7 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pcvqt"]
 bg_color = Color(1, 1, 1, 1)
 
-[node name="MemberWrapper" type="MarginContainer" node_paths=PackedStringArray("_memberContainer")]
+[node name="MemberWrapper" type="MarginContainer" node_paths=PackedStringArray("_label", "_memberContainer", "_panel")]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 82.0
@@ -27,7 +27,9 @@ theme_override_constants/margin_bottom = 5
 script = ExtResource("1_8eidn")
 _defaultInspectorScene = ExtResource("2_7pobb")
 _inspectorScenes = [ExtResource("3_p0ove"), ExtResource("9_x4gcj"), ExtResource("5_26ytk"), ExtResource("6_bg012"), ExtResource("7_7jq4b"), ExtResource("8_cyx2u"), ExtResource("8_53ac5")]
+_label = NodePath("VBoxContainer/Label")
 _memberContainer = NodePath("VBoxContainer/MemberInspectorContainer")
+_panel = NodePath("VBoxContainer/Panel")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
