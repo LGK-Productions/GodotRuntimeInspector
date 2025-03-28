@@ -47,6 +47,7 @@ public partial class MemberGroup : Control
         _groupNameLabel.Text = groupLayout.Title;
         _groupNameLabel.Visible = !groupLayout.LayoutFlags.IsSet(LayoutFlags.NoLabel);
         _background.Visible = !groupLayout.LayoutFlags.IsSet(LayoutFlags.NoBackground);
+        _memberParent.Visible = groupLayout.LayoutFlags.IsSet(LayoutFlags.ExpandedInitially);
     }
 
     public void AddMember(MemberWrapper memberWrapper)

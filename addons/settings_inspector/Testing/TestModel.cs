@@ -48,7 +48,7 @@ internal class TestModel
     #region Layouting
 
     [Tab("Layouting")]
-    [BoxGroup("Box Group 1", LayoutFlags = LayoutFlags.ExpandedInitially)]
+    [BoxGroup("Box Group 1")]
     public string TestBoxGroup1 { get; set; }
     
     [Tab("Layouting")]
