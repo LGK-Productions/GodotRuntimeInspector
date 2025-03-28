@@ -12,7 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://bwrwptoimsk2e" path="res://addons/settings_inspector/art/icons/fluent--triangle-down-12-filled.png" id="7_g5ya0"]
 [ext_resource type="Script" path="res://addons/settings_inspector/src/OptionButton.cs" id="11_3flad"]
 
-[node name="InlineInspector" type="MarginContainer" node_paths=PackedStringArray("_memberParent", "_unattachButton", "_loadButton", "_saveButton", "_expandButton", "_typeChooser", "_label", "_background")]
+[node name="InlineInspector" type="MarginContainer" node_paths=PackedStringArray("_expandButton", "_loadButton", "_memberParent", "_saveButton", "_typeChooser", "_unattachButton", "_background", "_label")]
 custom_minimum_size = Vector2(0, 40)
 anchors_preset = 10
 anchor_right = 1.0
@@ -21,16 +21,16 @@ grow_horizontal = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_gh2an")
-_memberCollectionScene = ExtResource("2_m0e18")
-_memberTabCollectionScene = ExtResource("2_ki6s4")
-_memberParent = NodePath("MarginContainer/VBoxContainer/ContentHolder")
-_unattachButton = NodePath("MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer/Detach")
-_loadButton = NodePath("MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer/Load")
-_saveButton = NodePath("MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer/Save")
 _expandButton = NodePath("MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/Button")
+_loadButton = NodePath("MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer/Load")
+_memberCollectionScene = ExtResource("2_m0e18")
+_memberParent = NodePath("MarginContainer/VBoxContainer/ContentHolder")
+_memberTabCollectionScene = ExtResource("2_ki6s4")
+_saveButton = NodePath("MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer/Save")
 _typeChooser = NodePath("MarginContainer/VBoxContainer/VBoxContainer/TypeChooser")
-_label = NodePath("MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/Label")
+_unattachButton = NodePath("MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer/Detach")
 _background = NodePath("PanelContainer")
+_label = NodePath("MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/Label")
 
 [node name="PanelContainer" type="Panel" parent="."]
 layout_mode = 2
@@ -67,8 +67,8 @@ icon = ExtResource("5_ufwhm")
 flat = true
 expand_icon = true
 script = ExtResource("6_s4qxm")
-_onTexture = ExtResource("7_g5ya0")
 _offTexture = ExtResource("5_ufwhm")
+_onTexture = ExtResource("7_g5ya0")
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2

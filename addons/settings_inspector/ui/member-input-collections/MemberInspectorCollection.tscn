@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://diheksfofmcdc"]
 
-[ext_resource type="Script" path="res://addons/settings_inspector/src/InspectorCollections/MemberInspectorCollection.cs" id="1_gai4g"]
+[ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/InspectorCollections/MemberInspectorCollection.cs" id="1_16csa"]
 [ext_resource type="PackedScene" uid="uid://cxu8tdbkv5g84" path="res://addons/settings_inspector/ui/member-input-collections/BoxGroup.tscn" id="2_3m6fy"]
 
 [node name="MarginContainer" type="MarginContainer" node_paths=PackedStringArray("_memberInspectorParent", "_scrollContainer")]
@@ -8,9 +8,9 @@ anchors_preset = 10
 anchor_right = 1.0
 grow_horizontal = 2
 size_flags_horizontal = 3
-script = ExtResource("1_gai4g")
-_memberInspectorParent = NodePath("ClassInspectorContent")
+script = ExtResource("1_16csa")
 _boxGroupScene = ExtResource("2_3m6fy")
+_memberInspectorParent = NodePath("ClassInspectorContent")
 _scrollContainer = NodePath("ScrollContainer")
 
 [node name="ClassInspectorContent" type="VBoxContainer" parent="."]

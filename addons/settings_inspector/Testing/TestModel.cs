@@ -139,6 +139,11 @@ internal class TestModel
     [Tab("Other")]
     [FilePath]
     public string TestFilePath { get; set; }
+    
+    [Tab("Other")]
+    [Label("Testing Label", 25)]
+    [Line]
+    public string TestLabel { get; set; }
 
     #endregion
 }

@@ -4,25 +4,20 @@ using System.Collections.Generic;
 using Godot;
 using LgkProductions.Inspector;
 
-namespace SettingInspector.addons.settings_inspector.src.InspectorCollections;
+namespace SettingInspector.addons.settings_inspector.src.Inspectors.InspectorCollections;
 
 public partial class MemberInspectorTabCollection : Control, IMemberInspectorCollection
 {
-	[Export] private TabContainer _tabContainer;
-	[Export] private PackedScene _memberCollectionScene;
-
 	private readonly Dictionary<string, IMemberInspectorCollection> _tabs = new();
+	[Export] private PackedScene _memberCollectionScene;
+	[Export] private TabContainer _tabContainer;
 
 
 	public IEnumerator<(InspectorElement, MemberInspector)> GetEnumerator()
 	{
 		foreach (var (_, collection) in _tabs)
-		{
-			foreach (var e in collection)
-			{
-				yield return (e);
-			}
-		}
+		foreach (var e in collection)
+			yield return e;
 	}
 
 	IEnumerator IEnumerable.GetEnumerator()
@@ -33,10 +28,7 @@ public partial class MemberInspectorTabCollection : Control, IMemberInspectorCol
 	public void SetMemberInspector(Inspector inspector)
 	{
 		//sort into tabs
-		foreach (var element in inspector.Elements)
-		{
-			AddElement(element);
-		}
+		foreach (var element in inspector.Elements) AddElement(element);
 	}
 
 	public void AddElement(InspectorElement element)
@@ -62,19 +54,7 @@ public partial class MemberInspectorTabCollection : Control, IMemberInspectorCol
 
 	public void WriteBack()
 	{
-		foreach (var (_, collection) in _tabs)
-		{
-			collection.WriteBack();
-		}
-	}
-
-	private void Clear()
-	{
-		foreach (var (_, collection) in _tabs)
-		{
-			collection.Remove();
-		}
-		_tabs.Clear();
+		foreach (var (_, collection) in _tabs) collection.WriteBack();
 	}
 
 	public void Remove()
@@ -85,26 +65,25 @@ public partial class MemberInspectorTabCollection : Control, IMemberInspectorCol
 
 	public void SetEditable(bool editable)
 	{
-		foreach (var (_, collection) in _tabs)
-		{
-			collection.SetEditable(editable);
-		}
+		foreach (var (_, collection) in _tabs) collection.SetEditable(editable);
 	}
 
 	public void SetScrollable(bool scrollable)
 	{
-		foreach (var (_, collection) in _tabs)
-		{
-			collection.SetScrollable(scrollable);
-		}
+		foreach (var (_, collection) in _tabs) collection.SetScrollable(scrollable);
+	}
+
+
+	public event Action? ValueChanged;
+
+	private void Clear()
+	{
+		foreach (var (_, collection) in _tabs) collection.Remove();
+		_tabs.Clear();
 	}
 
 	private void OnChildValueChanged()
 	{
 		ValueChanged?.Invoke();
 	}
-	
-	
-
-	public event Action? ValueChanged;
 }

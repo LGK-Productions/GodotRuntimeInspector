@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using LgkProductions.Inspector;
 
-namespace SettingInspector.addons.settings_inspector.src.InspectorCollections;
+namespace SettingInspector.addons.settings_inspector.src.Inspectors.InspectorCollections;
 
 public interface IMemberInspectorCollection : IEnumerable<(InspectorElement, MemberInspector)>
 {
@@ -17,6 +17,6 @@ public interface IMemberInspectorCollection : IEnumerable<(InspectorElement, Mem
     public void SetEditable(bool editable);
 
     public void SetScrollable(bool scrollable);
-    
+
     public event Action ValueChanged;
 }

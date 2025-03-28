@@ -4,11 +4,11 @@ namespace SettingInspector.addons.settings_inspector.src;
 
 public partial class MemberInspectorWrapper : Node
 {
-	[Export] private Button _closeButton;
 	[Export] private Button _applyButton;
-	[Export] private Node _inspectorContainer;
-	
+	[Export] private Button _closeButton;
+
 	private IInspectorHandle? _currentInspector;
+	[Export] private Node _inspectorContainer;
 
 	public void SetHandle(IInspectorHandle handle, bool destroyOnClosed = true)
 	{
@@ -41,6 +41,7 @@ public partial class MemberInspectorWrapper : Node
 			_currentInspector.RootInspectorWrapper.MemberInspector.Remove();
 			_currentInspector = null;
 		}
+
 		QueueFree();
 	}
 }

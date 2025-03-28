@@ -12,7 +12,7 @@ public static class Util
         return AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes())
             .Where(p => p is { IsAbstract: false, IsInterface: false } && type.IsAssignableFrom(p));
     }
-    
+
     public static bool TryCreateInstance(Type type, out object? instance)
     {
         instance = null;

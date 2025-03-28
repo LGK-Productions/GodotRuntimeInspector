@@ -56,5 +56,4 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
 			_spinBox.AllowLesser = true;
 		_spinBox.Step = StepSize;
 	}
-
 }
