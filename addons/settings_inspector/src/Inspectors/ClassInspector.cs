@@ -45,6 +45,7 @@ public partial class ClassInspector : MemberInspector
 
 	protected override void OnInitialize()
 	{
+        base.OnInitialize();
 		_unattachButton.Pressed += UnattachPressed;
 		_loadButton.Pressed += LoadPressed;
 		_saveButton.Pressed += SavePressed;
@@ -56,6 +57,7 @@ public partial class ClassInspector : MemberInspector
 
 	protected override void OnRemove()
 	{
+        base.OnRemove();
 		_unattachButton.Pressed -= UnattachPressed;
 		_loadButton.Pressed -= LoadPressed;
 		_saveButton.Pressed -= SavePressed;
@@ -220,8 +222,7 @@ public partial class ClassInspector : MemberInspector
 	{
 		if (_assignables == null || index < 0 || index >= _assignables.Length) return;
 		if (!Util.TryCreateInstance(_assignables[index], out var instance)) return;
-		SetInstance(instance, MemberUiInfo,
-			LayoutFlags.Set(LayoutFlags | LayoutFlags.ExpandedInitially, _expandButton.ButtonPressed));
+		SetInstance(instance, MemberUiInfo, LayoutFlags | LayoutFlags.ExpandedInitially);
 	}
 
 	#endregion

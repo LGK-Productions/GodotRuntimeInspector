@@ -35,7 +35,7 @@ public static class Util
 
     public static bool IsSet(this LayoutFlags flags, LayoutFlags flag)
     {
-        return (flags & flag) != 0;
+        return (flags & flag) == flag;
     }
 
     public static LayoutFlags Set(this LayoutFlags flags, LayoutFlags flag, bool value)
