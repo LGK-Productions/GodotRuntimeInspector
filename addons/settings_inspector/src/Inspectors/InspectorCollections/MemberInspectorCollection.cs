@@ -90,12 +90,14 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
         _memberInspectorParent.Owner = null;
         if (!scrollable)
         {
+            _scrollContainer.Visible = false;
             if (parent is not ScrollContainer) return;
             parent.RemoveChild(_memberInspectorParent);
             parent.GetParent().AddChild(_memberInspectorParent);
         }
         else
         {
+            _scrollContainer.Visible = true;
             if (parent is ScrollContainer) return;
             parent.RemoveChild(_memberInspectorParent);
             _scrollContainer.AddChild(_memberInspectorParent);
