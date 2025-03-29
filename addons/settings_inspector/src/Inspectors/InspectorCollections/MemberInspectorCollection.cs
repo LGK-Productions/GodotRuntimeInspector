@@ -8,118 +8,118 @@ namespace SettingInspector.addons.settings_inspector.src.Inspectors.InspectorCol
 
 public partial class MemberInspectorCollection : Control, IMemberInspectorCollection
 {
-	private readonly List<(InspectorElement, MemberInspector)> _inspectors = new();
-	private readonly Dictionary<string, MemberGroup> _memberGroups = new();
-	[Export] private PackedScene _boxGroupScene;
-	[Export] private Node _memberInspectorParent;
-	[Export] private ScrollContainer _scrollContainer;
+    private readonly List<(InspectorElement, MemberInspector)> _inspectors = new();
+    private readonly Dictionary<string, MemberGroup> _memberGroups = new();
+    [Export] private PackedScene _boxGroupScene;
+    [Export] private Node _memberInspectorParent;
+    [Export] private ScrollContainer _scrollContainer;
 
-	public void SetMemberInspector(Inspector inspector)
-	{
-		Clear();
-		foreach (var element in inspector.Elements) AddElement(element);
-	}
+    public void SetMemberInspector(Inspector inspector)
+    {
+        Clear();
+        foreach (var element in inspector.Elements) AddElement(element);
+    }
 
-	public void AddElement(InspectorElement element)
-	{
-		var memberWrapper = MemberInspectorHandler.Instance?.MemberWrapperScene?.Instantiate<MemberWrapper>();
-		memberWrapper.SetMemberType(element.MemberInfo.Type);
+    public void AddElement(InspectorElement element)
+    {
+        var memberWrapper = MemberInspectorHandler.Instance?.MemberWrapperScene?.Instantiate<MemberWrapper>();
+        memberWrapper.SetMemberType(element.MemberInfo.Type);
 
-		//Grouping Logic
-		var groupLayout = element.MemberInfo.Group;
-		var groupScene = _boxGroupScene;
+        //Grouping Logic
+        var groupLayout = element.MemberInfo.Group;
+        var groupScene = _boxGroupScene;
 
-		if (groupLayout == null)
-		{
-			_memberInspectorParent.AddChild(memberWrapper);
-		}
-		else
-		{
-			if (!_memberGroups.TryGetValue(groupLayout.Title, out var group))
-			{
-				var memberGroupNode = groupScene.Instantiate();
-				_memberInspectorParent.AddChild(memberGroupNode);
-				group = (MemberGroup)memberGroupNode;
-				group.SetGroup(groupLayout);
-				_memberGroups.Add(groupLayout.Title, group);
-			}
+        if (groupLayout == null)
+        {
+            _memberInspectorParent.AddChild(memberWrapper);
+        }
+        else
+        {
+            if (!_memberGroups.TryGetValue(groupLayout.Title, out var group))
+            {
+                var memberGroupNode = groupScene.Instantiate();
+                _memberInspectorParent.AddChild(memberGroupNode);
+                group = (MemberGroup)memberGroupNode;
+                group.SetGroup(groupLayout);
+                _memberGroups.Add(groupLayout.Title, group);
+            }
 
-			group.AddMember(memberWrapper);
-		}
+            group.AddMember(memberWrapper);
+        }
 
-		memberWrapper.MemberInspector.SetMember(element);
-		_inspectors.Add((element, memberWrapper.MemberInspector));
-		memberWrapper.MemberInspector.ValueChanged += OnChildValueChanged;
-	}
+        memberWrapper.MemberInspector.SetMember(element);
+        _inspectors.Add((element, memberWrapper.MemberInspector));
+        memberWrapper.MemberInspector.ValueChanged += OnChildValueChanged;
+    }
 
-	public void WriteBack()
-	{
-		foreach (var (element, inspector) in _inspectors)
-		{
-			if (element.MemberInfo.IsReadOnly) continue;
-			if (inspector.TryRetrieveMember(out var value))
-				element.Value = value;
-		}
-	}
+    public void WriteBack()
+    {
+        foreach (var (element, inspector) in _inspectors)
+        {
+            if (element.MemberInfo.IsReadOnly) continue;
+            if (inspector.TryRetrieveMember(out var value))
+                element.Value = value;
+        }
+    }
 
-	public void Remove()
-	{
-		Clear();
-		QueueFree();
-	}
+    public void Remove()
+    {
+        Clear();
+        QueueFree();
+    }
 
-	public void SetEditable(bool editable)
-	{
-	}
+    public void SetEditable(bool editable)
+    {
+    }
 
-	public IEnumerator<(InspectorElement, MemberInspector)> GetEnumerator()
-	{
-		return _inspectors.GetEnumerator();
-	}
+    public IEnumerator<(InspectorElement, MemberInspector)> GetEnumerator()
+    {
+        return _inspectors.GetEnumerator();
+    }
 
-	IEnumerator IEnumerable.GetEnumerator()
-	{
-		return GetEnumerator();
-	}
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 
-	public event Action ValueChanged;
+    public event Action ValueChanged;
 
-	public void SetScrollable(bool scrollable)
-	{
-		var parent = _memberInspectorParent.GetParent();
-		_memberInspectorParent.Owner = null;
-		if (!scrollable)
-		{
-			if (parent is not ScrollContainer) return;
-			parent.RemoveChild(_memberInspectorParent);
-			parent.GetParent().AddChild(_memberInspectorParent);
-		}
-		else
-		{
-			if (parent is ScrollContainer) return;
-			parent.RemoveChild(_memberInspectorParent);
-			_scrollContainer.AddChild(_memberInspectorParent);
-		}
+    public void SetScrollable(bool scrollable)
+    {
+        var parent = _memberInspectorParent.GetParent();
+        _memberInspectorParent.Owner = null;
+        if (!scrollable)
+        {
+            if (parent is not ScrollContainer) return;
+            parent.RemoveChild(_memberInspectorParent);
+            parent.GetParent().AddChild(_memberInspectorParent);
+        }
+        else
+        {
+            if (parent is ScrollContainer) return;
+            parent.RemoveChild(_memberInspectorParent);
+            _scrollContainer.AddChild(_memberInspectorParent);
+        }
 
-		_memberInspectorParent.Owner = _memberInspectorParent.GetParent();
-	}
+        _memberInspectorParent.Owner = _memberInspectorParent.GetParent();
+    }
 
-	private void Clear()
-	{
-		foreach (var (_, inspector) in _inspectors)
-		{
-			inspector.ValueChanged -= OnChildValueChanged;
-			inspector.Remove();
-		}
+    private void Clear()
+    {
+        foreach (var (_, inspector) in _inspectors)
+        {
+            inspector.ValueChanged -= OnChildValueChanged;
+            inspector.Remove();
+        }
 
-		_inspectors.Clear();
-		foreach (var (_, group) in _memberGroups) group.QueueFree();
+        _inspectors.Clear();
+        foreach (var (_, group) in _memberGroups) group.QueueFree();
 
-		_memberGroups.Clear();
-	}
+        _memberGroups.Clear();
+    }
 
-	private void OnChildValueChanged()
-	{
-		ValueChanged?.Invoke();
-	}
+    private void OnChildValueChanged()
+    {
+        ValueChanged?.Invoke();
+    }
 }
