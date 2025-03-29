@@ -5,7 +5,7 @@ using LgkProductions.Inspector.MetaData;
 namespace SettingInspector.addons.settings_inspector.src.Attributes;
 
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-public sealed class LabelAttribute(string text, int fontSize = 17) : InspectorAttribute
+public sealed class LabelAttribute(string text, int fontSize = 20) : InspectorAttribute
 {
     public const string TextKey = "LabelText";
     public const string FontSizeKey = "LabelFontSize";

@@ -42,8 +42,7 @@ public partial class MemberWrapper : MarginContainer
 
     public void SetLabelFontSize(int fontSize)
     {
-        if (_label == null) return;
-        _label.AddThemeConstantOverride("font_size", fontSize);
+        _label?.AddThemeFontSizeOverride("font_size", fontSize);
     }
 
     public void SetLine(bool visible = true)

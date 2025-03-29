@@ -115,7 +115,8 @@ internal class TestModel
     [Tab("Other")] [FilePath] public string TestFilePath { get; set; }
 
     [Tab("Other")]
-    [Label("Testing Label", 25)]
+    [Label("Testing Label")]
+    [Space(10)]
     [Line]
     public string TestLabel { get; set; }
 

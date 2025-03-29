@@ -33,13 +33,7 @@ public partial class MemberInspectorWrapper : Node
 
     public void SetVisible(bool visible)
     {
-        if (GetNode("") is Window window)
-        {
-            window.SetVisible(visible);
-        }
-        if (GetNode("") is Control control)
-        {
-            control.SetVisible(visible);
-        }
+        if (GetNode("") is Window window) window.SetVisible(visible);
+        if (GetNode("") is Control control) control.SetVisible(visible);
     }
 }
