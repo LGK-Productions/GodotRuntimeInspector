@@ -55,10 +55,10 @@ public partial class MemberInspectorHandler : Control
     {
         if (instance == null) throw new NullReferenceException("instance is null");
 
-        var memberInspectorWrapper = _memberInspectorWindowScene.Instantiate<MemberInspectorWrapper>();
-        AddChild(memberInspectorWrapper);
+        var memberInspectorWrapper = _memberInspectorWindowScene.Instantiate<IMemberInspectorWrapper>();
+        AddChild(memberInspectorWrapper.RootNode);
         var wrapper = MemberWrapperScene.Instantiate<MemberWrapper>();
-        memberInspectorWrapper.AddChild(wrapper);
+        memberInspectorWrapper.RootNode.AddChild(wrapper);
         var handle = new MemberInspectorHandle<T>(instance, wrapper, memberInspectorWrapper);
         memberInspectorWrapper.SetHandle(handle);
 
@@ -70,7 +70,7 @@ public class MemberInspectorHandle<T> : IInspectorHandle
 {
     private bool _valid = true;
 
-    public MemberInspectorHandle(T instance, MemberWrapper memberWrapper, MemberInspectorWrapper root)
+    public MemberInspectorHandle(T instance, MemberWrapper memberWrapper, IMemberInspectorWrapper root)
     {
         Root = root;
         RootInspectorWrapper = memberWrapper;
@@ -81,7 +81,7 @@ public class MemberInspectorHandle<T> : IInspectorHandle
     }
 
     public bool Buffered { get; set; } = false;
-    public MemberInspectorWrapper Root { get; }
+    public IMemberInspectorWrapper Root { get; }
     public event Action? OnClose;
     public MemberWrapper RootInspectorWrapper { get; }
 
@@ -101,7 +101,7 @@ public class MemberInspectorHandle<T> : IInspectorHandle
         }
         else
         {
-            Root.QueueFree();
+            Root.RootNode.QueueFree();
             _valid = false;
         }
 
@@ -120,7 +120,7 @@ public class MemberInspectorHandle<T> : IInspectorHandle
 public interface IInspectorHandle
 {
     public MemberWrapper RootInspectorWrapper { get; }
-    public MemberInspectorWrapper Root { get; }
+    public IMemberInspectorWrapper Root { get; }
     public void Apply();
     public void Close();
     public void Reopen();
