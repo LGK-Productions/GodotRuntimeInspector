@@ -7,8 +7,6 @@
 initial_position = 1
 size = Vector2i(790, 475)
 content_scale_size = Vector2i(790, 475)
-content_scale_mode = 1
-content_scale_aspect = 2
 script = ExtResource("1_bq3ne")
 _applyButton = NodePath("ClassInspectorWrapper/MainMargin/VBoxContainer/MarginContainer2/HBoxContainer/Apply")
 _closeButton = NodePath("ClassInspectorWrapper/MainMargin/VBoxContainer/MarginContainer2/HBoxContainer/Close")
