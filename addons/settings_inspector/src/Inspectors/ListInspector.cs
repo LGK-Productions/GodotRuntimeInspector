@@ -162,4 +162,10 @@ public partial class ListInspector : MemberInspector
         base.OnSetMetaData(member);
         _addButton.Disabled = member.IsReadOnly;
     }
+
+    protected override void SetLayoutFlags(LayoutFlags flags)
+    {
+        base.SetLayoutFlags(flags);
+        _expandButton?.SetPressed(flags.IsSet(LayoutFlags.ExpandedInitially));
+    }
 }
