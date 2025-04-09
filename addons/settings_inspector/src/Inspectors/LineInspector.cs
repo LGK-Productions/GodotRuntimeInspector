@@ -6,7 +6,7 @@ namespace SettingInspector.addons.settings_inspector.src.Inspectors;
 
 public partial class LineInspector : MemberInspector
 {
-    private FileDialog _fileDialog = FileDialogHandler.CreateNative();
+    private FileDialogHandler.FileDialogHandle _fileDialogHandle = FileDialogHandler.CreateNative();
     [Export] private Button _filePathButton;
     [Export] private LineEdit _lineEdit;
 
@@ -14,6 +14,8 @@ public partial class LineInspector : MemberInspector
     {
         _lineEdit.TextChanged += OnTextChanged;
         _filePathButton.Pressed += OnFilePathButtonPressed;
+        if (_fileDialogHandle.FileDialog.GetParent() == null)
+            AddChild(_fileDialogHandle.FileDialog);
     }
 
     protected override void OnRemove()
@@ -22,11 +24,11 @@ public partial class LineInspector : MemberInspector
         _filePathButton.Pressed -= OnFilePathButtonPressed;
     }
 
-    private void OnFilePathButtonPressed()
+    private async void OnFilePathButtonPressed()
     {
-        _fileDialog.FileMode = FileDialog.FileModeEnum.OpenAny;
+        _fileDialogHandle.FileDialog.FileMode = FileDialog.FileModeEnum.OpenAny;
 
-        if (FileDialogHandler.Popup(_fileDialog, out var path)) SetValue(path);
+        SetValue(await _fileDialogHandle.WaitForPathSelectedAsync());
     }
 
     private void OnTextChanged(string newValue)

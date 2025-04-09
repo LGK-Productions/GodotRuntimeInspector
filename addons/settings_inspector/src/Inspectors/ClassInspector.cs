@@ -30,7 +30,7 @@ public partial class ClassInspector : MemberInspector
     private Type[]? _assignables;
     [Export] private ToggleButton? _expandButton;
 
-    private FileDialog _fileDialog = FileDialogHandler.CreateNative();
+    private FileDialogHandler.FileDialogHandle _fileDialogHandle = FileDialogHandler.CreateNative();
 
     private object? _instance;
     [Export] private Button? _loadButton;
@@ -51,8 +51,8 @@ public partial class ClassInspector : MemberInspector
         _saveButton.Pressed += SavePressed;
         _expandButton.Toggled += ExpandButtonToggled;
         _typeChooser.IndexSelected += TypeIndexSelected;
-        if (_fileDialog.GetParent() == null)
-            AddChild(_fileDialog);
+        if (_fileDialogHandle.FileDialog.GetParent() == null)
+            AddChild(_fileDialogHandle.FileDialog);
     }
 
     protected override void OnRemove()
@@ -169,12 +169,12 @@ public partial class ClassInspector : MemberInspector
         MemberInspectorHandler.Instance.OpenClassInspectorWindow(_instance);
     }
 
-    private void SavePressed()
+    private async void SavePressed()
     {
-        _fileDialog.FileMode = FileDialog.FileModeEnum.SaveFile;
-        _fileDialog.Filters = ["*.json"];
+        _fileDialogHandle.FileDialog.FileMode = FileDialog.FileModeEnum.SaveFile;
+        _fileDialogHandle.FileDialog.Filters = ["*.json"];
 
-        if (!FileDialogHandler.Popup(_fileDialog, out var filePath)) return;
+        var filePath = await _fileDialogHandle.WaitForFileSelectedAsync();
 
         if (ValueType == null) return;
 
@@ -190,12 +190,12 @@ public partial class ClassInspector : MemberInspector
         }
     }
 
-    private void LoadPressed()
+    private async void LoadPressed()
     {
-        _fileDialog.FileMode = FileDialog.FileModeEnum.OpenFile;
-        _fileDialog.Filters = ["*.json"];
+        _fileDialogHandle.FileDialog.FileMode = FileDialog.FileModeEnum.OpenFile;
+        _fileDialogHandle.FileDialog.Filters = ["*.json"];
 
-        if (!FileDialogHandler.Popup(_fileDialog, out var filePath)) return;
+        var filePath = await _fileDialogHandle.WaitForFileSelectedAsync();
 
         if (!File.Exists(filePath))
         {
