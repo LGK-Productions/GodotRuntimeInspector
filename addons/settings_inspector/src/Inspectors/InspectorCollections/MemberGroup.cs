@@ -2,17 +2,17 @@ using Godot;
 using LgkProductions.Inspector;
 using Orientation = LgkProductions.Inspector.Orientation;
 
-namespace SettingInspector.addons.settings_inspector.src.InspectorCollections;
+namespace SettingInspector.addons.settings_inspector.src.Inspectors.InspectorCollections;
 
 public partial class MemberGroup : Control
 {
-    [Export] private Label _groupNameLabel;
     [Export] private Control _background;
-    [Export] private HBoxContainer _memberParentHorizontal;
-    [Export] private VBoxContainer _memberParentVertical;
     [Export] private Button _expandButton;
+    [Export] private Label _groupNameLabel;
 
     private BoxContainer? _memberParent;
+    [Export] private HBoxContainer _memberParentHorizontal;
+    [Export] private VBoxContainer _memberParentVertical;
 
     public override void _EnterTree()
     {
@@ -47,10 +47,11 @@ public partial class MemberGroup : Control
         _groupNameLabel.Text = groupLayout.Title;
         _groupNameLabel.Visible = !groupLayout.LayoutFlags.IsSet(LayoutFlags.NoLabel);
         _background.Visible = !groupLayout.LayoutFlags.IsSet(LayoutFlags.NoBackground);
+        _memberParent.Visible = groupLayout.LayoutFlags.IsSet(LayoutFlags.ExpandedInitially);
     }
 
-    public void AddMember(MemberInspector memberInspector)
+    public void AddMember(MemberWrapper memberWrapper)
     {
-        _memberParent.AddChild(memberInspector);
+        _memberParent.AddChild(memberWrapper);
     }
 }

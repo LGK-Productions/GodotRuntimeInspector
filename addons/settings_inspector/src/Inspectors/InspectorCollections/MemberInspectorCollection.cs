@@ -4,37 +4,35 @@ using System.Collections.Generic;
 using Godot;
 using LgkProductions.Inspector;
 
-namespace SettingInspector.addons.settings_inspector.src.InspectorCollections;
+namespace SettingInspector.addons.settings_inspector.src.Inspectors.InspectorCollections;
 
 public partial class MemberInspectorCollection : Control, IMemberInspectorCollection
 {
-    [Export] private Node _memberInspectorParent;
-    [Export] private PackedScene _boxGroupScene;
-    [Export] private ScrollContainer _scrollContainer;
-
     private readonly List<(InspectorElement, MemberInspector)> _inspectors = new();
-    readonly Dictionary<string, MemberGroup> _memberGroups = new();
+    private readonly Dictionary<string, MemberGroup> _memberGroups = new();
+    [Export] private PackedScene _boxGroupScene;
+    [Export] private Node _memberInspectorParent;
+    [Export] private ScrollContainer _scrollContainer;
 
     public void SetMemberInspector(Inspector inspector)
     {
         Clear();
-        foreach (var element in inspector.Elements)
-        {
-            AddElement(element);
-        }
+        foreach (var element in inspector.Elements) AddElement(element);
     }
 
     public void AddElement(InspectorElement element)
     {
-        var scene = MemberInspectorHandler.Instance.GetInputScene(element.MemberInfo.Type);
-        var memberInspector = (MemberInspector)scene.Instantiate();
+        var memberWrapper = MemberInspectorHandler.Instance?.MemberWrapperScene?.Instantiate<MemberWrapper>();
+        memberWrapper.SetMemberType(element.MemberInfo.Type);
 
         //Grouping Logic
-        GroupLayout? groupLayout = element.MemberInfo.Group;
-        PackedScene groupScene = _boxGroupScene;
+        var groupLayout = element.MemberInfo.Group;
+        var groupScene = _boxGroupScene;
 
         if (groupLayout == null)
-            _memberInspectorParent.AddChild(memberInspector);
+        {
+            _memberInspectorParent.AddChild(memberWrapper);
+        }
         else
         {
             if (!_memberGroups.TryGetValue(groupLayout.Title, out var group))
@@ -46,12 +44,12 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
                 _memberGroups.Add(groupLayout.Title, group);
             }
 
-            group.AddMember(memberInspector);
+            group.AddMember(memberWrapper);
         }
 
-        memberInspector.SetMember(element);
-        _inspectors.Add((element, memberInspector));
-        memberInspector.ValueChanged += OnChildValueChanged;
+        memberWrapper.MemberInspector.SetMember(element);
+        _inspectors.Add((element, memberWrapper.MemberInspector));
+        memberWrapper.MemberInspector.ValueChanged += OnChildValueChanged;
     }
 
     public void WriteBack()
@@ -64,23 +62,6 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
         }
     }
 
-    private void Clear()
-    {
-        foreach (var (_, inspector) in _inspectors)
-        {
-            inspector.ValueChanged -= OnChildValueChanged;
-            inspector.Remove();
-        }
-
-        _inspectors.Clear();
-        foreach (var (_, group) in _memberGroups)
-        {
-            group.QueueFree();
-        }
-
-        _memberGroups.Clear();
-    }
-
     public void Remove()
     {
         Clear();
@@ -89,11 +70,6 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
 
     public void SetEditable(bool editable)
     {
-    }
-
-    private void OnChildValueChanged()
-    {
-        ValueChanged?.Invoke();
     }
 
     public IEnumerator<(InspectorElement, MemberInspector)> GetEnumerator()
@@ -114,17 +90,38 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
         _memberInspectorParent.Owner = null;
         if (!scrollable)
         {
+            _scrollContainer.Visible = false;
             if (parent is not ScrollContainer) return;
             parent.RemoveChild(_memberInspectorParent);
             parent.GetParent().AddChild(_memberInspectorParent);
         }
         else
         {
+            _scrollContainer.Visible = true;
             if (parent is ScrollContainer) return;
             parent.RemoveChild(_memberInspectorParent);
             _scrollContainer.AddChild(_memberInspectorParent);
         }
 
         _memberInspectorParent.Owner = _memberInspectorParent.GetParent();
+    }
+
+    private void Clear()
+    {
+        foreach (var (_, inspector) in _inspectors)
+        {
+            inspector.ValueChanged -= OnChildValueChanged;
+            inspector.Remove();
+        }
+
+        _inspectors.Clear();
+        foreach (var (_, group) in _memberGroups) group.QueueFree();
+
+        _memberGroups.Clear();
+    }
+
+    private void OnChildValueChanged()
+    {
+        ValueChanged?.Invoke();
     }
 }

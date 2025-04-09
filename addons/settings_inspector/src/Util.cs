@@ -12,7 +12,7 @@ public static class Util
         return AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes())
             .Where(p => p is { IsAbstract: false, IsInterface: false } && type.IsAssignableFrom(p));
     }
-    
+
     public static bool TryCreateInstance(Type type, out object? instance)
     {
         instance = null;
@@ -35,7 +35,7 @@ public static class Util
 
     public static bool IsSet(this LayoutFlags flags, LayoutFlags flag)
     {
-        return (flags & flag) != 0;
+        return (flags & flag) == flag;
     }
 
     public static LayoutFlags Set(this LayoutFlags flags, LayoutFlags flag, bool value)

@@ -1,14 +1,17 @@
 [gd_scene load_steps=3 format=3 uid="uid://dkcox87a5snt0"]
 
-[ext_resource type="Script" path="res://addons/settings_inspector/src/InspectorCollections/MemberInspectorTabCollection.cs" id="1_mnbf8"]
+[ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/InspectorCollections/MemberInspectorTabCollection.cs" id="1_on77a"]
 [ext_resource type="PackedScene" uid="uid://diheksfofmcdc" path="res://addons/settings_inspector/ui/member-input-collections/MemberInspectorCollection.tscn" id="2_x7ov5"]
 
 [node name="MarginContainer" type="MarginContainer" node_paths=PackedStringArray("_tabContainer")]
-offset_right = 1152.0
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
 size_flags_horizontal = 3
-script = ExtResource("1_mnbf8")
-_tabContainer = NodePath("TabContainer")
+script = ExtResource("1_on77a")
 _memberCollectionScene = ExtResource("2_x7ov5")
+_tabContainer = NodePath("TabContainer")
 
 [node name="TabContainer" type="TabContainer" parent="."]
 layout_mode = 2
+tab_focus_mode = 0

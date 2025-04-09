@@ -2,25 +2,18 @@
 
 [ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/ToggleInspector.cs" id="1_eo6wk"]
 
-[node name="ToggleInspector" type="MarginContainer" node_paths=PackedStringArray("_checkbox", "_label")]
+[node name="ToggleInspector" type="HBoxContainer" node_paths=PackedStringArray("_checkbox", "_label")]
 custom_minimum_size = Vector2(0, 40)
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 46.0
+offset_bottom = 24.0
 grow_horizontal = 2
 size_flags_horizontal = 3
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 5
 script = ExtResource("1_eo6wk")
-_checkbox = NodePath("HBoxContainer/CheckBox")
-_label = NodePath("HBoxContainer/Label")
+_checkbox = NodePath("HBoxContainer/CheckButton")
+_label = NodePath("Label")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -29,6 +22,13 @@ text = "Property Name"
 vertical_alignment = 1
 clip_text = true
 
-[node name="CheckBox" type="CheckBox" parent="HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="CheckBox" type="CheckBox" parent="HBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="HBoxContainer"]
+layout_mode = 2

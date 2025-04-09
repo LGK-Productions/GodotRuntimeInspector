@@ -1,132 +1,129 @@
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Godot;
 using LgkProductions.Inspector;
+using SettingInspector.addons.settings_inspector.src.Inspectors;
 using SettingInspector.addons.settings_inspector.Testing;
 
 namespace SettingInspector.addons.settings_inspector.src;
 
 public partial class MemberInspectorHandler : Control
 {
-	[Export] private PackedScene _memberInspectorWindowScene;
-	[Export] private bool _showTestingClass;
-	
-	[Export] public PackedScene DefaultInspectorScene;
-	[Export] public Godot.Collections.Array<PackedScene> InspectorScenes;
+    [Export] private PackedScene _memberInspectorWindowScene;
+    [Export] private bool _showTestingClass;
 
-	
-	public static MemberInspectorHandler? Instance { get; private set; }
+    [Export] public PackedScene? MemberWrapperScene;
 
-	public override void _EnterTree()
-	{
-		if (Instance != null)
-			QueueFree();
-		else
-		{
-			Instance = this;
-		}
-	}
+    public static MemberInspectorHandler? Instance { get; private set; }
 
-	public override void _Ready()
-	{
-		if (_showTestingClass)
-			InspectorTesting();
-	}
+    public override void _EnterTree()
+    {
+        if (Instance != null)
+            QueueFree();
+        else
+            Instance = this;
+    }
 
-	private void InspectorTesting()
-	{
-		TestModel model = new();
-		OpenClassInspector(model);
-	}
+    public override void _Ready()
+    {
+        if (_showTestingClass)
+            InspectorTesting();
+    }
 
-	public MemberInspectorHandle<T> OpenClassInspector<T>() where T : new()
-	{
-		return OpenClassInspector<T>(new T());
-	}
-	
-	public MemberInspectorHandle<T> OpenClassInspector<T>(T instance)
-	{
-		var inspectorWindow = _memberInspectorWindowScene.Instantiate<MemberInspectorWrapper>();
-		AddChild(inspectorWindow);
-		var handle = new MemberInspectorHandle<T>(instance);
-		inspectorWindow.SetHandle(handle);
-		return handle;
-	}
-	
-	public PackedScene GetInputScene(Type inputType)
-	{
-		if (inputType == typeof(bool))
-		{
-			if (InspectorScenes.Count > 0)
-				return Instance.InspectorScenes[0];
-		}
-		if (inputType == typeof(int))
-		{
-			if (InspectorScenes.Count > 1)
-				return InspectorScenes[1];
-		}
-		if (inputType == typeof(float))
-		{
-			if (InspectorScenes.Count > 2)
-				return InspectorScenes[2];
-		}
-		if (inputType == typeof(double))
-		{
-			if (InspectorScenes.Count > 3)
-				return InspectorScenes[3];
-		}
-		if (inputType.IsEnum)
-		{
-			if (InspectorScenes.Count > 4)
-				return InspectorScenes[4];
-		}
+    private void InspectorTesting()
+    {
+        TestModel model = new();
+        OpenClassInspectorWindow(model);
+    }
 
-		if (inputType.IsGenericType && inputType.GetGenericTypeDefinition() == typeof(List<>))
-		{
-			if (InspectorScenes.Count > 6)
-				return InspectorScenes[6];
-		}
-		if (!inputType.IsPrimitive && inputType != typeof(string))
-		{
-			if (InspectorScenes.Count > 5)
-				return InspectorScenes[5];
-		}
+    public MemberInspectorHandle<T> OpenClassInspectorWindow<T>() where T : new()
+    {
+        return OpenClassInspectorWindow<T>(new T());
+    }
 
-		return DefaultInspectorScene;
-	}
+    /// <summary>
+    ///     Opens a new inspector of the given <paramref name="instance" />
+    /// </summary>
+    /// <param name="instance">The instance to open an inspector for</param>
+    /// <param name="buffered">
+    ///     Whether the instance should be buffered instead of being destroyed upon closing.
+    ///     Opening an Inspector with an already buffered instance reopens the buffered window instead of creating a new one.
+    /// </param>
+    /// <typeparam name="T">The type of the opened inspector.</typeparam>
+    /// <returns>An <see cref="MemberInspectorHandle{T}" /> holding references to the inspector.</returns>
+    /// <exception cref="NullReferenceException">Thrown if the instance is null</exception>
+    public MemberInspectorHandle<T> OpenClassInspectorWindow<T>(T instance)
+    {
+        if (instance == null) throw new NullReferenceException("instance is null");
+
+        var memberInspectorWrapper = _memberInspectorWindowScene.Instantiate<IMemberInspectorWrapper>();
+        AddChild(memberInspectorWrapper.RootNode);
+        var wrapper = MemberWrapperScene.Instantiate<MemberWrapper>();
+        memberInspectorWrapper.RootNode.AddChild(wrapper);
+        var handle = new MemberInspectorHandle<T>(instance, wrapper, memberInspectorWrapper);
+        memberInspectorWrapper.SetHandle(handle);
+
+        return handle;
+    }
 }
 
 public class MemberInspectorHandle<T> : IInspectorHandle
 {
-	public event Action<T>? OnApply;
-	public event Action? OnClose;
-	
-	public MemberInspector RootInspector { get; }
-	
-	public MemberInspectorHandle(T instance)
-	{
-		RootInspector = MemberInspectorHandler.Instance.GetInputScene(typeof(T)).Instantiate<MemberInspector>();
-		RootInspector.SetInstance(instance, new () { AllowTabs = true, Scrollable = true }, LayoutFlags.NotFoldable | LayoutFlags.NoBackground);
-	}
-	public void Apply()
-	{
-		if (RootInspector.TryRetrieveMember(out var val))
-			OnApply?.Invoke((T)val!);
-	}
+    private bool _valid = true;
 
-	public void Close()
-	{
-		OnClose?.Invoke();
-	}
+    public MemberInspectorHandle(T instance, MemberWrapper memberWrapper, IMemberInspectorWrapper root)
+    {
+        Root = root;
+        RootInspectorWrapper = memberWrapper;
+        RootInspectorWrapper.SetMemberType(typeof(T));
+        RootInspectorWrapper.MemberInspector.SetInstance(instance,
+            new MemberUiInfo { AllowTabs = true, Scrollable = true },
+            LayoutFlags.NotFoldable | LayoutFlags.NoBackground);
+    }
+
+    public bool Buffered { get; set; } = false;
+    public IMemberInspectorWrapper Root { get; }
+    public event Action? OnClose;
+    public MemberWrapper RootInspectorWrapper { get; }
+
+    public void Apply()
+    {
+        if (!_valid) return;
+        if (RootInspectorWrapper.MemberInspector.TryRetrieveMember(out var val))
+            OnApply?.Invoke((T)val!);
+    }
+
+    public void Close()
+    {
+        if (!_valid) return;
+        if (Buffered)
+        {
+            Root.SetVisible(false);
+        }
+        else
+        {
+            Root.RootNode.QueueFree();
+            _valid = false;
+        }
+
+        OnClose?.Invoke();
+    }
+
+    public void Reopen()
+    {
+        if (!_valid || !Buffered) return;
+        Root.SetVisible(true);
+    }
+
+    public event Action<T>? OnApply;
 }
 
 public interface IInspectorHandle
 {
-	public void Apply();
-	public void Close();
-	
-	public event Action? OnClose;
-	
-	public MemberInspector RootInspector { get; }
+    public MemberWrapper RootInspectorWrapper { get; }
+    public IMemberInspectorWrapper Root { get; }
+    public void Apply();
+    public void Close();
+    public void Reopen();
+
+    public event Action? OnClose;
 }

@@ -1,20 +1,20 @@
 [gd_scene load_steps=5 format=3 uid="uid://co1cn8deb2dsh"]
 
-[ext_resource type="Script" path="res://addons/settings_inspector/src/InspectorCollections/ListElement.cs" id="1_adqp8"]
 [ext_resource type="Texture2D" uid="uid://c5qf43aubs5pk" path="res://addons/settings_inspector/art/icons/fluent--chevron-up-12-regular.png" id="1_dyhqa"]
+[ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/InspectorCollections/ListElement.cs" id="1_nhpo3"]
 [ext_resource type="Texture2D" uid="uid://bqo8cbmvddfy" path="res://addons/settings_inspector/art/icons/fluent--chevron-down-12-regular.png" id="2_yvnkf"]
 [ext_resource type="Texture2D" uid="uid://quf1g2d4wcdo" path="res://addons/settings_inspector/art/icons/fluent--delete-20-regular.png" id="3_jpbbh"]
 
-[node name="ListElement" type="MarginContainer" node_paths=PackedStringArray("_upButton", "_downButton", "_deleteButton", "_inspectorContainer")]
+[node name="ListElement" type="MarginContainer" node_paths=PackedStringArray("_deleteButton", "_downButton", "_inspectorContainer", "_upButton")]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 51.0
 grow_horizontal = 2
-script = ExtResource("1_adqp8")
-_upButton = NodePath("MarginContainer/HBoxContainer/ReorderButtons/Up")
-_downButton = NodePath("MarginContainer/HBoxContainer/ReorderButtons/Down")
+script = ExtResource("1_nhpo3")
 _deleteButton = NodePath("MarginContainer/HBoxContainer/Delete")
+_downButton = NodePath("MarginContainer/HBoxContainer/ReorderButtons/Down")
 _inspectorContainer = NodePath("MarginContainer/HBoxContainer/InspectorContainer")
+_upButton = NodePath("MarginContainer/HBoxContainer/ReorderButtons/Up")
 metadata/_edit_vertical_guides_ = [-29.0]
 
 [node name="Panel" type="Panel" parent="."]

@@ -7,5 +7,5 @@ public record MemberUiInfo(
     bool AllowTabs = false,
     Type? parentType = null)
 {
-    public static readonly MemberUiInfo Default = new MemberUiInfo(Scrollable: false, AllowTabs: false, parentType: null);
+    public static readonly MemberUiInfo Default = new();
 }

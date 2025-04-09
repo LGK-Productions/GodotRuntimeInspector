@@ -2,25 +2,18 @@
 
 [ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/EnumInspector.cs" id="1_fh0l2"]
 
-[node name="EnumInspector" type="MarginContainer" node_paths=PackedStringArray("_optionButton", "_label")]
+[node name="EnumInspector" type="HBoxContainer" node_paths=PackedStringArray("_optionButton", "_label")]
 custom_minimum_size = Vector2(0, 40)
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 46.0
+offset_bottom = 23.0
 grow_horizontal = 2
 size_flags_horizontal = 3
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 5
 script = ExtResource("1_fh0l2")
-_optionButton = NodePath("HBoxContainer/OptionButton")
-_label = NodePath("HBoxContainer/Label")
+_optionButton = NodePath("OptionButton")
+_label = NodePath("Label")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -29,6 +22,6 @@ text = "Property Name"
 vertical_alignment = 1
 clip_text = true
 
-[node name="OptionButton" type="OptionButton" parent="HBoxContainer"]
+[node name="OptionButton" type="OptionButton" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3

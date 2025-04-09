@@ -2,25 +2,18 @@
 
 [ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/DoubleInspector.cs" id="1_6nyjg"]
 
-[node name="DoubleInspector" type="MarginContainer" node_paths=PackedStringArray("_spinBox", "_label")]
+[node name="DoubleInspector" type="HBoxContainer" node_paths=PackedStringArray("_spinBox", "_label")]
 custom_minimum_size = Vector2(0, 40)
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 46.0
+offset_bottom = 31.0
 grow_horizontal = 2
 size_flags_horizontal = 3
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 5
 script = ExtResource("1_6nyjg")
-_spinBox = NodePath("HBoxContainer/SpinBox")
-_label = NodePath("HBoxContainer/Label")
+_spinBox = NodePath("SpinBox")
+_label = NodePath("Label")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -29,6 +22,6 @@ text = "Property Name"
 vertical_alignment = 1
 clip_text = true
 
-[node name="SpinBox" type="SpinBox" parent="HBoxContainer"]
+[node name="SpinBox" type="SpinBox" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3

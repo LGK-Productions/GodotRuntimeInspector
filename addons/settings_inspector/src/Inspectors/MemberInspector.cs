@@ -3,24 +3,26 @@ using System.Linq;
 using Godot;
 using LgkProductions.Inspector;
 using LgkProductions.Inspector.MetaData;
-using SettingInspector.addons.settings_inspector.src.Inspectors;
+using SettingInspector.addons.settings_inspector.src.Attributes;
 
-namespace SettingInspector.addons.settings_inspector.src;
+namespace SettingInspector.addons.settings_inspector.src.Inspectors;
 
 public abstract partial class MemberInspector : Control
 {
-    [Export] private Label _label;
     [Export] private Control _background;
-
-    public Type? ValueType { get; protected set; }
-
-    protected bool Editable = true;
-    protected MemberUiInfo MemberUiInfo;
-    protected LayoutFlags LayoutFlags;
 
     private InspectorElement? _element;
 
-    private bool _initialized = false;
+    private bool _initialized;
+    [Export] private Label _label;
+    [Export] private MarginContainer _marginContainer;
+    private MemberWrapper? _wrapper;
+
+    protected bool Editable = true;
+    protected LayoutFlags LayoutFlags;
+    protected MemberUiInfo MemberUiInfo;
+
+    public Type? ValueType { get; protected set; }
 
     public void SetMember(InspectorElement iElement)
     {
@@ -33,10 +35,7 @@ public abstract partial class MemberInspector : Control
         {
             memberUiInfo = memberUiInfo with { parentType = iElement.MemberInfo.Type };
             var availableTypes = Util.GetAssignableTypes(ValueType).ToArray();
-            if (availableTypes.Length > 0)
-            {
-                ValueType = availableTypes[0];
-            }
+            if (availableTypes.Length > 0) ValueType = availableTypes[0];
         }
 
 
@@ -52,7 +51,10 @@ public abstract partial class MemberInspector : Control
         _element.ValueChanged += UpdateMemberInputValue;
     }
 
-    public void SetInstance(object value) => SetInstance(value, MemberUiInfo.Default);
+    public void SetInstance(object value)
+    {
+        SetInstance(value, MemberUiInfo.Default);
+    }
 
     public void SetInstance(object value, MemberUiInfo memberUiInfo, LayoutFlags flags = LayoutFlags.Default)
     {
@@ -97,10 +99,23 @@ public abstract partial class MemberInspector : Control
     {
         _label.Text = _element.MemberInfo.DisplayName;
         _label.TooltipText = _element.MemberInfo.Description;
-        if (member.CustomMetaData.TryGetValue("LabelSize", out var value) && value is float labelSizeMultiplier)
+        if (member.TryGetMetaData(new MetaDataKey<float>(LabelSizeAttribute.MetadataKey), out var labelSizeMultiplier))
             _label.SizeFlagsStretchRatio = labelSizeMultiplier;
+        _wrapper?.SetMargin((int)member.Spacing.Top, (int)member.Spacing.Botton, (int)member.Spacing.Left,
+            (int)member.Spacing.Right);
+        if (member.TryGetMetaData(new MetaDataKey<string>(LabelAttribute.TextKey), out var text))
+            _wrapper?.SetLabel(text);
+        if (member.TryGetMetaData(new MetaDataKey<int>(LabelAttribute.FontSizeKey), out var size))
+            _wrapper?.SetLabelFontSize(size);
+        _wrapper?.SetLine(member.HasLineAbove);
+
 
         SetEditable(!_element.MemberInfo.IsReadOnly);
+    }
+
+    public void SetWrapper(MemberWrapper wrapper)
+    {
+        _wrapper = wrapper;
     }
 
     protected virtual void Clear()
@@ -109,10 +124,12 @@ public abstract partial class MemberInspector : Control
 
     protected virtual void OnInitialize()
     {
+        _initialized = true;
     }
 
     protected virtual void OnRemove()
     {
+        _initialized = false;
     }
 
     public void Remove()
@@ -124,7 +141,8 @@ public abstract partial class MemberInspector : Control
             _element = null;
         }
 
-        OnRemove();
+        if (_initialized)
+            OnRemove();
         QueueFree();
     }
 

@@ -18,130 +18,114 @@ internal class TestModel
         timer.Elapsed += (sender, args) => TestUpdates++;
         timer.Start();
     }
-    
+
     #region Primitives
 
-    [Tab("Primitives")]
-    public bool TestBool { get; set; }
-    
-    [Tab("Primitives")]
-    public int TestInt { get; set; }
-    
-    [Tab("Primitives")]
-    public float TestFloat { get; set; }
-    
-    [Tab("Primitives")]
-    public double TestDouble { get; set; }
-    
-    [Tab("Primitives")]
-    public string TestString { get; set; }
-    
-    [Tab("Primitives")]
-    public TestEnum TestEnum { get; set; }
-    
-    [Tab("Primitives")]
-    [Range(0, 10)]
-    public float TestRange { get; set; }
+    [Tab("Primitives")] public bool TestBool { get; set; }
+
+    [Tab("Primitives")] public int TestInt { get; set; }
+
+    [Tab("Primitives")] public float TestFloat { get; set; }
+
+    [Tab("Primitives")] public double TestDouble { get; set; }
+
+    [Tab("Primitives")] public string TestString { get; set; }
+
+    [Tab("Primitives")] public TestEnum TestEnum { get; set; }
+
+    [Tab("Primitives")] [Range(0, 10)] public float TestRange { get; set; }
 
     #endregion
 
     #region Layouting
 
     [Tab("Layouting")]
-    [BoxGroup("Box Group 1", LayoutFlags = LayoutFlags.ExpandedInitially)]
+    [BoxGroup("Box Group 1")]
     public string TestBoxGroup1 { get; set; }
-    
+
     [Tab("Layouting")]
     [BoxGroup("Box Group 1")]
     public string TestBoxGroup2 { get; set; }
-    
+
     [Tab("Layouting")]
     [PropertyOrder(1000)]
-    public string TestPropertyOrder4 { get; set; } 
-    
+    public string TestPropertyOrder4 { get; set; }
+
+    [Tab("Layouting")] [PropertyOrder] public string TestPropertyOrder2 { get; set; }
+
+    [Tab("Layouting")] [PropertyOrder] public string TestPropertyOrder3 { get; set; }
+
+    [Tab("Layouting")] [PropertyOrder(-1)] public string TestPropertyOrder1 { get; set; }
+
+    [Tab("Layouting")] [LabelSize(0.3f)] public string TestLabelSize { get; set; }
+
     [Tab("Layouting")]
-    [PropertyOrder]
-    public string TestPropertyOrder2 { get; set; } 
-    
-    [Tab("Layouting")]
-    [PropertyOrder]
-    public string TestPropertyOrder3 { get; set; }
-    
-    [Tab("Layouting")]
-    [PropertyOrder(-1)]
-    public string TestPropertyOrder1 { get; set; } 
-    
-    [Tab("Layouting")]
-    [LabelSize(0.3f)]
-    public string TestLabelSize { get; set; }
-    
-    [Tab("Layouting")]
-    [BoxGroup("HorizontalGroup1", LayoutFlags = LayoutFlags.NotFoldable | LayoutFlags.NoBackground | LayoutFlags.NoLabel, Orientation = Orientation.Horizontal)]
+    [BoxGroup("HorizontalGroup1",
+        LayoutFlags = LayoutFlags.NotFoldable | LayoutFlags.NoBackground | LayoutFlags.NoLabel,
+        Orientation = Orientation.Horizontal)]
     public int TestHVal1 { get; set; }
-    
+
     [Tab("Layouting")]
     [BoxGroup("HorizontalGroup1")]
     public int TestHVal2 { get; set; }
-    
+
     [Tab("Layouting")]
     [BoxGroup("HorizontalGroup1")]
     public int TestHVal3 { get; set; }
+
+    [Tab("Layouting")] [Space(30)] public int TestSpace { get; set; }
 
     #endregion
 
     #region Complex Types
 
-    [Tab("ComplexTypes")]
-    public VeryComplexType TestInline { get; set; }
+    [Tab("ComplexTypes")] public VeryComplexType TestInline { get; set; }
 
     [Tab("ComplexTypes")] public TestingInterface TestInterface { get; set; } = new InterfaceType2();
-    
-    [Tab("ComplexTypes")]
-    public List<int> TestList { get; set; }
-    
-    [Tab("ComplexTypes")]
-    public List<List<int>> TestListList { get; set; }
-    
-    [Tab("ComplexTypes")]
-    public List<VeryComplexType> TestComplexList { get; set; }
-    
-    [Tab("ComplexTypes")]
-    public List<TestingInterface> TestPolymorphicList { get; set; }
+
+    [Tab("ComplexTypes")] public List<int> TestList { get; set; }
+
+    [Tab("ComplexTypes")] public List<List<int>> TestListList { get; set; }
+
+    [Tab("ComplexTypes")] public List<VeryComplexType> TestComplexList { get; set; }
+
+    [Tab("ComplexTypes")] public List<TestingInterface> TestPolymorphicList { get; set; }
 
     #endregion
 
     #region Other
 
-    [Tab("Other")]
-    public string TestDefaultValue { get; set; } = "Default";
-    
-    [Tab("Other")]
-    public string TestReadOnly { get; } = "ReadOnly";
-    
-    [Tab("Other")]
-    [Description("This is a property with a description")]
+    [Tab("Other")] public string TestDefaultValue { get; set; } = "Default";
+
+    [Tab("Other")] public string TestReadOnly { get; } = "ReadOnly";
+
+    [Tab("Other")] [Description("This is a property with a description")]
     public string TestDescription;
-    
+
     [Tab("Other")]
     [Description("This should count up every second")]
-    [ReadOnly(isReadOnly: true)]
+    [ReadOnly(true)]
     public int TestUpdates { get; set; }
-    
+
     [Tab("Other")]
     [HideInInspector]
     [Description("This property should not be visible")]
     public string TestHidden { get; set; }
-    
+
+    [Tab("Other")] [FilePath] public string TestFilePath { get; set; }
+
     [Tab("Other")]
-    [FilePath]
-    public string TestFilePath { get; set; }
+    [Label("Testing Label")]
+    [Space(10)]
+    [Line]
+    public string TestLabel { get; set; }
 
     #endregion
 }
 
 public class VeryComplexType
 {
-    public string TestReadonlyString { get;}
+    public string TestReadonlyString { get; }
     public int TestInt { get; set; } = 7;
 }
 
@@ -157,7 +141,6 @@ public class InterfaceType2 : TestingInterface
 
 public interface TestingInterface
 {
-    
 }
 
 public enum TestEnum
