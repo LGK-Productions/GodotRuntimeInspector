@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/DoubleInspector.cs" id="1_6nyjg"]
 
-[node name="DoubleInspector" type="HBoxContainer" node_paths=PackedStringArray("_spinBox", "_label")]
+[node name="DoubleInspector" type="HBoxContainer" node_paths=PackedStringArray("_spinBox", "_slider", "_valueLabel", "_label")]
 custom_minimum_size = Vector2(0, 40)
 anchors_preset = 10
 anchor_right = 1.0
@@ -10,7 +10,9 @@ offset_bottom = 31.0
 grow_horizontal = 2
 size_flags_horizontal = 3
 script = ExtResource("1_6nyjg")
-_spinBox = NodePath("SpinBox")
+_spinBox = NodePath("HBoxContainer/SpinBox")
+_slider = NodePath("HBoxContainer/HSlider")
+_valueLabel = NodePath("HBoxContainer/ValueDisplay")
 _label = NodePath("Label")
 
 [node name="Label" type="Label" parent="."]
@@ -22,6 +24,26 @@ text = "Property Name"
 vertical_alignment = 1
 clip_text = true
 
-[node name="SpinBox" type="SpinBox" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="SpinBox" type="SpinBox" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HSlider" type="HSlider" parent="HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+
+[node name="ValueDisplay" type="Label" parent="HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+text = "0.01"
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true

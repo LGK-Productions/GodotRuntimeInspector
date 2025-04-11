@@ -120,6 +120,16 @@ internal class TestModel
     [Line]
     public string TestLabel { get; set; }
 
+    [Tab("Other")]
+    [Slider]
+    [Range(0, 1)]
+    public float TestSlider { get; set; } = 0.5f;
+    
+    [Tab("Other")]
+    [Slider]
+    [Range(0, 11)]
+    public int IntSlider { get; set; } = 1;
+
     #endregion
 }
 
