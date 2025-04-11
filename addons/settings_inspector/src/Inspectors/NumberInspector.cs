@@ -14,7 +14,7 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
     [Export] private Label _valueLabel;
 
     private Godot.Range? _range;
-    protected virtual double StepSize { get; } = 1;
+    protected virtual double StepSize { get; set; } = 1;
 
     protected override void OnInitialize()
     {
@@ -61,15 +61,17 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
     {
         var valueText = value.ToString(CultureInfo.InvariantCulture);
         int index = valueText.IndexOfAny(Seperators);
-        _valueLabel.Text = index < 0 || index + 3 >= valueText.Length ? valueText : valueText.Substring(0, index + 3);
+        _valueLabel.Text = index < 0 || index + 3 >= valueText.Length ? valueText : valueText.Substring(0, index + 3).TrimEnd('0');
     }
 
     protected override void OnSetMetaData(MetaDataMember member)
     {
+        base.OnSetMetaData(member);
         _range = member.TryGetMetaData(new MetaDataKey<bool>(SliderAttribute.MetadataKey), out var metaData)
             ? _slider
             : _spinBox;
-        base.OnSetMetaData(member);
+        if (member.TryGetMetaData(new MetaDataKey<double>(StepSizeAttribute.MetadataKey), out var stepSize))
+            StepSize = stepSize;
         if (member.MaxValue != null)
             _range.MaxValue = (double)Convert.ChangeType(member.MaxValue, typeof(double));
         else
