@@ -59,9 +59,10 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
 
     private void SetValueLabel(double value)
     {
-        var valueText = value.ToString(CultureInfo.InvariantCulture);
-        int index = valueText.IndexOfAny(Seperators);
-        _valueLabel.Text = index < 0 || index + 3 >= valueText.Length ? valueText : valueText.Substring(0, index + 3).TrimEnd('0');
+        value *= 100;
+        int valInt = (int)Math.Round(value);
+        var valueText = (valInt / 100f).ToString(CultureInfo.InvariantCulture);
+        _valueLabel.Text = valueText.TrimEnd('0');
     }
 
     protected override void OnSetMetaData(MetaDataMember member)
