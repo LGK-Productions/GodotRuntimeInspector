@@ -1,9 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://c2os26issvvje"]
 
-[ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/IntInspector.cs" id="1_deodd"]
+[ext_resource type="Script" uid="uid://c20ye4132ht2" path="res://addons/settings_inspector/src/Inspectors/IntInspector.cs" id="1_deodd"]
 
 [node name="IntInspector" type="HBoxContainer" node_paths=PackedStringArray("_spinBox", "_slider", "_valueLabel", "_label")]
-custom_minimum_size = Vector2(0, 40)
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 31.0

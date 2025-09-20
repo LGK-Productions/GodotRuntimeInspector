@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://cpgqabh8joa7x"]
+
+[ext_resource type="Script" uid="uid://dwhlyftgrlwn1" path="res://addons/settings_inspector/src/Inspectors/ColorInspector.cs" id="1_03rmx"]
+
+[node name="LineInspector" type="HBoxContainer" node_paths=PackedStringArray("_colorPicker", "_label")]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 31.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+script = ExtResource("1_03rmx")
+_colorPicker = NodePath("HBoxContainer/ColorPicker")
+_label = NodePath("Label")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+mouse_filter = 0
+text = "Property Name"
+vertical_alignment = 1
+clip_text = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorPicker" type="ColorPickerButton" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3

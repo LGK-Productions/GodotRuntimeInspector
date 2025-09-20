@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cy2pkb0dun2c7"]
 
 [ext_resource type="Theme" uid="uid://62r1pqjwqsym" path="res://addons/settings_inspector/themes/inspector_theme.tres" id="1_68bgs"]
-[ext_resource type="Script" path="res://addons/settings_inspector/src/MemberInspectorWindow.cs" id="2_kp0n3"]
+[ext_resource type="Script" uid="uid://dvuwvjsmgho7j" path="res://addons/settings_inspector/src/MemberInspectorWindow.cs" id="2_kp0n3"]
 
 [node name="ClassInspectorWrapper" type="Panel" node_paths=PackedStringArray("_applyButton", "_closeButton", "_inspectorContainer")]
 clip_contents = true

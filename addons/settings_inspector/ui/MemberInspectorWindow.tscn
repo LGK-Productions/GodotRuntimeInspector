@@ -1,10 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://b1sxcktro3xif"]
 
-[ext_resource type="Script" path="res://addons/settings_inspector/src/MemberInspectorWindow.cs" id="1_bq3ne"]
+[ext_resource type="Script" uid="uid://dvuwvjsmgho7j" path="res://addons/settings_inspector/src/MemberInspectorWindow.cs" id="1_bq3ne"]
 [ext_resource type="Theme" uid="uid://62r1pqjwqsym" path="res://addons/settings_inspector/themes/inspector_theme.tres" id="2_ox7tm"]
 
 [node name="ClassInspectorWindow" type="Window" node_paths=PackedStringArray("_applyButton", "_closeButton", "_inspectorContainer")]
-initial_position = 1
+initial_position = 2
 size = Vector2i(790, 475)
 content_scale_size = Vector2i(790, 475)
 script = ExtResource("1_bq3ne")

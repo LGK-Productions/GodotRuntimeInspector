@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Godot;
 using LgkProductions.Inspector.MetaData;
+using SettingInspector.addons.settings_inspector.src.ValueTree;
 
 namespace SettingInspector.addons.settings_inspector.src.Inspectors;
 
@@ -22,7 +23,7 @@ public partial class EnumInspector : MemberInspector
 
     private void OnItemSelected(long item)
     {
-        OnValueChanged();
+        OnValueChanged(new ValueChangeTree(this, item));
     }
 
     protected override void SetValue(object value)

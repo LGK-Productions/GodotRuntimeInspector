@@ -1,14 +1,14 @@
 [gd_scene load_steps=5 format=3 uid="uid://co1cn8deb2dsh"]
 
-[ext_resource type="Texture2D" uid="uid://c5qf43aubs5pk" path="res://addons/settings_inspector/art/icons/fluent--chevron-up-12-regular.png" id="1_dyhqa"]
-[ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/InspectorCollections/ListElement.cs" id="1_nhpo3"]
-[ext_resource type="Texture2D" uid="uid://bqo8cbmvddfy" path="res://addons/settings_inspector/art/icons/fluent--chevron-down-12-regular.png" id="2_yvnkf"]
+[ext_resource type="Script" uid="uid://cy3qnxxexg03a" path="res://addons/settings_inspector/src/Inspectors/InspectorCollections/ListElement.cs" id="1_nhpo3"]
+[ext_resource type="Texture2D" uid="uid://bjf2pknb8uo4n" path="res://addons/settings_inspector/art/icons/fluent--chevron-up-12-regular-2.png" id="2_88ves"]
 [ext_resource type="Texture2D" uid="uid://quf1g2d4wcdo" path="res://addons/settings_inspector/art/icons/fluent--delete-20-regular.png" id="3_jpbbh"]
+[ext_resource type="Texture2D" uid="uid://cqds8g5so2kre" path="res://addons/settings_inspector/art/icons/fluent--chevron-down-12-regular-2.png" id="3_r042k"]
 
 [node name="ListElement" type="MarginContainer" node_paths=PackedStringArray("_deleteButton", "_downButton", "_inspectorContainer", "_upButton")]
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 51.0
+offset_bottom = 54.0
 grow_horizontal = 2
 script = ExtResource("1_nhpo3")
 _deleteButton = NodePath("MarginContainer/HBoxContainer/Delete")
@@ -39,14 +39,14 @@ theme_override_constants/separation = 0
 [node name="Up" type="Button" parent="MarginContainer/HBoxContainer/ReorderButtons"]
 layout_mode = 2
 size_flags_vertical = 3
-icon = ExtResource("1_dyhqa")
+icon = ExtResource("2_88ves")
 icon_alignment = 1
 expand_icon = true
 
 [node name="Down" type="Button" parent="MarginContainer/HBoxContainer/ReorderButtons"]
 layout_mode = 2
 size_flags_vertical = 3
-icon = ExtResource("2_yvnkf")
+icon = ExtResource("3_r042k")
 icon_alignment = 1
 expand_icon = true
 

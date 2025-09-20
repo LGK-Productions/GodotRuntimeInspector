@@ -1,9 +1,12 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Godot;
 using LgkProductions.Inspector;
 using LgkProductions.Inspector.MetaData;
+using Microsoft.Extensions.Logging;
 using SettingInspector.addons.settings_inspector.src.Attributes;
+using SettingInspector.addons.settings_inspector.src.ValueTree;
 
 namespace SettingInspector.addons.settings_inspector.src.Inspectors;
 
@@ -42,7 +45,7 @@ public abstract partial class MemberInspector : Control
         var value = _element.Value;
         if (value == null && !Util.TryCreateInstance(ValueType, out value))
         {
-            GD.Print("Value is null, could not create instance.");
+            MemberInspectorHandler.Logger?.LogWarning("Value is null, could not create instance.");
             return;
         }
 
@@ -101,7 +104,7 @@ public abstract partial class MemberInspector : Control
         _label.TooltipText = _element.MemberInfo.Description;
         if (member.TryGetMetaData(new MetaDataKey<float>(LabelSizeAttribute.MetadataKey), out var labelSizeMultiplier))
             _label.SizeFlagsStretchRatio = labelSizeMultiplier;
-        _wrapper?.SetMargin((int)member.Spacing.Top, (int)member.Spacing.Botton, (int)member.Spacing.Left,
+        _wrapper?.AddMargin((int)member.Spacing.Top, (int)member.Spacing.Botton, (int)member.Spacing.Left,
             (int)member.Spacing.Right);
         if (member.TryGetMetaData(new MetaDataKey<string>(LabelAttribute.TextKey), out var text))
             _wrapper?.SetLabel(text);
@@ -146,11 +149,11 @@ public abstract partial class MemberInspector : Control
         QueueFree();
     }
 
-    public event Action ValueChanged;
+    public event Action<ValueChangeTree>? ValueChanged;
 
-    protected void OnValueChanged()
+    protected void OnValueChanged(ValueChangeTree valueChangeTree)
     {
-        ValueChanged?.Invoke();
+        ValueChanged?.Invoke(valueChangeTree);
     }
 
     private void UpdateMemberInputValue(object instance, MetaDataMember member, object? value)
@@ -159,23 +162,44 @@ public abstract partial class MemberInspector : Control
         SetValue(value);
     }
 
-    public bool TryRetrieveMember(out object? result)
+    public bool TryRetrieveMember([NotNullWhen(true)]out object? result)
     {
         result = null;
         if (ValueType == null)
         {
-            GD.PrintErr("Could not retrieve member, due to no type being set");
+            MemberInspectorHandler.Logger?.LogError("Could not retrieve member, due to no type being set");
             return false;
         }
 
         try
         {
             result = Convert.ChangeType(GetValue(), ValueType);
-            return true;
+            return result != null;
         }
         catch (Exception e)
         {
-            GD.PrintErr(e);
+            MemberInspectorHandler.Logger?.LogError(e, "Failed to convert value to type {valueType}", ValueType);
+        }
+
+        return false;
+    }
+
+    public bool TryRetrieveMember<T>([NotNullWhen(true)]out T? result)
+    {
+        result = default;
+        if (ValueType != typeof(T))
+        {
+            MemberInspectorHandler.Logger?.LogError("Could not retrieve member, due to type not matching");
+            return false;
+        }
+        try
+        {
+            result = (T?)Convert.ChangeType(GetValue(), typeof(T));
+            return result != null;
+        }
+        catch (Exception e)
+        {
+            MemberInspectorHandler.Logger?.LogError(e, "Failed to convert value to type {valueType}", ValueType);
         }
 
         return false;

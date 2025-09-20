@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using SettingInspector.addons.settings_inspector.src.ValueTree;
 
 namespace SettingInspector.addons.settings_inspector.src.Inspectors.InspectorCollections;
 
@@ -74,10 +75,10 @@ public partial class ListElement : Control
         _deleteButton.Pressed -= OnDeletePressed;
     }
 
-    private void OnMemberValueChanged()
+    private void OnMemberValueChanged(ValueChangeTree tree)
     {
-        ValueChanged?.Invoke();
+        ValueChanged?.Invoke(tree);
     }
 
-    public event Action ValueChanged;
+    public event Action<ValueChangeTree>? ValueChanged;
 }

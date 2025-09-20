@@ -1,6 +1,7 @@
 using System;
 using Godot;
 using LgkProductions.Inspector;
+using Microsoft.Extensions.Logging;
 using SettingInspector.addons.settings_inspector.src.Inspectors;
 using SettingInspector.addons.settings_inspector.Testing;
 
@@ -14,6 +15,12 @@ public partial class MemberInspectorHandler : Control
     [Export] public PackedScene? MemberWrapperScene;
 
     public static MemberInspectorHandler? Instance { get; private set; }
+    
+    public static ILogger? Logger => Instance?._logger;
+
+    private ILogger? _logger;
+
+    public const string Scope = "SettingInspector";
 
     public override void _EnterTree()
     {
@@ -63,6 +70,16 @@ public partial class MemberInspectorHandler : Control
         memberInspectorWrapper.SetHandle(handle);
 
         return handle;
+    }
+
+    public MemberWrapper ConstructMemberWrapper<T>(T instance, LayoutFlags flags = LayoutFlags.NotFoldable | LayoutFlags.NoLabel, bool removeInset = false)
+    {
+        var memberWrapper = MemberInspectorHandler.Instance.MemberWrapperScene.Instantiate<MemberWrapper>();
+        memberWrapper.SetMemberType(typeof(T));
+        memberWrapper.MemberInspector.SetInstance(instance, MemberUiInfo.Default, flags);
+        if (removeInset)
+            memberWrapper.SetMargin(left: 0, right: 0);
+        return memberWrapper;
     }
 }
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Godot;
 using LgkProductions.Inspector;
+using SettingInspector.addons.settings_inspector.src.ValueTree;
 
 namespace SettingInspector.addons.settings_inspector.src.Inspectors.InspectorCollections;
 
@@ -70,6 +71,10 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
 
     public void SetEditable(bool editable)
     {
+        foreach (var (_, memberInspector) in _inspectors)
+        {
+            memberInspector.SetEditable(editable);
+        }
     }
 
     public IEnumerator<(InspectorElement, MemberInspector)> GetEnumerator()
@@ -82,7 +87,7 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
         return GetEnumerator();
     }
 
-    public event Action ValueChanged;
+    public event Action<ValueChangeTree>? ValueChanged;
 
     public void SetScrollable(bool scrollable)
     {
@@ -120,8 +125,8 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
         _memberGroups.Clear();
     }
 
-    private void OnChildValueChanged()
+    private void OnChildValueChanged(ValueChangeTree tree)
     {
-        ValueChanged?.Invoke();
+        ValueChanged?.Invoke(tree);
     }
 }

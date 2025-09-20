@@ -1,9 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://b6d0uqwp7g3k"]
 
-[ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/DoubleInspector.cs" id="1_6nyjg"]
+[ext_resource type="Script" uid="uid://cjt5qitq2alhi" path="res://addons/settings_inspector/src/Inspectors/DoubleInspector.cs" id="1_6nyjg"]
 
 [node name="DoubleInspector" type="HBoxContainer" node_paths=PackedStringArray("_spinBox", "_slider", "_valueLabel", "_label")]
-custom_minimum_size = Vector2(0, 40)
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 31.0

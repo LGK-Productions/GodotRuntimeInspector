@@ -1,9 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://q2rqrwwx2811"]
 
-[ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/EnumInspector.cs" id="1_fh0l2"]
+[ext_resource type="Script" uid="uid://bqqt7hvh47qod" path="res://addons/settings_inspector/src/Inspectors/EnumInspector.cs" id="1_fh0l2"]
 
 [node name="EnumInspector" type="HBoxContainer" node_paths=PackedStringArray("_optionButton", "_label")]
-custom_minimum_size = Vector2(0, 40)
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 23.0

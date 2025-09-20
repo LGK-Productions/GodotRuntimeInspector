@@ -1,6 +1,7 @@
 using Godot;
 using LgkProductions.Inspector.MetaData;
 using SettingInspector.addons.settings_inspector.src.Attributes;
+using SettingInspector.addons.settings_inspector.src.ValueTree;
 
 namespace SettingInspector.addons.settings_inspector.src.Inspectors;
 
@@ -28,12 +29,12 @@ public partial class LineInspector : MemberInspector
     {
         _fileDialogHandle.FileDialog.FileMode = FileDialog.FileModeEnum.OpenAny;
 
-        SetValue(await _fileDialogHandle.WaitForPathSelectedAsync());
+        SetValue(await _fileDialogHandle.WaitForFileSelectedAsync());
     }
 
     private void OnTextChanged(string newValue)
     {
-        OnValueChanged();
+        OnValueChanged(new ValueChangeTree(this, newValue));
     }
 
     protected override void SetValue(object value)
@@ -58,5 +59,6 @@ public partial class LineInspector : MemberInspector
     {
         base.SetEditable(editable);
         _lineEdit.Editable = editable;
+        _filePathButton.Disabled = !editable;
     }
 }

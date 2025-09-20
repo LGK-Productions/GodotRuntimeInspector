@@ -1,16 +1,16 @@
 [gd_scene load_steps=2 format=3 uid="uid://je1rbey7jxnq"]
 
-[ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/ToggleInspector.cs" id="1_eo6wk"]
+[ext_resource type="Script" uid="uid://c6j2neimfwui" path="res://addons/settings_inspector/src/Inspectors/ToggleInspector.cs" id="1_eo6wk"]
 
-[node name="ToggleInspector" type="HBoxContainer" node_paths=PackedStringArray("_checkbox", "_label")]
-custom_minimum_size = Vector2(0, 40)
+[node name="ToggleInspector" type="HBoxContainer" node_paths=PackedStringArray("_checkbox", "_toggle", "_label")]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 24.0
 grow_horizontal = 2
 size_flags_horizontal = 3
 script = ExtResource("1_eo6wk")
-_checkbox = NodePath("HBoxContainer/CheckButton")
+_checkbox = NodePath("HBoxContainer/CheckBox")
+_toggle = NodePath("HBoxContainer/CheckButton")
 _label = NodePath("Label")
 
 [node name="Label" type="Label" parent="."]
@@ -31,4 +31,5 @@ visible = false
 layout_mode = 2
 
 [node name="CheckButton" type="CheckButton" parent="HBoxContainer"]
+visible = false
 layout_mode = 2

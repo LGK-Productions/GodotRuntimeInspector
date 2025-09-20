@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://lnfsq1glnxff"]
 
-[ext_resource type="Script" path="res://addons/settings_inspector/src/MemberInspectorHandler.cs" id="1_lw1hq"]
+[ext_resource type="Script" uid="uid://cbbt4otwkg1e5" path="res://addons/settings_inspector/src/MemberInspectorHandler.cs" id="1_lw1hq"]
 [ext_resource type="PackedScene" uid="uid://b1sxcktro3xif" path="res://addons/settings_inspector/ui/MemberInspectorWindow.tscn" id="2_rubim"]
 
 [node name="ClassInspector" type="Control"]

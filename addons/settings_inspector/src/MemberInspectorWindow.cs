@@ -14,6 +14,7 @@ public partial class MemberInspectorWindow : Window, IMemberInspectorWrapper
 	public Button ApplyButton => _applyButton;
 	public Button CloseButton => _closeButton;
 	public Node RootNode => this;
+
 	void IMemberInspectorWrapper.SetHandleInternal(IInspectorHandle handle)
 	{
 		CloseRequested += CurrentInspector.Close;
@@ -28,6 +29,11 @@ public partial class MemberInspectorWindow : Window, IMemberInspectorWrapper
 	{
 		Visible = visible;
 	}
+
+	public void SetContentScale(float scale)
+	{
+		ContentScaleFactor = scale;
+	}
 }
 
 public interface IMemberInspectorWrapper
@@ -37,6 +43,7 @@ public interface IMemberInspectorWrapper
 	protected Button ApplyButton { get; }
 	protected Button CloseButton { get; }
 	public Node RootNode { get; }
+
 	public void SetHandle(IInspectorHandle handle)
 	{
 		ResetInspector();
@@ -65,4 +72,8 @@ public interface IMemberInspectorWrapper
 	protected void ResetInspectorInternal();
 
 	public void SetVisible(bool visible);
+
+	public virtual void SetContentScale(float scale)
+	{
+	}
 }

@@ -1,9 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://fy86nlnhnwa4"]
 
-[ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/FloatInspector.cs" id="1_eslfd"]
+[ext_resource type="Script" uid="uid://dkmrc1jyalqeh" path="res://addons/settings_inspector/src/Inspectors/FloatInspector.cs" id="1_eslfd"]
 
 [node name="FloatInspector" type="HBoxContainer" node_paths=PackedStringArray("_spinBox", "_slider", "_valueLabel", "_label")]
-custom_minimum_size = Vector2(0, 40)
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 31.0

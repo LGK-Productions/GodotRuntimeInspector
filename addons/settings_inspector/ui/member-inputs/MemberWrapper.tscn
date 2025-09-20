@@ -1,6 +1,6 @@
-[gd_scene load_steps=11 format=3 uid="uid://duar7vh55goxk"]
+[gd_scene load_steps=12 format=3 uid="uid://duar7vh55goxk"]
 
-[ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/MemberWrapper.cs" id="1_8eidn"]
+[ext_resource type="Script" uid="uid://rp8nre7bvm14" path="res://addons/settings_inspector/src/Inspectors/MemberWrapper.cs" id="1_8eidn"]
 [ext_resource type="PackedScene" uid="uid://edq00o2jrvbw" path="res://addons/settings_inspector/ui/member-inputs/LineInspector.tscn" id="2_7pobb"]
 [ext_resource type="PackedScene" uid="uid://je1rbey7jxnq" path="res://addons/settings_inspector/ui/member-inputs/ToggleInspector.tscn" id="3_p0ove"]
 [ext_resource type="PackedScene" uid="uid://fy86nlnhnwa4" path="res://addons/settings_inspector/ui/member-inputs/FloatInspector.tscn" id="5_26ytk"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://ts8gnglujv7i" path="res://addons/settings_inspector/ui/member-inputs/ListInspector.tscn" id="8_53ac5"]
 [ext_resource type="PackedScene" uid="uid://cgxsnary7mkam" path="res://addons/settings_inspector/ui/member-inputs/InlineInspector.tscn" id="8_cyx2u"]
 [ext_resource type="PackedScene" uid="uid://c2os26issvvje" path="res://addons/settings_inspector/ui/member-inputs/IntInspector.tscn" id="9_x4gcj"]
+[ext_resource type="PackedScene" uid="uid://cpgqabh8joa7x" path="res://addons/settings_inspector/ui/member-inputs/ColorInspector.tscn" id="10_iwsvj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pcvqt"]
 bg_color = Color(1, 1, 1, 1)
@@ -16,17 +17,17 @@ bg_color = Color(1, 1, 1, 1)
 [node name="MemberWrapper" type="MarginContainer" node_paths=PackedStringArray("_label", "_memberContainer", "_panel")]
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 82.0
+offset_bottom = 24.0
 grow_horizontal = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 5
+theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 5
+theme_override_constants/margin_bottom = 1
 script = ExtResource("1_8eidn")
 _defaultInspectorScene = ExtResource("2_7pobb")
-_inspectorScenes = [ExtResource("3_p0ove"), ExtResource("9_x4gcj"), ExtResource("5_26ytk"), ExtResource("6_bg012"), ExtResource("7_7jq4b"), ExtResource("8_cyx2u"), ExtResource("8_53ac5")]
+_inspectorScenes = Array[PackedScene]([ExtResource("3_p0ove"), ExtResource("9_x4gcj"), ExtResource("5_26ytk"), ExtResource("6_bg012"), ExtResource("7_7jq4b"), ExtResource("8_cyx2u"), ExtResource("8_53ac5"), ExtResource("10_iwsvj")])
 _label = NodePath("VBoxContainer/Label")
 _memberContainer = NodePath("VBoxContainer/MemberInspectorContainer")
 _panel = NodePath("VBoxContainer/Panel")
@@ -46,6 +47,6 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_pcvqt")
 
 [node name="MemberInspectorContainer" type="MarginContainer" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 40)
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 size_flags_vertical = 3

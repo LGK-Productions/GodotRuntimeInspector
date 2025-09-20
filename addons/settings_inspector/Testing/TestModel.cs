@@ -123,7 +123,6 @@ internal class TestModel
     [Tab("Other")]
     [Slider]
     [Range(0, 1)]
-    [StepSize(0.2)]
     public float TestSlider { get; set; } = 0.5f;
     
     [Tab("Other")]

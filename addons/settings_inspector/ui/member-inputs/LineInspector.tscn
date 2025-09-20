@@ -1,10 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://edq00o2jrvbw"]
 
-[ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/LineInspector.cs" id="1_8elny"]
+[ext_resource type="Script" uid="uid://dpwta784acye8" path="res://addons/settings_inspector/src/Inspectors/LineInspector.cs" id="1_8elny"]
 [ext_resource type="Texture2D" uid="uid://b14uo4tn7qwv0" path="res://addons/settings_inspector/art/icons/fluent--folder-28-regular.png" id="2_g071b"]
 
 [node name="LineInspector" type="HBoxContainer" node_paths=PackedStringArray("_filePathButton", "_lineEdit", "_label")]
-custom_minimum_size = Vector2(0, 40)
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 31.0

@@ -4,6 +4,7 @@ using System.Numerics;
 using Godot;
 using LgkProductions.Inspector.MetaData;
 using SettingInspector.addons.settings_inspector.src.Attributes;
+using SettingInspector.addons.settings_inspector.src.ValueTree;
 
 namespace SettingInspector.addons.settings_inspector.src.Inspectors;
 
@@ -20,6 +21,16 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
     {
         _spinBox.ValueChanged += OnNumberChanged;
         _slider.ValueChanged += OnNumberChanged;
+        _spinBox.GetLineEdit().TextChanged += OnTextChanged;
+    }
+
+    private void OnTextChanged(string newtext)
+    {
+        if (!double.TryParse(newtext, NumberStyles.Any, CultureInfo.InvariantCulture, out double value)) return;
+        if (value % StepSize <= 0.000001 || value % StepSize >= StepSize - 0.000001)
+        {
+            _spinBox.Value = value;
+        }
     }
 
     protected override void OnRemove()
@@ -33,7 +44,7 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
         _range ??= _slider;
         base.SetValue(value);
         var val = (double)Convert.ChangeType(value, typeof(double));
-        _range.Value = val;
+        _range.SetValue(val);
         SetValueLabel(val);
     }
 
@@ -51,10 +62,10 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
 
     private void OnNumberChanged(double value)
     {
-        SetValueLabel(value);   
-        OnValueChanged();
+        SetValueLabel(value);
+        OnValueChanged(new ValueChangeTree(this, value));
     }
-    
+
     private static readonly char[] Seperators = ['.', ','];
 
     private void SetValueLabel(double value)
@@ -73,6 +84,8 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
             : _spinBox;
         if (member.TryGetMetaData(new MetaDataKey<double>(StepSizeAttribute.MetadataKey), out var stepSize))
             StepSize = stepSize;
+        if (member.TryGetMetaData(SuffixAttribute.MetadataKey, out var suffix))
+            _spinBox.Suffix = suffix;
         if (member.MaxValue != null)
             _range.MaxValue = (double)Convert.ChangeType(member.MaxValue, typeof(double));
         else

@@ -6,6 +6,7 @@ using Godot;
 using LgkProductions.Inspector;
 using LgkProductions.Inspector.MetaData;
 using SettingInspector.addons.settings_inspector.src.Inspectors.InspectorCollections;
+using SettingInspector.addons.settings_inspector.src.ValueTree;
 
 namespace SettingInspector.addons.settings_inspector.src.Inspectors;
 
@@ -103,6 +104,7 @@ public partial class ListInspector : MemberInspector
         _memberParent.AddChild(listElementInstance);
         _listElements.Add(listElementInstance);
         _expandButton?.SetVisible(_listElements.Count > 0 && !LayoutFlags.IsSet(LayoutFlags.NotFoldable));
+        listElementInstance.ValueChanged += OnChildValueChanged;
     }
 
     private void AppendListElement(Type? type)
@@ -110,6 +112,7 @@ public partial class ListInspector : MemberInspector
         if (type == null || _listElementType == null || !Util.TryCreateInstance(type, out var instance)) return;
         if (!_listElementType.IsAssignableFrom(type)) return;
         AppendListElement(instance);
+        OnValueChanged(new ValueChangeTree(this, _list));
     }
 
     private void AppendNewListElement()
@@ -131,6 +134,7 @@ public partial class ListInspector : MemberInspector
         _listElements.RemoveAt(index);
         element.Remove();
         _expandButton?.SetVisible(_listElements.Count > 0 && !LayoutFlags.IsSet(LayoutFlags.NotFoldable));
+        OnValueChanged(new ValueChangeTree(this, _list));
     }
 
     public void MoveElement(ListElement element, bool up)
@@ -152,9 +156,9 @@ public partial class ListInspector : MemberInspector
         _addButton.Disabled = !editable;
     }
 
-    private void OnChildValueChanged()
+    private void OnChildValueChanged(ValueChangeTree tree)
     {
-        OnValueChanged();
+        OnValueChanged(new ValueChangeTree(this, _list, tree));
     }
 
     protected override void OnSetMetaData(MetaDataMember member)
@@ -162,6 +166,7 @@ public partial class ListInspector : MemberInspector
         base.OnSetMetaData(member);
         _addButton.Disabled = member.IsReadOnly;
     }
+
 
     protected override void SetLayoutFlags(LayoutFlags flags)
     {

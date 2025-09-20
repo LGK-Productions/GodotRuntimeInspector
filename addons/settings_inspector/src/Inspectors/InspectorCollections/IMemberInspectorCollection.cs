@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LgkProductions.Inspector;
+using SettingInspector.addons.settings_inspector.src.ValueTree;
 
 namespace SettingInspector.addons.settings_inspector.src.Inspectors.InspectorCollections;
 
@@ -18,5 +19,5 @@ public interface IMemberInspectorCollection : IEnumerable<(InspectorElement, Mem
 
     public void SetScrollable(bool scrollable);
 
-    public event Action ValueChanged;
+    public event Action<ValueChangeTree>? ValueChanged;
 }

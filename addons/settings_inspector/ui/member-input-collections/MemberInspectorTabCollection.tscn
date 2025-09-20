@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dkcox87a5snt0"]
 
-[ext_resource type="Script" path="res://addons/settings_inspector/src/Inspectors/InspectorCollections/MemberInspectorTabCollection.cs" id="1_on77a"]
+[ext_resource type="Script" uid="uid://cjv50m2gmti8d" path="res://addons/settings_inspector/src/Inspectors/InspectorCollections/MemberInspectorTabCollection.cs" id="1_on77a"]
 [ext_resource type="PackedScene" uid="uid://diheksfofmcdc" path="res://addons/settings_inspector/ui/member-input-collections/MemberInspectorCollection.tscn" id="2_x7ov5"]
 
 [node name="MarginContainer" type="MarginContainer" node_paths=PackedStringArray("_tabContainer")]
