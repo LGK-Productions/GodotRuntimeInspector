@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Godot;
 using LgkProductions.Inspector;
+using LgkProductions.Inspector.MetaData;
 using Microsoft.Extensions.Logging;
 using SettingInspector.addons.settings_inspector.src.Inspectors.InspectorCollections;
 using SettingInspector.addons.settings_inspector.src.ValueTree;
@@ -30,11 +31,12 @@ public partial class ClassInspector : MemberInspector
 
 	private static readonly PollingTickProvider TickProvider = new(1);
 	private Type[]? _assignables;
-	[Export] private ToggleButton? _expandButton;
+	
 
 	private FileDialogHandler.FileDialogHandle _fileDialogHandle = FileDialogHandler.CreateNative();
 
 	private object? _instance;
+	[Export] private FoldableContainer? _foldableContainer;
 	[Export] private Button? _loadButton;
 	private Node? _memberCollectionNode;
 	[Export] private PackedScene _memberCollectionScene;
@@ -51,7 +53,6 @@ public partial class ClassInspector : MemberInspector
 		_unattachButton.Pressed += UnattachPressed;
 		_loadButton.Pressed += LoadPressed;
 		_saveButton.Pressed += SavePressed;
-		_expandButton.Toggled += ExpandButtonToggled;
 		_typeChooser.IndexSelected += TypeIndexSelected;
 		if (_fileDialogHandle.FileDialog.GetParent() == null)
 			AddChild(_fileDialogHandle.FileDialog);
@@ -63,7 +64,6 @@ public partial class ClassInspector : MemberInspector
 		_unattachButton.Pressed -= UnattachPressed;
 		_loadButton.Pressed -= LoadPressed;
 		_saveButton.Pressed -= SavePressed;
-		_expandButton.Toggled -= ExpandButtonToggled;
 		_typeChooser.IndexSelected += TypeIndexSelected;
 	}
 
@@ -73,14 +73,16 @@ public partial class ClassInspector : MemberInspector
 		_instance = classInstance;
 		var inspector = Inspector.Attach(_instance, TickProvider);
 		var serializable = classInstance.GetType().GetCustomAttributes<SerializableAttribute>().Any();
-
-		_expandButton?.SetVisible(_expandButton.Visible &&
-								  (inspector.Elements.Count > 0 || MemberUiInfo.parentType != null));
+		
 		_saveButton?.SetVisible(_saveButton.Visible && serializable);
 		_loadButton?.SetVisible(_loadButton.Visible && serializable);
 		_unattachButton?.SetVisible(_unattachButton.Visible && AllowUnattach);
+		_typeChooser.Visible = MemberUiInfo.parentType != null;
+		
 		if (_assignables != null)
 			_typeChooser.SetSelectedIndex(Array.IndexOf(_assignables, classInstance.GetType()));
+		if (Element == null)
+			_foldableContainer?.Title = ValueType?.Name;
 
 		_memberCollectionNode =
 			(MemberUiInfo.AllowTabs ? _memberTabCollectionScene : _memberCollectionScene).Instantiate();
@@ -88,6 +90,13 @@ public partial class ClassInspector : MemberInspector
 		MemberInspectorCollection!.SetMemberInspector(inspector);
 		MemberInspectorCollection.SetScrollable(MemberUiInfo.Scrollable);
 		MemberInspectorCollection.ValueChanged += ChildValueChanged;
+	}
+
+	protected override void OnSetMetaData(MetaDataMember member)
+	{
+		base.OnSetMetaData(member);
+		_foldableContainer?.Title = member.DisplayName;
+		_foldableContainer?.TooltipText = member.Description;
 	}
 
 	protected override void Clear()
@@ -115,13 +124,25 @@ public partial class ClassInspector : MemberInspector
 		base.SetLayoutFlags(flags);
 
 		var expanded = flags.IsSet(LayoutFlags.ExpandedInitially);
-		_expandButton?.SetPressed(expanded);
-		_expandButton?.SetVisible(!flags.IsSet(LayoutFlags.NotFoldable));
+		_foldableContainer?.SetFolded(!expanded);
+		//_expandButton?.SetVisible(!flags.IsSet(LayoutFlags.NotFoldable));
 
 		var elementsVisible = !flags.IsSet(LayoutFlags.NoElements);
 		_loadButton?.SetVisible(elementsVisible);
 		_saveButton?.SetVisible(elementsVisible);
 		_unattachButton?.SetVisible(elementsVisible);
+
+		if (flags.IsSet(LayoutFlags.NoBackground))
+		{
+			_foldableContainer?.SetVisible(false);
+			_memberParent?.GetParent()?.Reparent(this);
+		}
+
+		if (flags.IsSet(LayoutFlags.NoLabel))
+		{
+			_foldableContainer?.Title = "";
+			_foldableContainer?.TooltipText = "";
+		}
 	}
 
 	protected override void SetMemberUiInfo(MemberUiInfo memberUiInfo)
@@ -158,12 +179,6 @@ public partial class ClassInspector : MemberInspector
 	}
 
 	#region Buttons
-
-	private void ExpandButtonToggled(bool on)
-	{
-		_memberParent.Visible = on;
-		_typeChooser.Visible = MemberUiInfo.parentType != null && on;
-	}
 
 	private void UnattachPressed()
 	{

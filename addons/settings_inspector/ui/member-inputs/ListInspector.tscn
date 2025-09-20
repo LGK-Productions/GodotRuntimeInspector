@@ -1,81 +1,43 @@
-[gd_scene load_steps=8 format=3 uid="uid://ts8gnglujv7i"]
+[gd_scene load_steps=4 format=3 uid="uid://ts8gnglujv7i"]
 
 [ext_resource type="Script" uid="uid://bq2aymmovaes" path="res://addons/settings_inspector/src/Inspectors/ListInspector.cs" id="1_oec23"]
-[ext_resource type="StyleBox" uid="uid://bixi5p37q6grs" path="res://addons/settings_inspector/themes/MemberBackgroundPanel.tres" id="2_80gxu"]
 [ext_resource type="PackedScene" uid="uid://co1cn8deb2dsh" path="res://addons/settings_inspector/ui/member-input-collections/ListElement.tscn" id="2_hafwm"]
-[ext_resource type="Texture2D" uid="uid://bongwtucroeq4" path="res://addons/settings_inspector/art/icons/fluent--triangle-right-12-filled.png" id="3_wawn4"]
-[ext_resource type="Script" uid="uid://dslr5tl2fmpq7" path="res://addons/settings_inspector/src/ToggleButton.cs" id="4_nua4t"]
-[ext_resource type="Texture2D" uid="uid://bwrwptoimsk2e" path="res://addons/settings_inspector/art/icons/fluent--triangle-down-12-filled.png" id="5_t4o06"]
 [ext_resource type="Texture2D" uid="uid://disp4d0dg0lq8" path="res://addons/settings_inspector/art/icons/fluent--add-12-regular.png" id="6_h4yhc"]
 
-[node name="ListInspector" type="MarginContainer" node_paths=PackedStringArray("_addButton", "_addMenuButton", "_expandButton", "_memberParent", "_background", "_label")]
+[node name="ListInspector" type="MarginContainer" node_paths=PackedStringArray("_addButton", "_addMenuButton", "_foldableContainer", "_memberParent", "_background", "_label")]
 offset_right = 1152.0
 offset_bottom = 34.0
 script = ExtResource("1_oec23")
-_addButton = NodePath("VBoxContainer/MarginContainer/HBoxContainer/Add")
-_addMenuButton = NodePath("VBoxContainer/MarginContainer/HBoxContainer/Add2")
-_expandButton = NodePath("VBoxContainer/MarginContainer/HBoxContainer/Button")
+_addButton = NodePath("FoldableContainer/VBoxContainer/Add")
+_addMenuButton = NodePath("FoldableContainer/VBoxContainer/Add2")
+_foldableContainer = NodePath("FoldableContainer")
 _listElementScene = ExtResource("2_hafwm")
-_memberParent = NodePath("VBoxContainer/MemberParent")
-_background = NodePath("Panel")
-_label = NodePath("VBoxContainer/MarginContainer/HBoxContainer/Label")
+_memberParent = NodePath("FoldableContainer/VBoxContainer/MemberParent")
+_background = NodePath("")
+_label = NodePath("")
 
-[node name="Panel" type="Panel" parent="."]
-layout_mode = 2
-theme_override_styles/panel = ExtResource("2_80gxu")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="FoldableContainer" type="FoldableContainer" parent="."]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="FoldableContainer"]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(20, 20)
+[node name="MemberParent" type="VBoxContainer" parent="FoldableContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 4
-focus_mode = 0
-toggle_mode = true
-icon = ExtResource("3_wawn4")
-flat = true
-expand_icon = true
-script = ExtResource("4_nua4t")
-_offTexture = ExtResource("3_wawn4")
-_onTexture = ExtResource("5_t4o06")
 
-[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 21
-text = "Property Name"
-clip_text = true
-
-[node name="Stretcher" type="MarginContainer" parent="VBoxContainer/MarginContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.01
-
-[node name="Add" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="Add" type="Button" parent="FoldableContainer/VBoxContainer"]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 focus_mode = 0
 icon = ExtResource("6_h4yhc")
+icon_alignment = 1
 expand_icon = true
 
-[node name="Add2" type="MenuButton" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="Add2" type="MenuButton" parent="FoldableContainer/VBoxContainer"]
 visible = false
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 icon = ExtResource("6_h4yhc")
 flat = false
+icon_alignment = 1
 expand_icon = true
-
-[node name="MemberParent" type="VBoxContainer" parent="VBoxContainer"]
-layout_mode = 2

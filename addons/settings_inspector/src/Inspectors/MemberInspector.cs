@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Net.Http;
 using Godot;
 using LgkProductions.Inspector;
 using LgkProductions.Inspector.MetaData;
@@ -14,10 +15,10 @@ public abstract partial class MemberInspector : Control
 {
     [Export] private Control _background;
 
-    private InspectorElement? _element;
+    protected InspectorElement? Element;
 
     private bool _initialized;
-    [Export] private Label _label;
+    [Export] private Label? _label;
     [Export] private MarginContainer _marginContainer;
     private MemberWrapper? _wrapper;
 
@@ -29,8 +30,8 @@ public abstract partial class MemberInspector : Control
 
     public void SetMember(InspectorElement iElement)
     {
-        _element = iElement;
-        OnSetMetaData(_element.MemberInfo);
+        Element = iElement;
+        OnSetMetaData(Element.MemberInfo);
         var memberUiInfo = MemberUiInfo.Default;
         ValueType = iElement.MemberInfo.Type;
         var isAssignableType = ValueType.IsAbstract || ValueType.IsInterface;
@@ -42,7 +43,7 @@ public abstract partial class MemberInspector : Control
         }
 
 
-        var value = _element.Value;
+        var value = Element.Value;
         if (value == null && !Util.TryCreateInstance(ValueType, out value))
         {
             MemberInspectorHandler.Logger?.LogWarning("Value is null, could not create instance.");
@@ -51,7 +52,7 @@ public abstract partial class MemberInspector : Control
 
         SetInstance(value!, memberUiInfo, iElement.MemberInfo.LayoutFlags);
 
-        _element.ValueChanged += UpdateMemberInputValue;
+        Element.ValueChanged += UpdateMemberInputValue;
     }
 
     public void SetInstance(object value)
@@ -65,8 +66,8 @@ public abstract partial class MemberInspector : Control
             OnInitialize();
 
         ValueType = value.GetType();
-        if (_element == null)
-            _label.Text = ValueType.Name;
+        if (Element == null)
+            _label?.SetText(ValueType.Name);
 
         SetMemberUiInfo(memberUiInfo);
         SetLayoutFlags(flags);
@@ -100,10 +101,10 @@ public abstract partial class MemberInspector : Control
 
     protected virtual void OnSetMetaData(MetaDataMember member)
     {
-        _label.Text = _element.MemberInfo.DisplayName;
-        _label.TooltipText = _element.MemberInfo.Description;
+        _label?.Text = Element.MemberInfo.DisplayName;
+        _label?.TooltipText = Element.MemberInfo.Description;
         if (member.TryGetMetaData(new MetaDataKey<float>(LabelSizeAttribute.MetadataKey), out var labelSizeMultiplier))
-            _label.SizeFlagsStretchRatio = labelSizeMultiplier;
+            _label?.SizeFlagsStretchRatio = labelSizeMultiplier;
         _wrapper?.AddMargin((int)member.Spacing.Top, (int)member.Spacing.Botton, (int)member.Spacing.Left,
             (int)member.Spacing.Right);
         if (member.TryGetMetaData(new MetaDataKey<string>(LabelAttribute.TextKey), out var text))
@@ -113,7 +114,7 @@ public abstract partial class MemberInspector : Control
         _wrapper?.SetLine(member.HasLineAbove);
 
 
-        SetEditable(!_element.MemberInfo.IsReadOnly);
+        SetEditable(!Element.MemberInfo.IsReadOnly);
     }
 
     public void SetWrapper(MemberWrapper wrapper)
@@ -138,10 +139,10 @@ public abstract partial class MemberInspector : Control
     public void Remove()
     {
         Clear();
-        if (_element != null)
+        if (Element != null)
         {
-            _element.ValueChanged -= UpdateMemberInputValue;
-            _element = null;
+            Element.ValueChanged -= UpdateMemberInputValue;
+            Element = null;
         }
 
         if (_initialized)

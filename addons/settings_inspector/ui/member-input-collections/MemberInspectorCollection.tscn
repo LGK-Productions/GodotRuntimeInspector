@@ -8,6 +8,7 @@ anchors_preset = 10
 anchor_right = 1.0
 grow_horizontal = 2
 size_flags_horizontal = 3
+theme_override_constants/margin_top = 5
 script = ExtResource("1_16csa")
 _boxGroupScene = ExtResource("2_3m6fy")
 _memberInspectorParent = NodePath("ClassInspectorContent")

@@ -1,18 +1,15 @@
-[gd_scene load_steps=12 format=3 uid="uid://cgxsnary7mkam"]
+[gd_scene load_steps=9 format=3 uid="uid://cgxsnary7mkam"]
 
 [ext_resource type="Script" uid="uid://ctaxf5lbijl40" path="res://addons/settings_inspector/src/Inspectors/ClassInspector.cs" id="1_gh2an"]
 [ext_resource type="PackedScene" uid="uid://dkcox87a5snt0" path="res://addons/settings_inspector/ui/member-input-collections/MemberInspectorTabCollection.tscn" id="2_ki6s4"]
 [ext_resource type="PackedScene" uid="uid://diheksfofmcdc" path="res://addons/settings_inspector/ui/member-input-collections/MemberInspectorCollection.tscn" id="2_m0e18"]
 [ext_resource type="StyleBox" uid="uid://bixi5p37q6grs" path="res://addons/settings_inspector/themes/MemberBackgroundPanel.tres" id="4_f7xsk"]
-[ext_resource type="Texture2D" uid="uid://bongwtucroeq4" path="res://addons/settings_inspector/art/icons/fluent--triangle-right-12-filled.png" id="5_ufwhm"]
 [ext_resource type="Texture2D" uid="uid://cc174xw73yt7w" path="res://addons/settings_inspector/art/icons/fluent--save-32-regular.png" id="5_va8p2"]
-[ext_resource type="Script" uid="uid://dslr5tl2fmpq7" path="res://addons/settings_inspector/src/ToggleButton.cs" id="6_s4qxm"]
 [ext_resource type="Texture2D" uid="uid://dc6tjm60uou6b" path="res://addons/settings_inspector/art/icons/fluent--arrow-upload-16-regular.png" id="6_vo5tg"]
 [ext_resource type="Texture2D" uid="uid://dqifa1advp264" path="res://addons/settings_inspector/art/icons/fluent--window-multiple-20-regular.png" id="7_epxcb"]
-[ext_resource type="Texture2D" uid="uid://bwrwptoimsk2e" path="res://addons/settings_inspector/art/icons/fluent--triangle-down-12-filled.png" id="7_g5ya0"]
 [ext_resource type="Script" uid="uid://caw1535e802jp" path="res://addons/settings_inspector/src/OptionButton.cs" id="11_3flad"]
 
-[node name="InlineInspector" type="MarginContainer" node_paths=PackedStringArray("_expandButton", "_loadButton", "_memberParent", "_saveButton", "_typeChooser", "_unattachButton", "_background", "_label")]
+[node name="InlineInspector" type="MarginContainer" node_paths=PackedStringArray("_foldableContainer", "_loadButton", "_memberParent", "_saveButton", "_typeChooser", "_unattachButton", "_background", "_label")]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 30.0
@@ -20,98 +17,39 @@ grow_horizontal = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_gh2an")
-_expandButton = NodePath("MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/Button")
-_loadButton = NodePath("MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer/Load")
+_foldableContainer = NodePath("FoldableContainer")
+_loadButton = NodePath("FoldableContainer/VBoxContainer/MarginContainer/HBoxContainer/Load")
 _memberCollectionScene = ExtResource("2_m0e18")
-_memberParent = NodePath("MarginContainer/VBoxContainer/ContentHolder")
+_memberParent = NodePath("FoldableContainer/VBoxContainer/ContentHolder")
 _memberTabCollectionScene = ExtResource("2_ki6s4")
-_saveButton = NodePath("MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer/Save")
-_typeChooser = NodePath("MarginContainer/VBoxContainer/VBoxContainer/TypeChooser")
-_unattachButton = NodePath("MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer/Detach")
+_saveButton = NodePath("FoldableContainer/VBoxContainer/MarginContainer/HBoxContainer/Save")
+_typeChooser = NodePath("FoldableContainer/VBoxContainer/MarginContainer/HBoxContainer/TypeChooser")
+_unattachButton = NodePath("FoldableContainer/VBoxContainer/MarginContainer/HBoxContainer/Detach")
 _background = NodePath("PanelContainer")
-_label = NodePath("MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/Label")
+_label = NodePath("")
 
 [node name="PanelContainer" type="Panel" parent="."]
+visible = false
 layout_mode = 2
 theme_override_styles/panel = ExtResource("4_f7xsk")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="FoldableContainer" type="FoldableContainer" parent="."]
 layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_right = 5
+title = "Property Name"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="FoldableContainer"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="FoldableContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_bottom = 0
+theme_override_constants/margin_right = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="FoldableContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
-alignment = 1
+alignment = 2
 
-[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(20, 20)
-layout_mode = 2
-size_flags_vertical = 4
-focus_mode = 0
-toggle_mode = true
-icon = ExtResource("5_ufwhm")
-flat = true
-expand_icon = true
-script = ExtResource("6_s4qxm")
-_offTexture = ExtResource("5_ufwhm")
-_onTexture = ExtResource("7_g5ya0")
-
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 21
-text = "Property Name"
-clip_text = true
-
-[node name="Stretcher" type="MarginContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.01
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer"]
-layout_mode = 2
-
-[node name="Save" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(30, 30)
-layout_mode = 2
-focus_mode = 0
-icon = ExtResource("5_va8p2")
-icon_alignment = 1
-expand_icon = true
-
-[node name="Load" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(30, 30)
-layout_mode = 2
-focus_mode = 0
-icon = ExtResource("6_vo5tg")
-icon_alignment = 1
-expand_icon = true
-
-[node name="Detach" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer"]
+[node name="TypeChooser" type="MarginContainer" parent="FoldableContainer/VBoxContainer/MarginContainer/HBoxContainer" node_paths=PackedStringArray("optionButton")]
 visible = false
-custom_minimum_size = Vector2(30, 30)
-layout_mode = 2
-focus_mode = 0
-icon = ExtResource("7_epxcb")
-icon_alignment = 1
-expand_icon = true
-
-[node name="TypeChooser" type="MarginContainer" parent="MarginContainer/VBoxContainer/VBoxContainer" node_paths=PackedStringArray("optionButton")]
-visible = false
-custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 20
@@ -121,10 +59,10 @@ theme_override_constants/margin_bottom = 5
 script = ExtResource("11_3flad")
 optionButton = NodePath("HBoxContainer/OptionButton")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/TypeChooser"]
+[node name="HBoxContainer" type="HBoxContainer" parent="FoldableContainer/VBoxContainer/MarginContainer/HBoxContainer/TypeChooser"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/TypeChooser/HBoxContainer"]
+[node name="Label" type="Label" parent="FoldableContainer/VBoxContainer/MarginContainer/HBoxContainer/TypeChooser/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -133,12 +71,38 @@ text = "Type"
 vertical_alignment = 1
 clip_text = true
 
-[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBoxContainer/VBoxContainer/TypeChooser/HBoxContainer"]
+[node name="OptionButton" type="OptionButton" parent="FoldableContainer/VBoxContainer/MarginContainer/HBoxContainer/TypeChooser/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 
-[node name="ContentHolder" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+[node name="Save" type="Button" parent="FoldableContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 visible = false
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+focus_mode = 0
+icon = ExtResource("5_va8p2")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Load" type="Button" parent="FoldableContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+focus_mode = 0
+icon = ExtResource("6_vo5tg")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Detach" type="Button" parent="FoldableContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+focus_mode = 0
+icon = ExtResource("7_epxcb")
+icon_alignment = 1
+expand_icon = true
+
+[node name="ContentHolder" type="MarginContainer" parent="FoldableContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
