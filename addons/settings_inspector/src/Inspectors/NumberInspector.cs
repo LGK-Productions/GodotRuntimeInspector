@@ -15,6 +15,8 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
     [Export] private Label _valueLabel;
 
     private Godot.Range? _range;
+
+    private double _internalValue;
     protected virtual double StepSize { get; set; } = 1;
 
     protected override void OnInitialize()
@@ -29,7 +31,7 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
         if (!double.TryParse(newtext, NumberStyles.Any, CultureInfo.InvariantCulture, out double value)) return;
         if (value % StepSize <= 0.000001 || value % StepSize >= StepSize - 0.000001)
         {
-            _spinBox.Value = value;
+            _internalValue = value;
         }
     }
 
@@ -45,12 +47,13 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
         base.SetValue(value);
         var val = (double)Convert.ChangeType(value, typeof(double));
         _range.SetValue(val);
+        _internalValue = val;
         SetValueLabel(val);
     }
 
     protected override object? GetValue()
     {
-        return Convert.ChangeType(_range.Value, typeof(T));
+        return Convert.ChangeType(_internalValue, typeof(T));
     }
 
     public override void SetEditable(bool editable)
@@ -62,12 +65,11 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
 
     private void OnNumberChanged(double value)
     {
-        SetValueLabel(value);
+        _internalValue = value;
+        SetValueLabel(_internalValue);
         OnValueChanged(new ValueChangeTree(this, value));
     }
-
-    private static readonly char[] Seperators = ['.', ','];
-
+    
     private void SetValueLabel(double value)
     {
         value *= 100;
