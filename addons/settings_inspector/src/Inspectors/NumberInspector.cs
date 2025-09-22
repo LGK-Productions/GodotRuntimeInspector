@@ -81,10 +81,10 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
     protected override void OnSetMetaData(MetaDataMember member)
     {
         base.OnSetMetaData(member);
-        _range = member.TryGetMetaData(new MetaDataKey<bool>(SliderAttribute.MetadataKey), out var metaData)
+        _range = member.TryGetMetaData(SliderAttribute.MetadataKey, out var metaData)
             ? _slider
             : _spinBox;
-        if (member.TryGetMetaData(new MetaDataKey<double>(StepSizeAttribute.MetadataKey), out var stepSize))
+        if (member.TryGetMetaData(StepSizeAttribute.MetadataKey, out var stepSize))
             StepSize = stepSize;
         if (member.TryGetMetaData(SuffixAttribute.MetadataKey, out var suffix))
             _spinBox.Suffix = suffix;

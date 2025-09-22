@@ -27,8 +27,6 @@ public partial class LineInspector : MemberInspector
 
     private async void OnFilePathButtonPressed()
     {
-        _fileDialogHandle.FileDialog.FileMode = FileDialog.FileModeEnum.OpenAny;
-
         SetValue(await _fileDialogHandle.WaitForFileSelectedAsync());
     }
 
@@ -47,7 +45,12 @@ public partial class LineInspector : MemberInspector
     {
         base.OnSetMetaData(member);
         _filePathButton.Visible =
-            member.CustomMetaData.TryGetValue(FilePathAttribute.MetadataKey, out var value) && value is bool and true;
+            member.TryGetMetaData(PathPickerAttribute.PickerTypeKey, out var value);
+        _fileDialogHandle.FileDialog.FileMode = value;
+        if (member.TryGetMetaData(PathPickerAttribute.FilterKey, out var filters))
+        {
+            _fileDialogHandle.FileDialog.Filters = filters;
+        }
     }
 
     protected override object? GetValue()

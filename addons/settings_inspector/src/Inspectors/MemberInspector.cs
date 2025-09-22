@@ -103,13 +103,13 @@ public abstract partial class MemberInspector : Control
     {
         _label?.Text = Element.MemberInfo.DisplayName;
         _label?.TooltipText = Element.MemberInfo.Description;
-        if (member.TryGetMetaData(new MetaDataKey<float>(LabelSizeAttribute.MetadataKey), out var labelSizeMultiplier))
+        if (member.TryGetMetaData(LabelSizeAttribute.MetadataKey, out var labelSizeMultiplier))
             _label?.SizeFlagsStretchRatio = labelSizeMultiplier;
         _wrapper?.AddMargin((int)member.Spacing.Top, (int)member.Spacing.Botton, (int)member.Spacing.Left,
             (int)member.Spacing.Right);
-        if (member.TryGetMetaData(new MetaDataKey<string>(LabelAttribute.TextKey), out var text))
+        if (member.TryGetMetaData(LabelAttribute.TextKey, out var text))
             _wrapper?.SetLabel(text);
-        if (member.TryGetMetaData(new MetaDataKey<int>(LabelAttribute.FontSizeKey), out var size))
+        if (member.TryGetMetaData(LabelAttribute.FontSizeKey, out var size))
             _wrapper?.SetLabelFontSize(size);
         _wrapper?.SetLine(member.HasLineAbove);
 

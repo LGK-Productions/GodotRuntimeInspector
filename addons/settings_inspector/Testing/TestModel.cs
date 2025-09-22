@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Timers;
+using Godot;
 using LgkProductions.Inspector;
 using LgkProductions.Inspector.Attributes;
 using SettingInspector.addons.settings_inspector.src.Attributes;
+using Orientation = LgkProductions.Inspector.Orientation;
+using Timer = System.Timers.Timer;
 
 namespace SettingInspector.addons.settings_inspector.Testing;
 
@@ -112,7 +114,8 @@ internal class TestModel
     [Description("This property should not be visible")]
     public string TestHidden { get; set; }
 
-    [Tab("Other")] [FilePath] public string TestFilePath { get; set; }
+    [Tab("Other")] [PathPicker(FileDialog.FileModeEnum.OpenFile, ["*.txt"])] public string TestFilePath { get; set; }
+    [Tab("Other")] [PathPicker(FileDialog.FileModeEnum.OpenDir)] public string TestDirPath { get; set; }
 
     [Tab("Other")]
     [Label("Testing Label")]
