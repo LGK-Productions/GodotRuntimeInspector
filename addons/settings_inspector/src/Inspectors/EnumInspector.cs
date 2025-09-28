@@ -29,7 +29,7 @@ public partial class EnumInspector : MemberInspector
     protected override void SetValue(object value)
     {
         base.SetValue(value);
-        if (Enum.IsDefined(value.GetType(), value) == false || ValueType == null) return;
+        if (!Enum.IsDefined(value.GetType(), value) || ValueType == null) return;
         var name = Enum.GetName(ValueType, value);
         if (name == null) return;
         _optionButton!.Selected = _enumLabels.IndexOf(name);

@@ -7,7 +7,7 @@ namespace SettingInspector.addons.settings_inspector.Attributes;
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
 public sealed class SuffixAttribute(string suffix) : InspectorAttribute
 {
-    public static readonly MetaDataKey<string> MetadataKey = new ("Suffix");
+    public static readonly MetaDataKey<string> MetadataKey = new("Suffix");
 
     public string Suffix { get; } = suffix;
 

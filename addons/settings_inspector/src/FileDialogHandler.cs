@@ -15,7 +15,7 @@ public static class FileDialogHandler
         fileDialog.CurrentDir = OS.HasFeature("editor")
             ? ProjectSettings.GlobalizePath("res://")
             : OS.GetExecutablePath().GetBaseDir();
-        fileDialog.RootSubfolder = String.Empty;
+        fileDialog.RootSubfolder = string.Empty;
         fileDialog.UseNativeDialog = true;
 
         return new FileDialogHandle(fileDialog);
@@ -23,13 +23,10 @@ public static class FileDialogHandler
 
     public class FileDialogHandle
     {
-        public FileDialog FileDialog { get; }
+        private readonly TaskCompletionSource<string> _dirSelectedTcs = new();
 
-        private TaskCompletionSource<string> _fileSelectedTcs = new TaskCompletionSource<string>();
-        private TaskCompletionSource<string> _dirSelectedTcs = new TaskCompletionSource<string>();
-        private TaskCompletionSource<string> _pathSelected = new TaskCompletionSource<string>();
-        public event Action<string>? FileSelected;
-        public event Action<string>? DirectorySelected;
+        private readonly TaskCompletionSource<string> _fileSelectedTcs = new();
+        private readonly TaskCompletionSource<string> _pathSelected = new();
 
         public FileDialogHandle(FileDialog fileDialog)
         {
@@ -37,6 +34,10 @@ public static class FileDialogHandler
             fileDialog.FileSelected += OnFileSelected;
             fileDialog.DirSelected += OnDirectorySelected;
         }
+
+        public FileDialog FileDialog { get; }
+        public event Action<string>? FileSelected;
+        public event Action<string>? DirectorySelected;
 
         public async Task<string> WaitForFileSelectedAsync()
         {

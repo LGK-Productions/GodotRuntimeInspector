@@ -9,6 +9,9 @@ namespace SettingInspector.addons.settings_inspector;
 
 public partial class MemberInspectorHandler : Control
 {
+    public const string Scope = "SettingInspector";
+
+    private ILogger? _logger;
     [Export] private PackedScene? _memberInspectorWindowScene;
     [Export] private bool _showTestingClass;
 
@@ -17,10 +20,6 @@ public partial class MemberInspectorHandler : Control
     public static MemberInspectorHandler? Instance { get; private set; }
 
     public static ILogger? Logger => Instance?._logger;
-
-    private ILogger? _logger;
-
-    public const string Scope = "SettingInspector";
 
     public override void _EnterTree()
     {
@@ -72,6 +71,15 @@ public partial class MemberInspectorHandler : Control
         return handle;
     }
 
+    /// <summary>
+    ///     Constructs a node containing an inspector of the given instance
+    /// </summary>
+    /// <param name="instance">The instance to create an inspector for</param>
+    /// <param name="flags">Additional layout flags</param>
+    /// <param name="removeInset">Whether the inset should be removed</param>
+    /// <typeparam name="T">The type of the instance</typeparam>
+    /// <returns>A MemberWrapper containing the inspector</returns>
+    /// <exception cref="NullReferenceException">Thrown if the instance is null or no MemberInspector instance exists</exception>
     public MemberWrapper ConstructMemberWrapper<T>(T instance,
         LayoutFlags flags = LayoutFlags.NotFoldable | LayoutFlags.NoLabel, bool removeInset = false)
     {

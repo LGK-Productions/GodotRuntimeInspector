@@ -14,14 +14,14 @@ public abstract partial class MemberInspector : Control
 {
     [Export] private Control? _background;
 
-    protected InspectorElement? Element;
-
     private bool _initialized;
     [Export] private Label? _label;
     [Export] private MarginContainer? _marginContainer;
     private MemberWrapper? _wrapper;
 
     protected bool Editable = true;
+
+    protected InspectorElement? Element;
     protected LayoutFlags LayoutFlags;
     protected MemberUiInfo MemberUiInfo;
 
@@ -162,7 +162,7 @@ public abstract partial class MemberInspector : Control
         SetValue(value);
     }
 
-    public bool TryRetrieveMember([NotNullWhen(true)]out object? result)
+    public bool TryRetrieveMember([NotNullWhen(true)] out object? result)
     {
         result = null;
         if (ValueType == null)
@@ -184,7 +184,7 @@ public abstract partial class MemberInspector : Control
         return false;
     }
 
-    public bool TryRetrieveMember<T>([NotNullWhen(true)]out T? result)
+    public bool TryRetrieveMember<T>([NotNullWhen(true)] out T? result)
     {
         result = default;
         if (ValueType != typeof(T))
@@ -192,6 +192,7 @@ public abstract partial class MemberInspector : Control
             MemberInspectorHandler.Logger?.LogError("Could not retrieve member, due to type not matching");
             return false;
         }
+
         try
         {
             result = (T?)Convert.ChangeType(GetValue(), typeof(T));

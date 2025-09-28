@@ -8,10 +8,10 @@ namespace SettingInspector.addons.settings_inspector;
 public partial class OptionButton : Control
 {
     private object[]? _currentOptions;
+    [Export] private Godot.OptionButton? _optionButton;
     public Action<int>? IndexSelected;
 
     public Action<object>? ItemSelected;
-    [Export] private Godot.OptionButton? _optionButton;
 
     public int SelectedIndex => _optionButton!.Selected;
     public object? Selected => _currentOptions?[SelectedIndex];

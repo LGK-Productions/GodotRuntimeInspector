@@ -5,18 +5,18 @@ using Godot;
 using LgkProductions.Inspector.MetaData;
 using SettingInspector.addons.settings_inspector.Attributes;
 using SettingInspector.addons.settings_inspector.ValueTree;
+using Range = Godot.Range;
 
 namespace SettingInspector.addons.settings_inspector.Inspectors;
 
 public partial class NumberInspector<T> : MemberInspector where T : struct, INumber<T>
 {
-    [Export] private SpinBox? _spinBox;
-    [Export] private Slider? _slider;
-    [Export] private Label? _valueLabel;
-
-    private Godot.Range? _range;
-
     private double _internalValue;
+
+    private Range? _range;
+    [Export] private Slider? _slider;
+    [Export] private SpinBox? _spinBox;
+    [Export] private Label? _valueLabel;
     protected virtual double StepSize { get; set; } = 1;
 
     protected override void OnInitialize()
@@ -28,11 +28,8 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
 
     private void OnTextChanged(string newtext)
     {
-        if (!double.TryParse(newtext, NumberStyles.Any, CultureInfo.InvariantCulture, out double value)) return;
-        if (value % StepSize <= 0.000001 || value % StepSize >= StepSize - 0.000001)
-        {
-            _internalValue = value;
-        }
+        if (!double.TryParse(newtext, NumberStyles.Any, CultureInfo.InvariantCulture, out var value)) return;
+        if (value % StepSize <= 0.000001 || value % StepSize >= StepSize - 0.000001) _internalValue = value;
     }
 
     protected override void OnRemove()
@@ -69,11 +66,11 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
         SetValueLabel(_internalValue);
         OnValueChanged(new ValueChangeTree(this, value));
     }
-    
+
     private void SetValueLabel(double value)
     {
         value *= 100;
-        int valInt = (int)Math.Round(value);
+        var valInt = (int)Math.Round(value);
         var valueText = (valInt / 100f).ToString(CultureInfo.InvariantCulture);
         _valueLabel!.Text = valueText.TrimEnd('0');
     }

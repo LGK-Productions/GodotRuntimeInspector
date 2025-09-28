@@ -71,10 +71,7 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
 
     public void SetEditable(bool editable)
     {
-        foreach (var (_, memberInspector) in _inspectors)
-        {
-            memberInspector.SetEditable(editable);
-        }
+        foreach (var (_, memberInspector) in _inspectors) memberInspector.SetEditable(editable);
     }
 
     public IEnumerator<(InspectorElement, MemberInspector)> GetEnumerator()

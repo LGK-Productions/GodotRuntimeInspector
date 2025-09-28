@@ -8,9 +8,9 @@ namespace SettingInspector.addons.settings_inspector.Inspectors;
 public partial class ToggleInspector : MemberInspector
 {
     [Export] private Button? _checkbox;
-    [Export] private Button? _toggle;
 
     private Button? _resolvedButton;
+    [Export] private Button? _toggle;
 
     protected override void OnInitialize()
     {
@@ -47,13 +47,9 @@ public partial class ToggleInspector : MemberInspector
         _checkbox!.Visible = false;
         _toggle!.Visible = false;
         if (member.TryGetMetaData(CheckboxAttribute.MetadataKey, out var res) && res)
-        {
             _resolvedButton = _checkbox;
-        }
         else
-        {
             _resolvedButton = _toggle;
-        }
 
         _resolvedButton.Visible = true;
         base.OnSetMetaData(member);

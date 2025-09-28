@@ -10,7 +10,8 @@ public class ValueChangeTree(MemberInspector member, object newValue, ValueChang
 
     public override string ToString()
     {
-        return Child == null ? $"{Member.ValueType.Name}: {NewValue}"
-                : $"{Member.ValueType.Name}: {NewValue}\n{Child}";
+        return Child == null
+            ? $"{Member.ValueType.Name}: {NewValue}"
+            : $"{Member.ValueType.Name}: {NewValue}\n{Child}";
     }
 }

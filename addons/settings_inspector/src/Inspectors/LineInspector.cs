@@ -48,9 +48,7 @@ public partial class LineInspector : MemberInspector
             member.TryGetMetaData(PathPickerAttribute.PickerTypeKey, out var value);
         _fileDialogHandle.FileDialog.FileMode = value;
         if (member.TryGetMetaData(PathPickerAttribute.FilterKey, out var filters))
-        {
             _fileDialogHandle.FileDialog.Filters = filters;
-        }
     }
 
     protected override object? GetValue()

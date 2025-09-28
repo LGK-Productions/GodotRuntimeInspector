@@ -8,7 +8,7 @@ namespace SettingInspector.addons.settings_inspector.Attributes;
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
 public sealed class SpacingAttribute(int top = 0, int bottom = 0, int left = 0, int right = 0) : InspectorAttribute
 {
-    public static readonly MetaDataKey<string> MetadataKey = new ("Suffix");
+    public static readonly MetaDataKey<string> MetadataKey = new("Suffix");
 
     public int Top { get; } = top;
     public int Bottom { get; } = bottom;

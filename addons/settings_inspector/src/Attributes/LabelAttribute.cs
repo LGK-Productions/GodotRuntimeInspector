@@ -7,7 +7,7 @@ namespace SettingInspector.addons.settings_inspector.Attributes;
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
 public sealed class LabelAttribute(string text, int fontSize = 20) : InspectorAttribute
 {
-    public static readonly MetaDataKey<string> TextKey = new ("LabelText");
+    public static readonly MetaDataKey<string> TextKey = new("LabelText");
     public static readonly MetaDataKey<int> FontSizeKey = new("LabelFontSize");
 
     public string Text { get; } = text;
