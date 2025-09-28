@@ -5,34 +5,34 @@ using System.Linq;
 using Godot;
 using LgkProductions.Inspector;
 using LgkProductions.Inspector.MetaData;
-using SettingInspector.addons.settings_inspector.src.Inspectors.InspectorCollections;
-using SettingInspector.addons.settings_inspector.src.ValueTree;
+using SettingInspector.addons.settings_inspector.Inspectors.InspectorCollections;
+using SettingInspector.addons.settings_inspector.ValueTree;
 
-namespace SettingInspector.addons.settings_inspector.src.Inspectors;
+namespace SettingInspector.addons.settings_inspector.Inspectors;
 
 public partial class ListInspector : MemberInspector
 {
 	private readonly List<ListElement> _listElements = new();
-	[Export] private Button _addButton;
-	[Export] private MenuButton _addMenuButton;
+	[Export] private Button? _addButton;
+	[Export] private MenuButton? _addMenuButton;
 	private List<Type>? _assignableTypes;
 	[Export] private FoldableContainer? _foldableContainer;
 
 	private IList? _list;
-	[Export] private PackedScene _listElementScene;
+	[Export] private PackedScene? _listElementScene;
 	private Type? _listElementType;
-	[Export] private Control _memberParent;
+	[Export] private Control? _memberParent;
 
 	protected override void OnInitialize()
 	{
-		_addButton.Pressed += AppendNewListElement;
-		_addMenuButton.GetPopup().IndexPressed += AppendListElement;
+		_addButton!.Pressed += AppendNewListElement;
+		_addMenuButton!.GetPopup().IndexPressed += AppendListElement;
 	}
 
 	protected override void OnRemove()
 	{
-		_addButton.Pressed -= AppendNewListElement;
-		_addMenuButton.GetPopup().IndexPressed -= AppendListElement;
+		_addButton!.Pressed -= AppendNewListElement;
+		_addMenuButton!.GetPopup().IndexPressed -= AppendListElement;
 	}
 
 	protected override object? GetValue()
@@ -56,8 +56,8 @@ public partial class ListInspector : MemberInspector
 			_foldableContainer?.Title = ValueType?.Name;
 		
 		_listElementType = list.GetType().GetGenericArguments()[0];
-		_addButton.Visible = !(_listElementType.IsAbstract || _listElementType.IsInterface);
-		_addMenuButton.Visible = _listElementType.IsAbstract || _listElementType.IsInterface;
+		_addButton!.Visible = !(_listElementType.IsAbstract || _listElementType.IsInterface);
+		_addMenuButton!.Visible = _listElementType.IsAbstract || _listElementType.IsInterface;
 		if (_listElementType.IsAbstract || _listElementType.IsInterface)
 		{
 			var popupMenu = _addMenuButton.GetPopup();
@@ -91,13 +91,13 @@ public partial class ListInspector : MemberInspector
 		if (_listElementType == null) return;
 		var memberWrapper = MemberInspectorHandler.Instance?.MemberWrapperScene?.Instantiate<MemberWrapper>();
 		memberWrapper.SetMemberType(_listElementType);
-		var listElementInstance = _listElementScene.Instantiate<ListElement>();
+		var listElementInstance = _listElementScene!.Instantiate<ListElement>();
 		var memberUiInfo = MemberUiInfo.Default;
 		if (value.GetType() != _listElementType)
-			memberUiInfo = memberUiInfo with { parentType = _listElementType };
+			memberUiInfo = memberUiInfo with { ParentType = _listElementType };
 		memberWrapper.MemberInspector.SetInstance(value, memberUiInfo);
 		listElementInstance.SetMemberInspector(memberWrapper.MemberInspector, this);
-		_memberParent.AddChild(listElementInstance);
+		_memberParent!.AddChild(listElementInstance);
 		_listElements.Add(listElementInstance);
 		listElementInstance.ValueChanged += OnChildValueChanged;
 	}
@@ -139,7 +139,7 @@ public partial class ListInspector : MemberInspector
 		if (targetIndex >= _listElements.Count || targetIndex < 0) return;
 		_listElements.RemoveAt(index);
 		_listElements.Insert(targetIndex, element);
-		_memberParent.MoveChild(element, targetIndex);
+		_memberParent!.MoveChild(element, targetIndex);
 	}
 
 	public override void SetEditable(bool editable)
@@ -147,7 +147,7 @@ public partial class ListInspector : MemberInspector
 		base.SetEditable(editable);
 		foreach (var inspector in _listElements) inspector.SetEditable(editable);
 
-		_addButton.Disabled = !editable;
+		_addButton!.Disabled = !editable;
 	}
 
 	private void OnChildValueChanged(ValueChangeTree tree)
@@ -158,7 +158,7 @@ public partial class ListInspector : MemberInspector
 	protected override void OnSetMetaData(MetaDataMember member)
 	{
 		base.OnSetMetaData(member);
-		_addButton.Disabled = member.IsReadOnly;
+		_addButton!.Disabled = member.IsReadOnly;
 		_foldableContainer?.Title = member.Name;
 		_foldableContainer?.TooltipText = member.Description;
 	}
@@ -182,7 +182,7 @@ public partial class ListInspector : MemberInspector
 
 		if (flags.IsSet(LayoutFlags.NoElements))
 		{
-			_addButton.Visible = false;
+			_addButton!.Visible = false;
 		}
 	}
 }

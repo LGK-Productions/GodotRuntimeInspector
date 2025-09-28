@@ -3,17 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using Godot;
 using LgkProductions.Inspector;
-using SettingInspector.addons.settings_inspector.src.ValueTree;
+using SettingInspector.addons.settings_inspector.ValueTree;
 
-namespace SettingInspector.addons.settings_inspector.src.Inspectors.InspectorCollections;
+namespace SettingInspector.addons.settings_inspector.Inspectors.InspectorCollections;
 
 public partial class MemberInspectorCollection : Control, IMemberInspectorCollection
 {
     private readonly List<(InspectorElement, MemberInspector)> _inspectors = new();
     private readonly Dictionary<string, MemberGroup> _memberGroups = new();
-    [Export] private PackedScene _boxGroupScene;
-    [Export] private Node _memberInspectorParent;
-    [Export] private ScrollContainer _scrollContainer;
+    [Export] private PackedScene? _boxGroupScene;
+    [Export] private Node? _memberInspectorParent;
+    [Export] private ScrollContainer? _scrollContainer;
 
     public void SetMemberInspector(Inspector inspector)
     {
@@ -32,14 +32,14 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
 
         if (groupLayout == null)
         {
-            _memberInspectorParent.AddChild(memberWrapper);
+            _memberInspectorParent!.AddChild(memberWrapper);
         }
         else
         {
             if (!_memberGroups.TryGetValue(groupLayout.Title, out var group))
             {
-                var memberGroupNode = groupScene.Instantiate();
-                _memberInspectorParent.AddChild(memberGroupNode);
+                var memberGroupNode = groupScene!.Instantiate();
+                _memberInspectorParent!.AddChild(memberGroupNode);
                 group = (MemberGroup)memberGroupNode;
                 group.SetGroup(groupLayout);
                 _memberGroups.Add(groupLayout.Title, group);
@@ -91,18 +91,18 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
 
     public void SetScrollable(bool scrollable)
     {
-        var parent = _memberInspectorParent.GetParent();
+        var parent = _memberInspectorParent!.GetParent();
         _memberInspectorParent.Owner = null;
         if (!scrollable)
         {
-            _scrollContainer.Visible = false;
+            _scrollContainer!.Visible = false;
             if (parent is not ScrollContainer) return;
             parent.RemoveChild(_memberInspectorParent);
             parent.GetParent().AddChild(_memberInspectorParent);
         }
         else
         {
-            _scrollContainer.Visible = true;
+            _scrollContainer!.Visible = true;
             if (parent is ScrollContainer) return;
             parent.RemoveChild(_memberInspectorParent);
             _scrollContainer.AddChild(_memberInspectorParent);

@@ -1,25 +1,24 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Net.Http;
 using Godot;
 using LgkProductions.Inspector;
 using LgkProductions.Inspector.MetaData;
 using Microsoft.Extensions.Logging;
-using SettingInspector.addons.settings_inspector.src.Attributes;
-using SettingInspector.addons.settings_inspector.src.ValueTree;
+using SettingInspector.addons.settings_inspector.Attributes;
+using SettingInspector.addons.settings_inspector.ValueTree;
 
-namespace SettingInspector.addons.settings_inspector.src.Inspectors;
+namespace SettingInspector.addons.settings_inspector.Inspectors;
 
 public abstract partial class MemberInspector : Control
 {
-    [Export] private Control _background;
+    [Export] private Control? _background;
 
     protected InspectorElement? Element;
 
     private bool _initialized;
     [Export] private Label? _label;
-    [Export] private MarginContainer _marginContainer;
+    [Export] private MarginContainer? _marginContainer;
     private MemberWrapper? _wrapper;
 
     protected bool Editable = true;
@@ -37,7 +36,7 @@ public abstract partial class MemberInspector : Control
         var isAssignableType = ValueType.IsAbstract || ValueType.IsInterface;
         if (isAssignableType)
         {
-            memberUiInfo = memberUiInfo with { parentType = iElement.MemberInfo.Type };
+            memberUiInfo = memberUiInfo with { ParentType = iElement.MemberInfo.Type };
             var availableTypes = Util.GetAssignableTypes(ValueType).ToArray();
             if (availableTypes.Length > 0) ValueType = availableTypes[0];
         }

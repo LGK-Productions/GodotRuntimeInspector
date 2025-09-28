@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Godot;
 using Godot.Collections;
 
-namespace SettingInspector.addons.settings_inspector.src.Inspectors;
+namespace SettingInspector.addons.settings_inspector.Inspectors;
 
 public partial class MemberWrapper : MarginContainer
 {

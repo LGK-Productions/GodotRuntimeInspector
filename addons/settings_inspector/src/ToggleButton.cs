@@ -1,11 +1,11 @@
 using Godot;
 
-namespace SettingInspector.addons.settings_inspector.src;
+namespace SettingInspector.addons.settings_inspector;
 
 public partial class ToggleButton : Button
 {
-    [Export] private Texture2D _offTexture;
-    [Export] private Texture2D _onTexture;
+    [Export] private Texture2D? _offTexture;
+    [Export] private Texture2D? _onTexture;
 
     public override void _EnterTree()
     {

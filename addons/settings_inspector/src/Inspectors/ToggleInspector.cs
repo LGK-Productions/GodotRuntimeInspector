@@ -1,51 +1,51 @@
 using Godot;
 using LgkProductions.Inspector.MetaData;
-using SettingInspector.addons.settings_inspector.src.Attributes;
-using SettingInspector.addons.settings_inspector.src.ValueTree;
+using SettingInspector.addons.settings_inspector.Attributes;
+using SettingInspector.addons.settings_inspector.ValueTree;
 
-namespace SettingInspector.addons.settings_inspector.src.Inspectors;
+namespace SettingInspector.addons.settings_inspector.Inspectors;
 
 public partial class ToggleInspector : MemberInspector
 {
-    [Export] private Button _checkbox;
-    [Export] private Button _toggle;
+    [Export] private Button? _checkbox;
+    [Export] private Button? _toggle;
 
-    private Button _resolvedButton;
+    private Button? _resolvedButton;
 
     protected override void OnInitialize()
     {
         _resolvedButton = _toggle;
-        _checkbox.Pressed += OnPressed;
-        _toggle.Pressed += OnPressed;
+        _checkbox!.Pressed += OnPressed;
+        _toggle!.Pressed += OnPressed;
     }
 
     protected override void OnRemove()
     {
-        _checkbox.Pressed -= OnPressed;
-        _toggle.Pressed -= OnPressed;
+        _checkbox!.Pressed -= OnPressed;
+        _toggle!.Pressed -= OnPressed;
     }
 
     protected override void SetValue(object value)
     {
         base.SetValue(value);
-        _resolvedButton.SetPressed((bool)value);
+        _resolvedButton!.SetPressed((bool)value);
     }
 
-    protected override object? GetValue()
+    protected override object GetValue()
     {
-        return _resolvedButton.IsPressed();
+        return _resolvedButton!.IsPressed();
     }
 
     public override void SetEditable(bool editable)
     {
         base.SetEditable(editable);
-        _resolvedButton.Disabled = !editable;
+        _resolvedButton!.Disabled = !editable;
     }
 
     protected override void OnSetMetaData(MetaDataMember member)
     {
-        _checkbox.Visible = false;
-        _toggle.Visible = false;
+        _checkbox!.Visible = false;
+        _toggle!.Visible = false;
         if (member.TryGetMetaData(CheckboxAttribute.MetadataKey, out var res) && res)
         {
             _resolvedButton = _checkbox;
@@ -61,6 +61,6 @@ public partial class ToggleInspector : MemberInspector
 
     private void OnPressed()
     {
-        OnValueChanged(new ValueChangeTree(this, _resolvedButton.IsPressed()));
+        OnValueChanged(new ValueChangeTree(this, _resolvedButton!.IsPressed()));
     }
 }

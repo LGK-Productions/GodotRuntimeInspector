@@ -2,34 +2,33 @@ using Godot;
 using LgkProductions.Inspector;
 using Orientation = LgkProductions.Inspector.Orientation;
 
-namespace SettingInspector.addons.settings_inspector.src.Inspectors.InspectorCollections;
+namespace SettingInspector.addons.settings_inspector.Inspectors.InspectorCollections;
 
 public partial class MemberGroup : Control
 {
-    [Export] private Control _background;
-    [Export] private Button _expandButton;
-    [Export] private Label _groupNameLabel;
+    [Export] private Control? _background;
+    [Export] private Button? _expandButton;
+    [Export] private Label? _groupNameLabel;
 
     private BoxContainer? _memberParent;
-    [Export] private HBoxContainer _memberParentHorizontal;
-    [Export] private VBoxContainer _memberParentVertical;
+    [Export] private HBoxContainer? _memberParentHorizontal;
+    [Export] private VBoxContainer? _memberParentVertical;
 
     public override void _EnterTree()
     {
         base._EnterTree();
-        _expandButton.Toggled += ExpandButtonToggled;
+        _expandButton!.Toggled += ExpandButtonToggled;
     }
 
     public override void _ExitTree()
     {
         base._ExitTree();
-        _expandButton.Toggled -= ExpandButtonToggled;
+        _expandButton!.Toggled -= ExpandButtonToggled;
     }
 
     private void ExpandButtonToggled(bool on)
     {
-        if (_memberParent != null)
-            _memberParent.Visible = on;
+        _memberParent?.Visible = on;
     }
 
     public void SetGroup(GroupLayout groupLayout)
@@ -41,17 +40,17 @@ public partial class MemberGroup : Control
             _ => _memberParent
         };
 
-        _expandButton.Visible = !groupLayout.LayoutFlags.IsSet(LayoutFlags.NotFoldable);
+        _expandButton!.Visible = !groupLayout.LayoutFlags.IsSet(LayoutFlags.NotFoldable);
         ExpandButtonToggled(true);
 
-        _groupNameLabel.Text = groupLayout.Title;
+        _groupNameLabel!.Text = groupLayout.Title;
         _groupNameLabel.Visible = !groupLayout.LayoutFlags.IsSet(LayoutFlags.NoLabel);
-        _background.Visible = !groupLayout.LayoutFlags.IsSet(LayoutFlags.NoBackground);
-        _memberParent.Visible = groupLayout.LayoutFlags.IsSet(LayoutFlags.ExpandedInitially);
+        _background!.Visible = !groupLayout.LayoutFlags.IsSet(LayoutFlags.NoBackground);
+        _memberParent!.Visible = groupLayout.LayoutFlags.IsSet(LayoutFlags.ExpandedInitially);
     }
 
     public void AddMember(MemberWrapper memberWrapper)
     {
-        _memberParent.AddChild(memberWrapper);
+        _memberParent!.AddChild(memberWrapper);
     }
 }

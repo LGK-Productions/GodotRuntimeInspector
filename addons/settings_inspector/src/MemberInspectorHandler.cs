@@ -2,20 +2,20 @@ using System;
 using Godot;
 using LgkProductions.Inspector;
 using Microsoft.Extensions.Logging;
-using SettingInspector.addons.settings_inspector.src.Inspectors;
+using SettingInspector.addons.settings_inspector.Inspectors;
 using SettingInspector.addons.settings_inspector.Testing;
 
-namespace SettingInspector.addons.settings_inspector.src;
+namespace SettingInspector.addons.settings_inspector;
 
 public partial class MemberInspectorHandler : Control
 {
-    [Export] private PackedScene _memberInspectorWindowScene;
+    [Export] private PackedScene? _memberInspectorWindowScene;
     [Export] private bool _showTestingClass;
 
     [Export] public PackedScene? MemberWrapperScene;
 
     public static MemberInspectorHandler? Instance { get; private set; }
-    
+
     public static ILogger? Logger => Instance?._logger;
 
     private ILogger? _logger;
@@ -62,9 +62,9 @@ public partial class MemberInspectorHandler : Control
     {
         if (instance == null) throw new NullReferenceException("instance is null");
 
-        var memberInspectorWrapper = _memberInspectorWindowScene.Instantiate<IMemberInspectorWrapper>();
+        var memberInspectorWrapper = _memberInspectorWindowScene!.Instantiate<IMemberInspectorWrapper>();
         AddChild(memberInspectorWrapper.RootNode);
-        var wrapper = MemberWrapperScene.Instantiate<MemberWrapper>();
+        var wrapper = MemberWrapperScene!.Instantiate<MemberWrapper>();
         memberInspectorWrapper.RootNode.AddChild(wrapper);
         var handle = new MemberInspectorHandle<T>(instance, wrapper, memberInspectorWrapper);
         memberInspectorWrapper.SetHandle(handle);
@@ -72,9 +72,12 @@ public partial class MemberInspectorHandler : Control
         return handle;
     }
 
-    public MemberWrapper ConstructMemberWrapper<T>(T instance, LayoutFlags flags = LayoutFlags.NotFoldable | LayoutFlags.NoLabel, bool removeInset = false)
+    public MemberWrapper ConstructMemberWrapper<T>(T instance,
+        LayoutFlags flags = LayoutFlags.NotFoldable | LayoutFlags.NoLabel, bool removeInset = false)
     {
-        var memberWrapper = MemberInspectorHandler.Instance.MemberWrapperScene.Instantiate<MemberWrapper>();
+        if (instance is null) throw new NullReferenceException("instance is null");
+        if (Instance is null) throw new NullReferenceException("No Member Inspector instance found");
+        var memberWrapper = Instance.MemberWrapperScene!.Instantiate<MemberWrapper>();
         memberWrapper.SetMemberType(typeof(T));
         memberWrapper.MemberInspector.SetInstance(instance, MemberUiInfo.Default, flags);
         if (removeInset)
@@ -92,6 +95,7 @@ public class MemberInspectorHandle<T> : IInspectorHandle
         Root = root;
         RootInspectorWrapper = memberWrapper;
         RootInspectorWrapper.SetMemberType(typeof(T));
+        if (instance is null) return;
         RootInspectorWrapper.MemberInspector.SetInstance(instance,
             new MemberUiInfo { AllowTabs = true, Scrollable = true },
             LayoutFlags.NotFoldable | LayoutFlags.NoBackground);

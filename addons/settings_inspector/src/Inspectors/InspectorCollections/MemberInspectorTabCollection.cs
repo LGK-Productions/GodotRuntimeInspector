@@ -3,15 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using Godot;
 using LgkProductions.Inspector;
-using SettingInspector.addons.settings_inspector.src.ValueTree;
+using SettingInspector.addons.settings_inspector.ValueTree;
 
-namespace SettingInspector.addons.settings_inspector.src.Inspectors.InspectorCollections;
+namespace SettingInspector.addons.settings_inspector.Inspectors.InspectorCollections;
 
 public partial class MemberInspectorTabCollection : Control, IMemberInspectorCollection
 {
     private readonly Dictionary<string, IMemberInspectorCollection> _tabs = new();
-    [Export] private PackedScene _memberCollectionScene;
-    [Export] private TabContainer _tabContainer;
+    [Export] private PackedScene? _memberCollectionScene;
+    [Export] private TabContainer? _tabContainer;
 
 
     public IEnumerator<(InspectorElement, MemberInspector)> GetEnumerator()
@@ -41,16 +41,16 @@ public partial class MemberInspectorTabCollection : Control, IMemberInspectorCol
         }
         else
         {
-            var collectionNode = _memberCollectionScene.Instantiate();
+            var collectionNode = _memberCollectionScene!.Instantiate();
             var memberCollection = (IMemberInspectorCollection)collectionNode;
             collectionNode.Name = tab;
-            _tabContainer.AddChild(collectionNode);
+            _tabContainer!.AddChild(collectionNode);
             memberCollection.AddElement(element);
             _tabs.Add(tab, memberCollection);
             memberCollection.ValueChanged += OnChildValueChanged;
         }
 
-        _tabContainer.TabsVisible = _tabs.Count > 1;
+        _tabContainer!.TabsVisible = _tabs.Count > 1;
     }
 
     public void WriteBack()

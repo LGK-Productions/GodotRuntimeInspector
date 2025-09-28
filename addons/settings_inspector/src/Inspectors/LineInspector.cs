@@ -1,28 +1,28 @@
 using Godot;
 using LgkProductions.Inspector.MetaData;
-using SettingInspector.addons.settings_inspector.src.Attributes;
-using SettingInspector.addons.settings_inspector.src.ValueTree;
+using SettingInspector.addons.settings_inspector.Attributes;
+using SettingInspector.addons.settings_inspector.ValueTree;
 
-namespace SettingInspector.addons.settings_inspector.src.Inspectors;
+namespace SettingInspector.addons.settings_inspector.Inspectors;
 
 public partial class LineInspector : MemberInspector
 {
-    private FileDialogHandler.FileDialogHandle _fileDialogHandle = FileDialogHandler.CreateNative();
-    [Export] private Button _filePathButton;
-    [Export] private LineEdit _lineEdit;
+    private readonly FileDialogHandler.FileDialogHandle _fileDialogHandle = FileDialogHandler.CreateNative();
+    [Export] private Button? _filePathButton;
+    [Export] private LineEdit? _lineEdit;
 
     protected override void OnInitialize()
     {
-        _lineEdit.TextChanged += OnTextChanged;
-        _filePathButton.Pressed += OnFilePathButtonPressed;
+        _lineEdit!.TextChanged += OnTextChanged;
+        _filePathButton!.Pressed += OnFilePathButtonPressed;
         if (_fileDialogHandle.FileDialog.GetParent() == null)
             AddChild(_fileDialogHandle.FileDialog);
     }
 
     protected override void OnRemove()
     {
-        _lineEdit.TextChanged -= OnTextChanged;
-        _filePathButton.Pressed -= OnFilePathButtonPressed;
+        _lineEdit!.TextChanged -= OnTextChanged;
+        _filePathButton!.Pressed -= OnFilePathButtonPressed;
     }
 
     private async void OnFilePathButtonPressed()
@@ -38,13 +38,13 @@ public partial class LineInspector : MemberInspector
     protected override void SetValue(object value)
     {
         base.SetValue(value);
-        _lineEdit.Text = value.ToString();
+        _lineEdit!.Text = value.ToString();
     }
 
     protected override void OnSetMetaData(MetaDataMember member)
     {
         base.OnSetMetaData(member);
-        _filePathButton.Visible =
+        _filePathButton!.Visible =
             member.TryGetMetaData(PathPickerAttribute.PickerTypeKey, out var value);
         _fileDialogHandle.FileDialog.FileMode = value;
         if (member.TryGetMetaData(PathPickerAttribute.FilterKey, out var filters))
@@ -55,13 +55,13 @@ public partial class LineInspector : MemberInspector
 
     protected override object? GetValue()
     {
-        return _lineEdit.Text;
+        return _lineEdit!.Text;
     }
 
     public override void SetEditable(bool editable)
     {
         base.SetEditable(editable);
-        _lineEdit.Editable = editable;
-        _filePathButton.Disabled = !editable;
+        _lineEdit!.Editable = editable;
+        _filePathButton!.Disabled = !editable;
     }
 }

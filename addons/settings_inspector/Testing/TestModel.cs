@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using Godot;
 using LgkProductions.Inspector;
 using LgkProductions.Inspector.Attributes;
-using SettingInspector.addons.settings_inspector.src.Attributes;
+using SettingInspector.addons.settings_inspector.Attributes;
 using Orientation = LgkProductions.Inspector.Orientation;
 using Timer = System.Timers.Timer;
 
@@ -24,6 +24,8 @@ internal class TestModel
     #region Primitives
 
     [Tab("Primitives")] public bool TestBool { get; set; }
+    
+    [Tab("Primitives")] [Checkbox] public bool TestCheckbox { get; set; }
 
     [Tab("Primitives")] public int TestInt { get; set; }
 

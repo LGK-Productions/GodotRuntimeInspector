@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LgkProductions.Inspector;
 
-namespace SettingInspector.addons.settings_inspector.src;
+namespace SettingInspector.addons.settings_inspector;
 
 public static class Util
 {
@@ -27,7 +27,7 @@ public static class Util
             instance = Activator.CreateInstance(type);
             return true;
         }
-        catch (Exception e)
+        catch
         {
             return false;
         }

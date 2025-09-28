@@ -8,11 +8,11 @@ using Godot;
 using LgkProductions.Inspector;
 using LgkProductions.Inspector.MetaData;
 using Microsoft.Extensions.Logging;
-using SettingInspector.addons.settings_inspector.src.Inspectors.InspectorCollections;
-using SettingInspector.addons.settings_inspector.src.ValueTree;
+using SettingInspector.addons.settings_inspector.Inspectors.InspectorCollections;
+using SettingInspector.addons.settings_inspector.ValueTree;
 using Timer = System.Timers.Timer;
 
-namespace SettingInspector.addons.settings_inspector.src.Inspectors;
+namespace SettingInspector.addons.settings_inspector.Inspectors;
 
 public partial class ClassInspector : MemberInspector
 {
@@ -33,27 +33,27 @@ public partial class ClassInspector : MemberInspector
 	private Type[]? _assignables;
 	
 
-	private FileDialogHandler.FileDialogHandle _fileDialogHandle = FileDialogHandler.CreateNative();
+	private readonly FileDialogHandler.FileDialogHandle _fileDialogHandle = FileDialogHandler.CreateNative();
 
 	private object? _instance;
 	[Export] private FoldableContainer? _foldableContainer;
 	[Export] private Button? _loadButton;
 	private Node? _memberCollectionNode;
-	[Export] private PackedScene _memberCollectionScene;
-	[Export] private Control _memberParent;
-	[Export] private PackedScene _memberTabCollectionScene;
+	[Export] private PackedScene? _memberCollectionScene;
+	[Export] private Control? _memberParent;
+	[Export] private PackedScene? _memberTabCollectionScene;
 	[Export] private Button? _saveButton;
-	[Export] private OptionButton _typeChooser;
+	[Export] private OptionButton? _typeChooser;
 	[Export] private Button? _unattachButton;
-	private IMemberInspectorCollection? MemberInspectorCollection => (IMemberInspectorCollection)_memberCollectionNode;
+	private IMemberInspectorCollection? MemberInspectorCollection => (IMemberInspectorCollection?)_memberCollectionNode;
 
 	protected override void OnInitialize()
 	{
 		base.OnInitialize();
-		_unattachButton.Pressed += UnattachPressed;
-		_loadButton.Pressed += LoadPressed;
-		_saveButton.Pressed += SavePressed;
-		_typeChooser.IndexSelected += TypeIndexSelected;
+		_unattachButton!.Pressed += UnattachPressed;
+		_loadButton!.Pressed += LoadPressed;
+		_saveButton!.Pressed += SavePressed;
+		_typeChooser!.IndexSelected += TypeIndexSelected;
 		if (_fileDialogHandle.FileDialog.GetParent() == null)
 			AddChild(_fileDialogHandle.FileDialog);
 	}
@@ -61,10 +61,10 @@ public partial class ClassInspector : MemberInspector
 	protected override void OnRemove()
 	{
 		base.OnRemove();
-		_unattachButton.Pressed -= UnattachPressed;
-		_loadButton.Pressed -= LoadPressed;
-		_saveButton.Pressed -= SavePressed;
-		_typeChooser.IndexSelected += TypeIndexSelected;
+		_unattachButton!.Pressed -= UnattachPressed;
+		_loadButton!.Pressed -= LoadPressed;
+		_saveButton!.Pressed -= SavePressed;
+		_typeChooser!.IndexSelected += TypeIndexSelected;
 	}
 
 	protected override void SetValue(object classInstance)
@@ -77,7 +77,7 @@ public partial class ClassInspector : MemberInspector
 		_saveButton?.SetVisible(_saveButton.Visible && serializable);
 		_loadButton?.SetVisible(_loadButton.Visible && serializable);
 		_unattachButton?.SetVisible(_unattachButton.Visible && AllowUnattach);
-		_typeChooser.Visible = MemberUiInfo.parentType != null;
+		_typeChooser!.Visible = MemberUiInfo.ParentType != null;
 		
 		if (_assignables != null)
 			_typeChooser.SetSelectedIndex(Array.IndexOf(_assignables, classInstance.GetType()));
@@ -85,8 +85,8 @@ public partial class ClassInspector : MemberInspector
 			_foldableContainer?.Title = ValueType?.Name;
 
 		_memberCollectionNode =
-			(MemberUiInfo.AllowTabs ? _memberTabCollectionScene : _memberCollectionScene).Instantiate();
-		_memberParent.AddChild(_memberCollectionNode);
+			(MemberUiInfo.AllowTabs ? _memberTabCollectionScene : _memberCollectionScene)!.Instantiate();
+		_memberParent!.AddChild(_memberCollectionNode);
 		MemberInspectorCollection!.SetMemberInspector(inspector);
 		MemberInspectorCollection.SetScrollable(MemberUiInfo.Scrollable);
 		MemberInspectorCollection.ValueChanged += ChildValueChanged;
@@ -148,8 +148,8 @@ public partial class ClassInspector : MemberInspector
 	protected override void SetMemberUiInfo(MemberUiInfo memberUiInfo)
 	{
 		base.SetMemberUiInfo(memberUiInfo);
-		if (MemberUiInfo.parentType != null)
-			SetParentType(MemberUiInfo.parentType);
+		if (MemberUiInfo.ParentType != null)
+			SetParentType(MemberUiInfo.ParentType);
 		else
 			_assignables = null;
 	}
@@ -157,7 +157,7 @@ public partial class ClassInspector : MemberInspector
 	private void SetParentType(Type parentType)
 	{
 		_assignables = Util.GetAssignableTypes(parentType).ToArray();
-		_typeChooser.SetOptions(_assignables.Select(t => t.Name));
+		_typeChooser!.SetOptions(_assignables.Select(t => t.Name));
 	}
 
 	public override void SetEditable(bool editable)
@@ -239,7 +239,7 @@ public partial class ClassInspector : MemberInspector
 	private void TypeIndexSelected(int index)
 	{
 		if (_assignables == null || index < 0 || index >= _assignables.Length) return;
-		if (!Util.TryCreateInstance(_assignables[index], out var instance)) return;
+		if (!Util.TryCreateInstance(_assignables[index], out var instance) || instance is null) return;
 		SetInstance(instance, MemberUiInfo, LayoutFlags | LayoutFlags.ExpandedInitially);
 	}
 

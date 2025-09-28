@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Godot;
 using Microsoft.Extensions.Logging;
 
-namespace SettingInspector.addons.settings_inspector.src;
+namespace SettingInspector.addons.settings_inspector;
 
 public static class FileDialogHandler
 {

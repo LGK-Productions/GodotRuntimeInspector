@@ -3,16 +3,16 @@ using System.Globalization;
 using System.Numerics;
 using Godot;
 using LgkProductions.Inspector.MetaData;
-using SettingInspector.addons.settings_inspector.src.Attributes;
-using SettingInspector.addons.settings_inspector.src.ValueTree;
+using SettingInspector.addons.settings_inspector.Attributes;
+using SettingInspector.addons.settings_inspector.ValueTree;
 
-namespace SettingInspector.addons.settings_inspector.src.Inspectors;
+namespace SettingInspector.addons.settings_inspector.Inspectors;
 
 public partial class NumberInspector<T> : MemberInspector where T : struct, INumber<T>
 {
-    [Export] private SpinBox _spinBox;
-    [Export] private Slider _slider;
-    [Export] private Label _valueLabel;
+    [Export] private SpinBox? _spinBox;
+    [Export] private Slider? _slider;
+    [Export] private Label? _valueLabel;
 
     private Godot.Range? _range;
 
@@ -21,8 +21,8 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
 
     protected override void OnInitialize()
     {
-        _spinBox.ValueChanged += OnNumberChanged;
-        _slider.ValueChanged += OnNumberChanged;
+        _spinBox!.ValueChanged += OnNumberChanged;
+        _slider!.ValueChanged += OnNumberChanged;
         _spinBox.GetLineEdit().TextChanged += OnTextChanged;
     }
 
@@ -37,8 +37,8 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
 
     protected override void OnRemove()
     {
-        _spinBox.ValueChanged -= OnNumberChanged;
-        _slider.ValueChanged -= OnNumberChanged;
+        _spinBox!.ValueChanged -= OnNumberChanged;
+        _slider!.ValueChanged -= OnNumberChanged;
     }
 
     protected override void SetValue(object value)
@@ -46,7 +46,7 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
         _range ??= _slider;
         base.SetValue(value);
         var val = (double)Convert.ChangeType(value, typeof(double));
-        _range.SetValue(val);
+        _range!.SetValue(val);
         _internalValue = val;
         SetValueLabel(val);
     }
@@ -59,8 +59,8 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
     public override void SetEditable(bool editable)
     {
         base.SetEditable(editable);
-        _spinBox.Editable = editable;
-        _slider.Editable = editable;
+        _spinBox!.Editable = editable;
+        _slider!.Editable = editable;
     }
 
     private void OnNumberChanged(double value)
@@ -75,30 +75,30 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
         value *= 100;
         int valInt = (int)Math.Round(value);
         var valueText = (valInt / 100f).ToString(CultureInfo.InvariantCulture);
-        _valueLabel.Text = valueText.TrimEnd('0');
+        _valueLabel!.Text = valueText.TrimEnd('0');
     }
 
     protected override void OnSetMetaData(MetaDataMember member)
     {
         base.OnSetMetaData(member);
-        _range = member.TryGetMetaData(SliderAttribute.MetadataKey, out var metaData)
+        _range = member.TryGetMetaData(SliderAttribute.MetadataKey, out _)
             ? _slider
             : _spinBox;
         if (member.TryGetMetaData(StepSizeAttribute.MetadataKey, out var stepSize))
             StepSize = stepSize;
         if (member.TryGetMetaData(SuffixAttribute.MetadataKey, out var suffix))
-            _spinBox.Suffix = suffix;
+            _spinBox!.Suffix = suffix;
         if (member.MaxValue != null)
-            _range.MaxValue = (double)Convert.ChangeType(member.MaxValue, typeof(double));
+            _range!.MaxValue = (double)Convert.ChangeType(member.MaxValue, typeof(double));
         else
-            _range.AllowGreater = true;
+            _range!.AllowGreater = true;
         if (member.MinValue != null)
             _range.MinValue = (double)Convert.ChangeType(member.MinValue, typeof(double));
         else
             _range.AllowLesser = true;
         _range.Step = StepSize;
-        _slider.Visible = _range == _slider;
-        _valueLabel.Visible = _range == _slider;
-        _spinBox.Visible = _range == _spinBox;
+        _slider!.Visible = _range == _slider;
+        _valueLabel!.Visible = _range == _slider;
+        _spinBox!.Visible = _range == _spinBox;
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 
-namespace SettingInspector.addons.settings_inspector.src;
+namespace SettingInspector.addons.settings_inspector;
 
 public partial class OptionButton : Control
 {
@@ -11,33 +11,33 @@ public partial class OptionButton : Control
     public Action<int>? IndexSelected;
 
     public Action<object>? ItemSelected;
-    [Export] private Godot.OptionButton optionButton;
+    [Export] private Godot.OptionButton? _optionButton;
 
-    public int SelectedIndex => optionButton.Selected;
+    public int SelectedIndex => _optionButton!.Selected;
     public object? Selected => _currentOptions?[SelectedIndex];
 
     public override void _EnterTree()
     {
         base._EnterTree();
-        optionButton.ItemSelected += OnItemSelected;
+        _optionButton!.ItemSelected += OnItemSelected;
     }
 
     public override void _ExitTree()
     {
         base._ExitTree();
-        optionButton.ItemSelected -= OnItemSelected;
+        _optionButton!.ItemSelected -= OnItemSelected;
     }
 
     public void SetOptions(IEnumerable<object> options)
     {
-        optionButton.GetPopup().Clear();
+        _optionButton!.GetPopup().Clear();
         _currentOptions = options.ToArray();
-        foreach (var option in _currentOptions) optionButton.GetPopup().AddItem(option.ToString());
+        foreach (var option in _currentOptions) _optionButton.GetPopup().AddItem(option.ToString());
     }
 
     public void SetSelectedIndex(int index)
     {
-        optionButton.Selected = index;
+        _optionButton!.Selected = index;
     }
 
     private void OnItemSelected(long index)

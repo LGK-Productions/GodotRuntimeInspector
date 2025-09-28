@@ -2,7 +2,7 @@
 using LgkProductions.Inspector.Attributes;
 using LgkProductions.Inspector.MetaData;
 
-namespace SettingInspector.addons.settings_inspector.src.Attributes;
+namespace SettingInspector.addons.settings_inspector.Attributes;
 
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
 public sealed class CheckboxAttribute : InspectorAttribute

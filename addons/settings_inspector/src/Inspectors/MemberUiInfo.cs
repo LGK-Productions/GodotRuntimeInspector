@@ -1,11 +1,11 @@
 using System;
 
-namespace SettingInspector.addons.settings_inspector.src.Inspectors;
+namespace SettingInspector.addons.settings_inspector.Inspectors;
 
 public record MemberUiInfo(
     bool Scrollable = false,
     bool AllowTabs = false,
-    Type? parentType = null)
+    Type? ParentType = null)
 {
     public static readonly MemberUiInfo Default = new();
 }

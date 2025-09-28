@@ -1,18 +1,18 @@
 using Godot;
 
-namespace SettingInspector.addons.settings_inspector.src;
+namespace SettingInspector.addons.settings_inspector;
 
 public partial class MemberInspectorWindow : Window, IMemberInspectorWrapper
 {
-	[Export] private Button _applyButton;
-	[Export] private Button _closeButton;
+	[Export] private Button? _applyButton;
+	[Export] private Button? _closeButton;
 
-	[Export] private Node _inspectorContainer;
+	[Export] private Node? _inspectorContainer;
 
-	public Node InspectorContainer => _inspectorContainer;
+	public Node InspectorContainer => _inspectorContainer!;
 	public IInspectorHandle? CurrentInspector { get; set; }
-	public Button ApplyButton => _applyButton;
-	public Button CloseButton => _closeButton;
+	public Button ApplyButton => _applyButton!;
+	public Button CloseButton => _closeButton!;
 	public Node RootNode => this;
 
 	void IMemberInspectorWrapper.SetHandleInternal(IInspectorHandle handle)
@@ -25,7 +25,7 @@ public partial class MemberInspectorWindow : Window, IMemberInspectorWrapper
 		CloseRequested -= CurrentInspector.Close;
 	}
 
-	public void SetVisible(bool visible)
+	public new void SetVisible(bool visible)
 	{
 		Visible = visible;
 	}

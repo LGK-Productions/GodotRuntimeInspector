@@ -1,18 +1,18 @@
 using System;
 using Godot;
-using SettingInspector.addons.settings_inspector.src.ValueTree;
+using SettingInspector.addons.settings_inspector.ValueTree;
 
-namespace SettingInspector.addons.settings_inspector.src.Inspectors.InspectorCollections;
+namespace SettingInspector.addons.settings_inspector.Inspectors.InspectorCollections;
 
 public partial class ListElement : Control
 {
-    [Export] private Button _deleteButton;
-    [Export] private Button _downButton;
+    [Export] private Button? _deleteButton;
+    [Export] private Button? _downButton;
 
     private MemberInspector? _inspector;
-    [Export] private Control _inspectorContainer;
+    [Export] private Control? _inspectorContainer;
     private ListInspector? _listInspector;
-    [Export] private Button _upButton;
+    [Export] private Button? _upButton;
 
     public void SetMemberInspector(MemberInspector inspector, ListInspector listInspector)
     {
@@ -22,16 +22,16 @@ public partial class ListElement : Control
         if (_inspector.GetParent() != null)
             _inspector.Reparent(_inspectorContainer);
         else
-            _inspectorContainer.AddChild(_inspector);
+            _inspectorContainer!.AddChild(_inspector);
         _inspector.AddThemeConstantOverride("margin_top", 0);
         _inspector.AddThemeConstantOverride("margin_left", 0);
         _inspector.AddThemeConstantOverride("margin_right", 0);
         _inspector.AddThemeConstantOverride("margin_bottom", 0);
 
         _inspector.ValueChanged += OnMemberValueChanged;
-        _upButton.Pressed += OnUpPressed;
-        _downButton.Pressed += OnDownPressed;
-        _deleteButton.Pressed += OnDeletePressed;
+        _upButton!.Pressed += OnUpPressed;
+        _downButton!.Pressed += OnDownPressed;
+        _deleteButton!.Pressed += OnDeletePressed;
     }
 
     private void OnUpPressed()
@@ -70,9 +70,9 @@ public partial class ListElement : Control
     {
         _inspector?.Remove();
         _inspector = null;
-        _upButton.Pressed -= OnUpPressed;
-        _downButton.Pressed -= OnDownPressed;
-        _deleteButton.Pressed -= OnDeletePressed;
+        _upButton!.Pressed -= OnUpPressed;
+        _downButton!.Pressed -= OnDownPressed;
+        _deleteButton!.Pressed -= OnDeletePressed;
     }
 
     private void OnMemberValueChanged(ValueChangeTree tree)
