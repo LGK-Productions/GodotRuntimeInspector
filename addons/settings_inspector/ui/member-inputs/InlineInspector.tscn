@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dqifa1advp264" path="res://addons/settings_inspector/art/icons/fluent--window-multiple-20-regular.png" id="7_epxcb"]
 [ext_resource type="Script" uid="uid://caw1535e802jp" path="res://addons/settings_inspector/src/OptionButton.cs" id="11_3flad"]
 
-[node name="InlineInspector" type="MarginContainer" node_paths=PackedStringArray("_foldableContainer", "_loadButton", "_memberParent", "_saveButton", "_typeChooser", "_unattachButton", "_background", "_label")]
+[node name="InlineInspector" type="MarginContainer" node_paths=PackedStringArray("_foldableContainer", "_loadButton", "_memberParent", "_saveButton", "_typeChooser", "_unattachButton", "_background")]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 30.0
@@ -26,7 +26,6 @@ _saveButton = NodePath("FoldableContainer/VBoxContainer/MarginContainer/HBoxCont
 _typeChooser = NodePath("FoldableContainer/VBoxContainer/MarginContainer/HBoxContainer/TypeChooser")
 _unattachButton = NodePath("FoldableContainer/VBoxContainer/MarginContainer/HBoxContainer/Detach")
 _background = NodePath("PanelContainer")
-_label = NodePath("")
 
 [node name="PanelContainer" type="Panel" parent="."]
 visible = false
@@ -48,7 +47,7 @@ theme_override_constants/margin_right = 3
 layout_mode = 2
 alignment = 2
 
-[node name="TypeChooser" type="MarginContainer" parent="FoldableContainer/VBoxContainer/MarginContainer/HBoxContainer" node_paths=PackedStringArray("optionButton")]
+[node name="TypeChooser" type="MarginContainer" parent="FoldableContainer/VBoxContainer/MarginContainer/HBoxContainer" node_paths=PackedStringArray("_optionButton")]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
@@ -57,7 +56,7 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 5
 script = ExtResource("11_3flad")
-optionButton = NodePath("HBoxContainer/OptionButton")
+_optionButton = NodePath("HBoxContainer/OptionButton")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="FoldableContainer/VBoxContainer/MarginContainer/HBoxContainer/TypeChooser"]
 layout_mode = 2
