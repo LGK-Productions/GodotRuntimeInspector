@@ -61,3 +61,9 @@ The inspector can be customized by adding c# tags to members/classes. You can fi
 
 
 ## Layout Flags
+You can specify some additional layout options via the layout flags, which can take effect depending on the element they are used for. The following flags are available:
+- **ExpandedInitially:** Expands the group initially
+- **NotFoldable:** Prevents the group from being foldable by the user (This overrides ExpandedInitially to be true)
+- **NoLabel:** Hides the label of this member
+- **NoElements:** Hides some elements, such as save/load buttons for serializable classes
+- **NoBackground:** Hides the background for the group
