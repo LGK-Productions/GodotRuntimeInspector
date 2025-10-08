@@ -71,7 +71,7 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
         value *= 100;
         var valInt = (int)Math.Round(value);
         var valueText = (valInt / 100f).ToString(CultureInfo.InvariantCulture);
-        _valueLabel!.Text = valueText.TrimEnd('0');
+        _valueLabel!.Text = valueText;
     }
 
     protected override void OnSetMetaData(MetaDataMember member)
