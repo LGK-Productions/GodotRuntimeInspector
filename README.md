@@ -1,9 +1,9 @@
 # Godot C# Runtime Inspector
 
 ## Introduction
-This is a Godot addon (4.5 and later) for opening an inspector for c# classes at runtime. It implements a frontend for the [LgkProductions Inspector](https://github.com/LGK-Productions/LgkProductions.Inspector). The inspector can be customized using various tags which are resolved by the 
+This is a Godot addon (4.5 and later) for opening an inspector for c# classes at runtime. It implements a frontend for the [LgkProductions Inspector](https://github.com/LGK-Productions/LgkProductions.Inspector). The inspector can be customized using various tags which are resolved by the Metadata backend.
 
-## Installation
+## Setup
 Put the addons/settings_inspector folder into the addons folder of your godot project. Drag the MemberInspectorHandler.tscn scene into the scene you want to open inspectors in.
 
 ## API
@@ -61,3 +61,12 @@ The inspector can be customized by adding c# tags to members/classes. You can fi
 
 
 ## Layout Flags
+You can specify some additional layout options via the layout flags, which can take effect depending on the element they are used for. The following flags are available:
+- **ExpandedInitially:** Expands the group initially
+- **NotFoldable:** Prevents the group from being foldable by the user (This overrides ExpandedInitially to be true)
+- **NoLabel:** Hides the label of this member
+- **NoElements:** Hides some elements, such as save/load buttons for serializable classes
+- **NoBackground:** Hides the background for the group
+
+## Value Changes
+When a value in the inspector is changed by the user, the value is **not** updated in the underlying instance. Instead a ValueChanged event is emmitted containing a path to the changed member. Upon calling ```TryRetrieveMember()``` values are written back into the instance, as otherwise a deep copy would be required. Values in the inspector get updated every second.
