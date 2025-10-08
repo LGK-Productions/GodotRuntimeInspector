@@ -88,9 +88,15 @@ public abstract partial class MemberInspector : Control
 
     protected abstract object? GetValue();
 
-    protected virtual void SetValue(object value)
+    protected void SetValue(object value)
     {
         Clear();
+        Callable.From(() => SetValueInternal(value)).CallDeferred();
+    }
+
+    protected virtual void SetValueInternal(object value)
+    {
+        
     }
 
     public virtual void SetEditable(bool editable)

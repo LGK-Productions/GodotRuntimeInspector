@@ -12,7 +12,7 @@ using Timer = System.Timers.Timer;
 namespace SettingInspector.addons.settings_inspector.Testing;
 
 [Serializable]
-internal class TestModel
+internal class TestModel : ITickProvider
 {
     public TestModel()
     {
@@ -23,8 +23,9 @@ internal class TestModel
 
     #region Primitives
 
-    [Tab("Primitives")] public bool TestBool { get; set; }
-    
+    [Tab("Primitives")]
+    public bool TestBool { get; set; }
+
     [Tab("Primitives")] [Checkbox] public bool TestCheckbox { get; set; }
 
     [Tab("Primitives")] public int TestInt { get; set; }
@@ -109,7 +110,14 @@ internal class TestModel
     [Tab("Other")]
     [Description("This should count up every second")]
     [ReadOnly(true)]
-    public int TestUpdates { get; set; }
+    public int TestUpdates {
+        get;
+        set
+        {
+            field = value;
+            Tick?.Invoke();
+        }
+    }
 
     [Tab("Other")]
     [HideInInspector]
@@ -136,6 +144,8 @@ internal class TestModel
     public int IntSlider { get; set; } = 1;
 
     #endregion
+
+    public event Action? Tick;
 }
 
 public class VeryComplexType

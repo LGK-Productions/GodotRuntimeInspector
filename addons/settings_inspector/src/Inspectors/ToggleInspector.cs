@@ -25,9 +25,8 @@ public partial class ToggleInspector : MemberInspector
         _toggle!.Pressed -= OnPressed;
     }
 
-    protected override void SetValue(object value)
+    protected override void SetValueInternal(object value)
     {
-        base.SetValue(value);
         _resolvedButton!.SetPressed((bool)value);
     }
 

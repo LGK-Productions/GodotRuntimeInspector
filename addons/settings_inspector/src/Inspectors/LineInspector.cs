@@ -35,9 +35,8 @@ public partial class LineInspector : MemberInspector
         OnValueChanged(new ValueChangeTree(this, newValue));
     }
 
-    protected override void SetValue(object value)
+    protected override void SetValueInternal(object value)
     {
-        base.SetValue(value);
         _lineEdit!.Text = value.ToString();
     }
 

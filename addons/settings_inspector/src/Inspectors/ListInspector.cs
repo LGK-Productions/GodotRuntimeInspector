@@ -46,9 +46,8 @@ public partial class ListInspector : MemberInspector
         return _list;
     }
 
-    protected override void SetValue(object value)
+    protected override void SetValueInternal(object value)
     {
-        base.SetValue(value);
         if (value is not IList list) return;
         _list = list;
 

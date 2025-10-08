@@ -29,7 +29,7 @@ public partial class ClassInspector : MemberInspector
     };
 
 
-    private static readonly PollingTickProvider TickProvider = new(1);
+    private static readonly PollingTickProvider SecondTickProvider = new(1);
 
 
     private readonly FileDialogHandler.FileDialogHandle _fileDialogHandle = FileDialogHandler.CreateNative();
@@ -67,11 +67,12 @@ public partial class ClassInspector : MemberInspector
         _typeChooser!.IndexSelected += TypeIndexSelected;
     }
 
-    protected override void SetValue(object classInstance)
+    protected override void SetValueInternal(object classInstance)
     {
-        base.SetValue(classInstance);
         _instance = classInstance;
-        var inspector = Inspector.Attach(_instance, TickProvider);
+        var inspector = _instance is ITickProvider provider
+            ? Inspector.Attach(_instance, provider)
+            : Inspector.Attach(_instance, SecondTickProvider);
         var serializable = classInstance.GetType().GetCustomAttributes<SerializableAttribute>().Any();
 
         _saveButton?.SetVisible(_saveButton.Visible && serializable);

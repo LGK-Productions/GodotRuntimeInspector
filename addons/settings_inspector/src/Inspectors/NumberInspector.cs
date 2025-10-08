@@ -38,10 +38,9 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
         _slider!.ValueChanged -= OnNumberChanged;
     }
 
-    protected override void SetValue(object value)
+    protected override void SetValueInternal(object value)
     {
         _range ??= _slider;
-        base.SetValue(value);
         var val = (double)Convert.ChangeType(value, typeof(double));
         _range!.SetValue(val);
         _internalValue = val;

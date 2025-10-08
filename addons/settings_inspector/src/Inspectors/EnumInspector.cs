@@ -26,9 +26,8 @@ public partial class EnumInspector : MemberInspector
         OnValueChanged(new ValueChangeTree(this, item));
     }
 
-    protected override void SetValue(object value)
+    protected override void SetValueInternal(object value)
     {
-        base.SetValue(value);
         if (!Enum.IsDefined(value.GetType(), value) || ValueType == null) return;
         var name = Enum.GetName(ValueType, value);
         if (name == null) return;

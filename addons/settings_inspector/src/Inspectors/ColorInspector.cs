@@ -19,9 +19,8 @@ public partial class ColorInspector : MemberInspector
         _colorPicker!.ColorChanged -= OnColorChanged;
     }
 
-    protected override void SetValue(object value)
+    protected override void SetValueInternal(object value)
     {
-        base.SetValue(value);
         if (value is Color color)
             _colorPicker!.Color = color;
     }
