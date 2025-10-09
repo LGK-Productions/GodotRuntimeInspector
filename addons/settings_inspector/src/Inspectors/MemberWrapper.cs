@@ -87,6 +87,9 @@ public partial class MemberWrapper : MarginContainer
         if (inputType.IsGenericType && inputType.GetGenericTypeDefinition() == typeof(List<>))
             if (_inspectorScenes.Count > 6)
                 return _inspectorScenes[6];
+        if (inputType.IsArray)
+            if (_inspectorScenes.Count > 8)
+                return _inspectorScenes[8];
         if (!inputType.IsPrimitive && inputType != typeof(string))
             if (_inspectorScenes.Count > 5)
                 return _inspectorScenes[5];

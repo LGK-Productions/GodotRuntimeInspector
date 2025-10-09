@@ -12,6 +12,7 @@ public partial class MemberInspectorHandler : Control
     public const string Scope = "SettingInspector";
 
     private ILogger? _logger;
+    
     [Export] private PackedScene? _memberInspectorWindowScene;
     [Export] private bool _showTestingClass;
 
@@ -94,6 +95,10 @@ public partial class MemberInspectorHandler : Control
     }
 }
 
+/// <summary>
+/// A handle class exposing functionality to interact with the member inspector
+/// </summary>
+/// <typeparam name="T">type of the inspected instance</typeparam>
 public class MemberInspectorHandle<T> : IInspectorHandle
 {
     private bool _valid = true;
@@ -109,11 +114,30 @@ public class MemberInspectorHandle<T> : IInspectorHandle
             LayoutFlags.NotFoldable | LayoutFlags.NoBackground);
     }
 
+    /// <summary>
+    /// If set to true, the root will be set to invisible on close instead of being removed.
+    /// This enables reopening the window without constructing it again.
+    /// </summary>
     public bool Buffered { get; set; } = false;
+    
+    /// <summary>
+    /// Root of this inspector. 
+    /// </summary>
     public IMemberInspectorWrapper Root { get; }
+    
+    /// <summary>
+    /// Gets called, if Close is called on this handle
+    /// </summary>
     public event Action? OnClose;
+    
+    /// <summary>
+    /// The root inspector wrapper
+    /// </summary>
     public MemberWrapper RootInspectorWrapper { get; }
 
+    /// <summary>
+    /// Applies values of the ui to the inspected instance
+    /// </summary>
     public void Apply()
     {
         if (!_valid) return;
@@ -121,6 +145,9 @@ public class MemberInspectorHandle<T> : IInspectorHandle
             OnApply?.Invoke((T)val!);
     }
 
+    /// <summary>
+    /// Closes the inspector
+    /// </summary>
     public void Close()
     {
         if (!_valid) return;
@@ -137,12 +164,18 @@ public class MemberInspectorHandle<T> : IInspectorHandle
         OnClose?.Invoke();
     }
 
+    /// <summary>
+    /// Reopens the inspector, only if buffered is enabled
+    /// </summary>
     public void Reopen()
     {
         if (!_valid || !Buffered) return;
         Root.SetVisible(true);
     }
 
+    /// <summary>
+    /// Gets called, if apply is called on this handle
+    /// </summary>
     public event Action<T>? OnApply;
 }
 

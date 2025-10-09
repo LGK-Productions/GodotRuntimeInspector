@@ -8,16 +8,15 @@ public partial class ListElement : Control
 {
     [Export] private Button? _deleteButton;
     [Export] private Button? _downButton;
+    [Export] private Button? _upButton;
 
     private MemberInspector? _inspector;
     [Export] private Control? _inspectorContainer;
     private ListInspector? _listInspector;
-    [Export] private Button? _upButton;
 
-    public void SetMemberInspector(MemberInspector inspector, ListInspector listInspector)
+    public void SetMemberInspector(MemberInspector inspector, ListInspector? listInspector = null)
     {
         _inspector = inspector;
-        _listInspector = listInspector;
 
         if (_inspector.GetParent() != null)
             _inspector.Reparent(_inspectorContainer);
@@ -29,9 +28,19 @@ public partial class ListElement : Control
         _inspector.AddThemeConstantOverride("margin_bottom", 0);
 
         _inspector.ValueChanged += OnMemberValueChanged;
-        _upButton!.Pressed += OnUpPressed;
-        _downButton!.Pressed += OnDownPressed;
-        _deleteButton!.Pressed += OnDeletePressed;
+
+        if (listInspector != null)
+        {
+            _listInspector = listInspector;
+            _upButton!.Pressed += OnUpPressed;
+            _downButton!.Pressed += OnDownPressed;
+            _deleteButton!.Pressed += OnDeletePressed;
+            SetButtonsVisible(true);
+        }
+        else
+        {
+            SetButtonsVisible(false);
+        }
     }
 
     private void OnUpPressed()
@@ -66,13 +75,27 @@ public partial class ListElement : Control
         _inspector?.SetEditable(editable);
     }
 
+    private void SetButtonsVisible(bool visible)
+    {
+        _deleteButton?.Visible = visible;
+        _downButton?.Visible = visible;
+        _upButton?.Visible = visible;
+        (_upButton?.GetParent() as Control)?.Visible = visible;
+    }
+
     private void Clear()
     {
         _inspector?.Remove();
         _inspector = null;
-        _upButton!.Pressed -= OnUpPressed;
-        _downButton!.Pressed -= OnDownPressed;
-        _deleteButton!.Pressed -= OnDeletePressed;
+
+        if (_listInspector != null)
+        {
+            _upButton!.Pressed -= OnUpPressed;
+            _downButton!.Pressed -= OnDownPressed;
+            _deleteButton!.Pressed -= OnDeletePressed;
+        }
+
+        _listInspector = null;
     }
 
     private void OnMemberValueChanged(ValueChangeTree tree)

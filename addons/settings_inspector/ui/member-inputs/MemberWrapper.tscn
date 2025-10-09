@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://duar7vh55goxk"]
+[gd_scene load_steps=13 format=3 uid="uid://duar7vh55goxk"]
 
 [ext_resource type="Script" uid="uid://rp8nre7bvm14" path="res://addons/settings_inspector/src/Inspectors/MemberWrapper.cs" id="1_8eidn"]
 [ext_resource type="PackedScene" uid="uid://edq00o2jrvbw" path="res://addons/settings_inspector/ui/member-inputs/LineInspector.tscn" id="2_7pobb"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://cgxsnary7mkam" path="res://addons/settings_inspector/ui/member-inputs/InlineInspector.tscn" id="8_cyx2u"]
 [ext_resource type="PackedScene" uid="uid://c2os26issvvje" path="res://addons/settings_inspector/ui/member-inputs/IntInspector.tscn" id="9_x4gcj"]
 [ext_resource type="PackedScene" uid="uid://cpgqabh8joa7x" path="res://addons/settings_inspector/ui/member-inputs/ColorInspector.tscn" id="10_iwsvj"]
+[ext_resource type="PackedScene" uid="uid://cq18ykal7l4kh" path="res://addons/settings_inspector/ui/member-inputs/ArrayInspector.tscn" id="11_mk3so"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pcvqt"]
 bg_color = Color(1, 1, 1, 1)
@@ -27,7 +28,7 @@ theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 1
 script = ExtResource("1_8eidn")
 _defaultInspectorScene = ExtResource("2_7pobb")
-_inspectorScenes = Array[PackedScene]([ExtResource("3_p0ove"), ExtResource("9_x4gcj"), ExtResource("5_26ytk"), ExtResource("6_bg012"), ExtResource("7_7jq4b"), ExtResource("8_cyx2u"), ExtResource("8_53ac5"), ExtResource("10_iwsvj")])
+_inspectorScenes = Array[PackedScene]([ExtResource("3_p0ove"), ExtResource("9_x4gcj"), ExtResource("5_26ytk"), ExtResource("6_bg012"), ExtResource("7_7jq4b"), ExtResource("8_cyx2u"), ExtResource("8_53ac5"), ExtResource("10_iwsvj"), ExtResource("11_mk3so")])
 _label = NodePath("VBoxContainer/Label")
 _memberContainer = NodePath("VBoxContainer/MemberInspectorContainer")
 _panel = NodePath("VBoxContainer/Panel")

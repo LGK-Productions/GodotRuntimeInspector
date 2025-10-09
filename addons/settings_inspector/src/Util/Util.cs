@@ -22,6 +22,12 @@ public static class Util
             return true;
         }
 
+        if (type.IsArray)
+        {
+            instance = Array.CreateInstance(type.GetElementType(), 0);
+            return true;
+        }
+
         try
         {
             instance = Activator.CreateInstance(type);

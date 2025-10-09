@@ -89,6 +89,8 @@ internal class TestModel : ITickProvider
     [Tab("ComplexTypes")] public TestingInterface TestInterface { get; set; } = new InterfaceType2();
 
     [Tab("ComplexTypes")] public List<int> TestList { get; set; }
+    
+    [Tab("ComplexTypes")] public int[] TestArray { get; set; }
 
     [Tab("ComplexTypes")] public List<List<int>> TestListList { get; set; }
 
