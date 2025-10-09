@@ -7,7 +7,8 @@ This is a Godot addon (4.5 and later) for opening an inspector for c# classes at
 Put the addons/settings_inspector folder into the addons folder of your godot project. Drag the MemberInspectorHandler.tscn scene into the scene you want to open inspectors in.
 
 ## API
-A new Inspector can be opened using:
+Inspectors can be created in two different ways:
+1. As a standalone floating window using:
 ``` c#
 private TestModel testObject = new();
 var handle = MemberInspectorHandler.Instance.OpenClassInspectorWindow(testObject);
@@ -15,7 +16,7 @@ var handle = MemberInspectorHandler.Instance.OpenClassInspectorWindow(testObject
 This will open a new native window containing an inspector for the testObject. The handle contains an OnApply and OnClose event, being called if apply/close are pressed.
 Apply writes the settings back into the test object, Close closes the inspector.
 
-Alternatively, a ui node can be build to add freely into the scene tree via
+2. As a ui node which can be added manually into the scene tree via
 ``` c#
 private TestModel testObject = new();
 var wrapper = MemberInspectorHandler.Instance.ConstructMemberWrapper(testObject)
@@ -59,6 +60,15 @@ The inspector can be customized by adding c# tags to members/classes. You can fi
 |**Suffix**|(string) suffix|Field/Property (int/float/double)|Defines a suffix for the target spinbox|
 |**PathPicker**|(FileModeEnum) fileMode, (string[]) filters|Field/Property (string)|Adds a button for picking a path with the given mode/filters|
 
+## Supported Types
+Aside from all primitive types, the runtime inspector can display:
+- Enums
+- (Godot-)Colors
+- Arrays
+- Lists
+
+All classes are displayed as composites of their members.
+There is no support for dictionaries at the moment
 
 ## Layout Flags
 You can specify some additional layout options via the layout flags, which can take effect depending on the element they are used for. The following flags are available:
@@ -69,4 +79,7 @@ You can specify some additional layout options via the layout flags, which can t
 - **NoBackground:** Hides the background for the group
 
 ## Value Changes
-When a value in the inspector is changed by the user, the value is **not** updated in the underlying instance. Instead a ValueChanged event is emmitted containing a path to the changed member. Upon calling ```TryRetrieveMember()``` values are written back into the instance, as otherwise a deep copy would be required. Values in the inspector get updated every second.
+When a value in the inspector is changed by the user, the value is **not** updated in the underlying instance. Instead a ValueChanged event is emmitted containing a path to the changed member. Upon calling ```TryRetrieveMember()``` values are written back into the instance, as otherwise a deep copy would be required.
+
+Values in the Inspector are polled every second from the displayed instance by default.
+Alternatively, a class can implement the ```ITickProvider``` interface to determine when the ui should be updated.
