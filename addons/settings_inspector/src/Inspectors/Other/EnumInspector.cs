@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using Godot;
 using LgkProductions.Inspector.MetaData;
-using SettingInspector.addons.settings_inspector.ValueTree;
+using SettingInspector.addons.settings_inspector.Util;
 
-namespace SettingInspector.addons.settings_inspector.Inspectors;
+namespace SettingInspector.addons.settings_inspector.Inspectors.Other;
 
 public partial class EnumInspector : MemberInspector
 {

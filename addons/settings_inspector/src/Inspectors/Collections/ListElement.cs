@@ -1,8 +1,8 @@
 using System;
 using Godot;
-using SettingInspector.addons.settings_inspector.ValueTree;
+using SettingInspector.addons.settings_inspector.Util;
 
-namespace SettingInspector.addons.settings_inspector.Inspectors.InspectorCollections;
+namespace SettingInspector.addons.settings_inspector.Inspectors.Collections;
 
 public partial class ListElement : Control
 {

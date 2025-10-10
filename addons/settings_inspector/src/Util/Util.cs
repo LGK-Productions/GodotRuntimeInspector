@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LgkProductions.Inspector;
 
-namespace SettingInspector.addons.settings_inspector;
+namespace SettingInspector.addons.settings_inspector.Util;
 
 public static class Util
 {

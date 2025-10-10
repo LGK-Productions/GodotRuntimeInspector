@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using SettingInspector.addons.settings_inspector.Inspectors;
 using SettingInspector.addons.settings_inspector.Testing;
 
-namespace SettingInspector.addons.settings_inspector;
+namespace SettingInspector.addons.settings_inspector.Handlers;
 
 public partial class MemberInspectorHandler : Control
 {

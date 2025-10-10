@@ -23,8 +23,7 @@ internal class TestModel : ITickProvider
 
     #region Primitives
 
-    [Tab("Primitives")]
-    public bool TestBool { get; set; }
+    [Tab("Primitives")] public bool TestBool { get; set; }
 
     [Tab("Primitives")] [Checkbox] public bool TestCheckbox { get; set; }
 
@@ -89,7 +88,7 @@ internal class TestModel : ITickProvider
     [Tab("ComplexTypes")] public TestingInterface TestInterface { get; set; } = new InterfaceType2();
 
     [Tab("ComplexTypes")] public List<int> TestList { get; set; }
-    
+
     [Tab("ComplexTypes")] public int[] TestArray { get; set; }
 
     [Tab("ComplexTypes")] public List<List<int>> TestListList { get; set; }
@@ -112,7 +111,8 @@ internal class TestModel : ITickProvider
     [Tab("Other")]
     [Description("This should count up every second")]
     [ReadOnly(true)]
-    public int TestUpdates {
+    public int TestUpdates
+    {
         get;
         set
         {
@@ -126,8 +126,13 @@ internal class TestModel : ITickProvider
     [Description("This property should not be visible")]
     public string TestHidden { get; set; }
 
-    [Tab("Other")] [PathPicker(FileDialog.FileModeEnum.OpenFile, ["*.txt"])] public string TestFilePath { get; set; }
-    [Tab("Other")] [PathPicker(FileDialog.FileModeEnum.OpenDir)] public string TestDirPath { get; set; }
+    [Tab("Other")]
+    [PathPicker(FileDialog.FileModeEnum.OpenFile, ["*.txt"])]
+    public string TestFilePath { get; set; }
+
+    [Tab("Other")]
+    [PathPicker(FileDialog.FileModeEnum.OpenDir)]
+    public string TestDirPath { get; set; }
 
     [Tab("Other")]
     [Label("Testing Label")]
@@ -135,15 +140,11 @@ internal class TestModel : ITickProvider
     [Line]
     public string TestLabel { get; set; }
 
-    [Tab("Other")]
-    [Slider]
-    [Range(0, 1)]
-    public float TestSlider { get; set; } = 0.5f;
+    [Tab("Other")] [Slider] [Range(0, 1)] public float TestSlider { get; set; } = 0.5f;
+
+    [Tab("Other")] [Slider] [Range(0, 11)] public int IntSlider { get; set; } = 1;
     
-    [Tab("Other")]
-    [Slider]
-    [Range(0, 11)]
-    public int IntSlider { get; set; } = 1;
+    [Tab("Other")] [Suffix("m")] public int TestSuffix { get; set; } = 1;
 
     #endregion
 

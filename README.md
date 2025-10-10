@@ -27,38 +27,38 @@ this returns a MemberWrapper which contains a reference to the underlying Member
 The inspector can be customized by adding c# tags to members/classes. You can find available tags in the following list:
 
 ### General
-|Name   |Parameters   |Targets   |Effect   |
-|---|---|---|---|
-|**ShowInInspector**|-|Field/Property|Shows the member in the inspector|
-|**HideInInspector**|-|Field/Property|Hides the member from the inspector|
-|**DisplayName**|(string) name|Field/Property|Alters the displayed name of the member|
-|**ReadOnly**|-|Field/Property|Sets the member to be read only (if not already)|
-|**Serializable**|-|Class|Sets the class to be serializable, enabling save/load buttons being shown in the inspector|
-|**Description**|(string) description|Field/Property|Adds a description to the member, being displayed when hovered|
-|**LabelSize**|(float) sizeMultiplier|Field/Property|Multiplies the labels width by the given Multiplier|
-|**Label**|(string) text, (int) fontSize|Field/Property|Adds a label above the target field with the given text|
-|**Line**|-|Field/Property|Adds a horizontal line above the target field|
+| Name                | Parameters                    | Targets        | Effect                                                                                     |
+|---------------------|-------------------------------|----------------|--------------------------------------------------------------------------------------------|
+| **ShowInInspector** | -                             | Field/Property | Shows the member in the inspector                                                          |
+| **HideInInspector** | -                             | Field/Property | Hides the member from the inspector                                                        |
+| **DisplayName**     | (string) name                 | Field/Property | Alters the displayed name of the member                                                    |
+| **ReadOnly**        | -                             | Field/Property | Sets the member to be read only (if not already)                                           |
+| **Serializable**    | -                             | Class          | Sets the class to be serializable, enabling save/load buttons being shown in the inspector |
+| **Description**     | (string) description          | Field/Property | Adds a description to the member, being displayed when hovered                             |
+| **LabelSize**       | (float) sizeMultiplier        | Field/Property | Multiplies the labels width by the given Multiplier                                        |
+| **Label**           | (string) text, (int) fontSize | Field/Property | Adds a label above the target field with the given text                                    |
+| **Line**            | -                             | Field/Property | Adds a horizontal line above the target field                                              |
 
 ### Layout
-|Name   |Parameters   |Targets   |Effect   |
-|---|---|---|---|
-|**PropertyOrder**|(int) order|Field/Property|Sets the given order (higher means further down)|
-|**Tab**|(string) tab|Field/Property|Moves the property into the given tab|
-|**BoxGroup**|(string) groupName, (LayoutFlags) layoutFlags, (Orientation) orientation|Field/Property|Moves the property into the given group. Orientation specifies horizontal/vertical, layout flags allow for additional layouting|
-|**Space**|(float) topMargin|Field/Property|Adds additional space above target property|
-|**Spacing**|(int) top, (int) bottom, (int) left, (int) right|Field/Property|Adds additional margin around the target field|
-|**LayoutFlags**|(LayoutFlags) flags|Field/Property|Specifies additional layout flags for the target field|
+| Name              | Parameters                                                               | Targets        | Effect                                                                                                                          |
+|-------------------|--------------------------------------------------------------------------|----------------|---------------------------------------------------------------------------------------------------------------------------------|
+| **PropertyOrder** | (int) order                                                              | Field/Property | Sets the given order (higher means further down)                                                                                |
+| **Tab**           | (string) tab                                                             | Field/Property | Moves the property into the given tab                                                                                           |
+| **BoxGroup**      | (string) groupName, (LayoutFlags) layoutFlags, (Orientation) orientation | Field/Property | Moves the property into the given group. Orientation specifies horizontal/vertical, layout flags allow for additional layouting |
+| **Space**         | (float) topMargin                                                        | Field/Property | Adds additional space above target property                                                                                     |
+| **Spacing**       | (int) top, (int) bottom, (int) left, (int) right                         | Field/Property | Adds additional margin around the target field                                                                                  |
+| **LayoutFlags**   | (LayoutFlags) flags                                                      | Field/Property | Specifies additional layout flags for the target field                                                                          |
 
 
 ### Specific
-|Name|Parameters|Targets|Effect|
-|---|---|---|---|
-|**Checkbox**|-|Field/Property (bool)|Switches the default toggle to a checkbox left|
-|**StepSize**|(double) stepSize|Field/Property (int/float/double)|Defines a custom step size for the target range|
-|**Range**|(double) minIncl, (double) maxIncl|Field/Property (int/float/double)|Specifies a custom range for the field|
-|**Slider**|-|Field/Property (int/float/double)| Switches Spinbox to a slider for target field|
-|**Suffix**|(string) suffix|Field/Property (int/float/double)|Defines a suffix for the target spinbox|
-|**PathPicker**|(FileModeEnum) fileMode, (string[]) filters|Field/Property (string)|Adds a button for picking a path with the given mode/filters|
+| Name           | Parameters                                  | Targets                           | Effect                                                       |
+|----------------|---------------------------------------------|-----------------------------------|--------------------------------------------------------------|
+| **Checkbox**   | -                                           | Field/Property (bool)             | Switches the default toggle to a checkbox left               |
+| **StepSize**   | (double) stepSize                           | Field/Property (int/float/double) | Defines a custom step size for the target range              |
+| **Range**      | (double) minIncl, (double) maxIncl          | Field/Property (int/float/double) | Specifies a custom range for the field                       |
+| **Slider**     | -                                           | Field/Property (int/float/double) | Switches Spinbox to a slider for target field                |
+| **Suffix**     | (string) suffix                             | Field/Property (int/float/double) | Defines a suffix for the target spinbox                      |
+| **PathPicker** | (FileModeEnum) fileMode, (string[]) filters | Field/Property (string)           | Adds a button for picking a path with the given mode/filters |
 
 ## Supported Types
 Aside from all primitive types, the runtime inspector can display:

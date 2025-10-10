@@ -4,10 +4,10 @@ using System.Numerics;
 using Godot;
 using LgkProductions.Inspector.MetaData;
 using SettingInspector.addons.settings_inspector.Attributes;
-using SettingInspector.addons.settings_inspector.ValueTree;
+using SettingInspector.addons.settings_inspector.Util;
 using Range = Godot.Range;
 
-namespace SettingInspector.addons.settings_inspector.Inspectors;
+namespace SettingInspector.addons.settings_inspector.Inspectors.Primitives;
 
 public partial class NumberInspector<T> : MemberInspector where T : struct, INumber<T>
 {

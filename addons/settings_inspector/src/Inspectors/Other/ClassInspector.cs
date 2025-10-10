@@ -8,11 +8,11 @@ using Godot;
 using LgkProductions.Inspector;
 using LgkProductions.Inspector.MetaData;
 using Microsoft.Extensions.Logging;
-using SettingInspector.addons.settings_inspector.Inspectors.InspectorCollections;
-using SettingInspector.addons.settings_inspector.ValueTree;
+using SettingInspector.addons.settings_inspector.Inspectors.Collections;
+using SettingInspector.addons.settings_inspector.Util;
 using Timer = System.Timers.Timer;
 
-namespace SettingInspector.addons.settings_inspector.Inspectors;
+namespace SettingInspector.addons.settings_inspector.Inspectors.Other;
 
 public partial class ClassInspector : MemberInspector
 {
@@ -43,7 +43,7 @@ public partial class ClassInspector : MemberInspector
     [Export] private Control? _memberParent;
     [Export] private PackedScene? _memberTabCollectionScene;
     [Export] private Button? _saveButton;
-    [Export] private OptionButton? _typeChooser;
+    [Export] private Util.OptionButton? _typeChooser;
     [Export] private Button? _unattachButton;
     private IMemberInspectorCollection? MemberInspectorCollection => (IMemberInspectorCollection?)_memberCollectionNode;
 
@@ -157,7 +157,7 @@ public partial class ClassInspector : MemberInspector
 
     private void SetParentType(Type parentType)
     {
-        _assignables = Util.GetAssignableTypes(parentType).ToArray();
+        _assignables = Util.Util.GetAssignableTypes(parentType).ToArray();
         _typeChooser!.SetOptions(_assignables.Select(t => t.Name));
     }
 
@@ -184,7 +184,7 @@ public partial class ClassInspector : MemberInspector
     private void UnattachPressed()
     {
         if (_instance == null) return;
-        MemberInspectorHandler.Instance.OpenClassInspectorWindow(_instance);
+        Handlers.MemberInspectorHandler.Instance.OpenClassInspectorWindow(_instance);
     }
 
     private async void SavePressed()
@@ -204,7 +204,7 @@ public partial class ClassInspector : MemberInspector
         }
         catch (Exception e)
         {
-            MemberInspectorHandler.Logger?.LogError(e, "Failed to save file");
+            Handlers.MemberInspectorHandler.Logger?.LogError(e, "Failed to save file");
         }
     }
 
@@ -217,7 +217,7 @@ public partial class ClassInspector : MemberInspector
 
         if (!File.Exists(filePath))
         {
-            MemberInspectorHandler.Logger?.LogError("File not found: {filePath}", filePath);
+            Handlers.MemberInspectorHandler.Logger?.LogError("File not found: {filePath}", filePath);
             return;
         }
 
@@ -233,14 +233,14 @@ public partial class ClassInspector : MemberInspector
         }
         catch (Exception e)
         {
-            MemberInspectorHandler.Logger?.LogError(e, "Failed to save file");
+            Handlers.MemberInspectorHandler.Logger?.LogError(e, "Failed to save file");
         }
     }
 
     private void TypeIndexSelected(int index)
     {
         if (_assignables == null || index < 0 || index >= _assignables.Length) return;
-        if (!Util.TryCreateInstance(_assignables[index], out var instance) || instance is null) return;
+        if (!Util.Util.TryCreateInstance(_assignables[index], out var instance) || instance is null) return;
         SetInstance(instance, MemberUiInfo, LayoutFlags | LayoutFlags.ExpandedInitially);
     }
 

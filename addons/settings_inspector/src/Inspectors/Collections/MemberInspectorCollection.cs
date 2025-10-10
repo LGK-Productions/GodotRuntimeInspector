@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Godot;
 using LgkProductions.Inspector;
-using SettingInspector.addons.settings_inspector.ValueTree;
+using SettingInspector.addons.settings_inspector.Util;
 
-namespace SettingInspector.addons.settings_inspector.Inspectors.InspectorCollections;
+namespace SettingInspector.addons.settings_inspector.Inspectors.Collections;
 
 public partial class MemberInspectorCollection : Control, IMemberInspectorCollection
 {
@@ -23,7 +23,7 @@ public partial class MemberInspectorCollection : Control, IMemberInspectorCollec
 
     public void AddElement(InspectorElement element)
     {
-        var memberWrapper = MemberInspectorHandler.Instance?.MemberWrapperScene?.Instantiate<MemberWrapper>();
+        var memberWrapper = Handlers.MemberInspectorHandler.Instance?.MemberWrapperScene?.Instantiate<MemberWrapper>();
         memberWrapper.SetMemberType(element.MemberInfo.Type);
 
         //Grouping Logic

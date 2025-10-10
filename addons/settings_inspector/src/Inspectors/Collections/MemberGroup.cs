@@ -1,8 +1,9 @@
 using Godot;
 using LgkProductions.Inspector;
+using SettingInspector.addons.settings_inspector.Util;
 using Orientation = LgkProductions.Inspector.Orientation;
 
-namespace SettingInspector.addons.settings_inspector.Inspectors.InspectorCollections;
+namespace SettingInspector.addons.settings_inspector.Inspectors.Collections;
 
 public partial class MemberGroup : Control
 {

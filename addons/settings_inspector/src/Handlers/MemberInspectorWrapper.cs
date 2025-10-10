@@ -1,6 +1,6 @@
 using Godot;
 
-namespace SettingInspector.addons.settings_inspector;
+namespace SettingInspector.addons.settings_inspector.Handlers;
 
 public partial class MemberInspectorWrapper : Node
 {

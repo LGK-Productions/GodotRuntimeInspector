@@ -1,4 +1,4 @@
-namespace SettingInspector.addons.settings_inspector.Inspectors;
+namespace SettingInspector.addons.settings_inspector.Inspectors.Primitives;
 
 public partial class FloatInspector : NumberInspector<float>
 {

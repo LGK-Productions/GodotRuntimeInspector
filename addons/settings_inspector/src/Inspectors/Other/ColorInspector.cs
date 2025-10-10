@@ -1,7 +1,7 @@
 ﻿using Godot;
-using SettingInspector.addons.settings_inspector.ValueTree;
+using SettingInspector.addons.settings_inspector.Util;
 
-namespace SettingInspector.addons.settings_inspector.Inspectors;
+namespace SettingInspector.addons.settings_inspector.Inspectors.Other;
 
 public partial class ColorInspector : MemberInspector
 {

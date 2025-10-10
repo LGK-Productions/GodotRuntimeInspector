@@ -5,10 +5,9 @@ using System.Linq;
 using Godot;
 using LgkProductions.Inspector;
 using LgkProductions.Inspector.MetaData;
-using SettingInspector.addons.settings_inspector.Inspectors.InspectorCollections;
-using SettingInspector.addons.settings_inspector.ValueTree;
+using SettingInspector.addons.settings_inspector.Util;
 
-namespace SettingInspector.addons.settings_inspector.Inspectors;
+namespace SettingInspector.addons.settings_inspector.Inspectors.Collections;
 
 public partial class ArrayInspector : MemberInspector
 {
@@ -74,7 +73,7 @@ public partial class ArrayInspector : MemberInspector
         _listElementType = ValueType.GetElementType();
         if (_listElementType.IsAbstract || _listElementType.IsInterface)
         {
-            _assignableTypes = Util.GetAssignableTypes(_listElementType).ToList();
+            _assignableTypes = Util.Util.GetAssignableTypes(_listElementType).ToList();
         }
 
         foreach (var obj in _list)
@@ -102,7 +101,7 @@ public partial class ArrayInspector : MemberInspector
     private void AppendListElement(object value)
     {
         if (_listElementType == null) return;
-        var memberWrapper = MemberInspectorHandler.Instance?.MemberWrapperScene?.Instantiate<MemberWrapper>();
+        var memberWrapper = Handlers.MemberInspectorHandler.Instance?.MemberWrapperScene?.Instantiate<MemberWrapper>();
         memberWrapper.SetMemberType(_listElementType);
         var listElementInstance = _listElementScene!.Instantiate<ListElement>();
         var memberUiInfo = MemberUiInfo.Default;
@@ -117,7 +116,7 @@ public partial class ArrayInspector : MemberInspector
 
     private void AppendListElement(Type? type)
     {
-        if (type == null || _listElementType == null || !Util.TryCreateInstance(type, out var instance)) return;
+        if (type == null || _listElementType == null || !Util.Util.TryCreateInstance(type, out var instance)) return;
         if (!_listElementType.IsAssignableFrom(type)) return;
         AppendListElement(instance);
         OnValueChanged(new ValueChangeTree(this, _list));
