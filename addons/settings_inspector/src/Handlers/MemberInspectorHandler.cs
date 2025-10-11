@@ -4,6 +4,7 @@ using LgkProductions.Inspector;
 using Microsoft.Extensions.Logging;
 using SettingInspector.addons.settings_inspector.Inspectors;
 using SettingInspector.addons.settings_inspector.Testing;
+using SettingInspector.addons.settings_inspector.Util;
 
 namespace SettingInspector.addons.settings_inspector.Handlers;
 
@@ -11,7 +12,7 @@ public partial class MemberInspectorHandler : Control
 {
     public const string Scope = "SettingInspector";
 
-    private ILogger? _logger;
+    private readonly ILogger? _logger = new GodotLogger();
     
     [Export] private PackedScene? _memberInspectorWindowScene;
     [Export] private bool _showTestingClass;
@@ -61,7 +62,7 @@ public partial class MemberInspectorHandler : Control
     public MemberInspectorHandle<T> OpenClassInspectorWindow<T>(T instance)
     {
         if (instance == null) throw new NullReferenceException("instance is null");
-
+        
         var memberInspectorWrapper = _memberInspectorWindowScene!.Instantiate<IMemberInspectorWrapper>();
         AddChild(memberInspectorWrapper.RootNode);
         var wrapper = MemberWrapperScene!.Instantiate<MemberWrapper>();
