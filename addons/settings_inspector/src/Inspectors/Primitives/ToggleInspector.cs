@@ -1,9 +1,9 @@
 using Godot;
 using LgkProductions.Inspector.MetaData;
-using SettingInspector.addons.settings_inspector.Attributes;
-using SettingInspector.addons.settings_inspector.Util;
+using SettingInspector.Attributes;
+using SettingInspector.Util;
 
-namespace SettingInspector.addons.settings_inspector.Inspectors.Primitives;
+namespace SettingInspector.Inspectors.Primitives;
 
 public partial class ToggleInspector : MemberInspector
 {

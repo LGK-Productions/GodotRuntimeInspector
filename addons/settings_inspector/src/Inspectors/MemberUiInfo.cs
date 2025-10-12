@@ -1,6 +1,6 @@
 using System;
 
-namespace SettingInspector.addons.settings_inspector.Inspectors;
+namespace SettingInspector.Inspectors;
 
 public record MemberUiInfo(
     bool Scrollable = false,

@@ -5,10 +5,11 @@ using Godot;
 using LgkProductions.Inspector;
 using LgkProductions.Inspector.MetaData;
 using Microsoft.Extensions.Logging;
-using SettingInspector.addons.settings_inspector.Attributes;
-using SettingInspector.addons.settings_inspector.Util;
+using SettingInspector.Attributes;
+using SettingInspector.Handlers;
+using SettingInspector.Util;
 
-namespace SettingInspector.addons.settings_inspector.Inspectors;
+namespace SettingInspector.Inspectors;
 
 public abstract partial class MemberInspector : Control
 {
@@ -45,7 +46,7 @@ public abstract partial class MemberInspector : Control
         var value = Element.Value;
         if (value == null && !Util.Util.TryCreateInstance(ValueType, out value))
         {
-            Handlers.MemberInspectorHandler.Logger?.LogWarning("Value is null, could not create instance.");
+            MemberInspectorHandler.Logger?.LogWarning("Value is null, could not create instance.");
             return;
         }
 
@@ -96,7 +97,6 @@ public abstract partial class MemberInspector : Control
 
     protected virtual void SetValueInternal(object value)
     {
-        
     }
 
     public virtual void SetEditable(bool editable)
@@ -173,7 +173,7 @@ public abstract partial class MemberInspector : Control
         result = null;
         if (ValueType == null)
         {
-            Handlers.MemberInspectorHandler.Logger?.LogError("Could not retrieve member, due to no type being set");
+            MemberInspectorHandler.Logger?.LogError("Could not retrieve member, due to no type being set");
             return false;
         }
 
@@ -184,7 +184,7 @@ public abstract partial class MemberInspector : Control
         }
         catch (Exception e)
         {
-            Handlers.MemberInspectorHandler.Logger?.LogError(e, "Failed to convert value to type {valueType}", ValueType);
+            MemberInspectorHandler.Logger?.LogError(e, "Failed to convert value to type {valueType}", ValueType);
         }
 
         return false;
@@ -195,7 +195,7 @@ public abstract partial class MemberInspector : Control
         result = default;
         if (ValueType != typeof(T))
         {
-            Handlers.MemberInspectorHandler.Logger?.LogError("Could not retrieve member, due to type not matching");
+            MemberInspectorHandler.Logger?.LogError("Could not retrieve member, due to type not matching");
             return false;
         }
 
@@ -206,7 +206,7 @@ public abstract partial class MemberInspector : Control
         }
         catch (Exception e)
         {
-            Handlers.MemberInspectorHandler.Logger?.LogError(e, "Failed to convert value to type {valueType}", ValueType);
+            MemberInspectorHandler.Logger?.LogError(e, "Failed to convert value to type {valueType}", ValueType);
         }
 
         return false;

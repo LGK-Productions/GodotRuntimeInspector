@@ -5,11 +5,11 @@ using System.ComponentModel.DataAnnotations;
 using Godot;
 using LgkProductions.Inspector;
 using LgkProductions.Inspector.Attributes;
-using SettingInspector.addons.settings_inspector.Attributes;
+using SettingInspector.Attributes;
 using Orientation = LgkProductions.Inspector.Orientation;
 using Timer = System.Timers.Timer;
 
-namespace SettingInspector.addons.settings_inspector.Testing;
+namespace SettingInspector.Testing;
 
 [Serializable]
 internal class TestModel : ITickProvider
@@ -20,6 +20,8 @@ internal class TestModel : ITickProvider
         timer.Elapsed += (sender, args) => TestUpdates++;
         timer.Start();
     }
+
+    public event Action? Tick;
 
     #region Primitives
 
@@ -143,12 +145,10 @@ internal class TestModel : ITickProvider
     [Tab("Other")] [Slider] [Range(0, 1)] public float TestSlider { get; set; } = 0.5f;
 
     [Tab("Other")] [Slider] [Range(0, 11)] public int IntSlider { get; set; } = 1;
-    
+
     [Tab("Other")] [Suffix("m")] public int TestSuffix { get; set; } = 1;
 
     #endregion
-
-    public event Action? Tick;
 }
 
 public class VeryComplexType

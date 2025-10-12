@@ -1,6 +1,6 @@
-﻿using SettingInspector.addons.settings_inspector.Inspectors;
+﻿using SettingInspector.Inspectors;
 
-namespace SettingInspector.addons.settings_inspector.Util;
+namespace SettingInspector.Util;
 
 public class ValueChangeTree(MemberInspector member, object newValue, ValueChangeTree? child = null)
 {

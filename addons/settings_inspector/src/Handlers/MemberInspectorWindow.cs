@@ -1,6 +1,6 @@
 using Godot;
 
-namespace SettingInspector.addons.settings_inspector.Handlers;
+namespace SettingInspector.Handlers;
 
 public partial class MemberInspectorWindow : Window, IMemberInspectorWrapper
 {

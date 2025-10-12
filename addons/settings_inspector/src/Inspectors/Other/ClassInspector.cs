@@ -8,11 +8,13 @@ using Godot;
 using LgkProductions.Inspector;
 using LgkProductions.Inspector.MetaData;
 using Microsoft.Extensions.Logging;
-using SettingInspector.addons.settings_inspector.Inspectors.Collections;
-using SettingInspector.addons.settings_inspector.Util;
+using SettingInspector.Handlers;
+using SettingInspector.Inspectors.Collections;
+using SettingInspector.Util;
+using OptionButton = SettingInspector.Util.OptionButton;
 using Timer = System.Timers.Timer;
 
-namespace SettingInspector.addons.settings_inspector.Inspectors.Other;
+namespace SettingInspector.Inspectors.Other;
 
 public partial class ClassInspector : MemberInspector
 {
@@ -43,7 +45,7 @@ public partial class ClassInspector : MemberInspector
     [Export] private Control? _memberParent;
     [Export] private PackedScene? _memberTabCollectionScene;
     [Export] private Button? _saveButton;
-    [Export] private Util.OptionButton? _typeChooser;
+    [Export] private OptionButton? _typeChooser;
     [Export] private Button? _unattachButton;
     private IMemberInspectorCollection? MemberInspectorCollection => (IMemberInspectorCollection?)_memberCollectionNode;
 
@@ -184,7 +186,7 @@ public partial class ClassInspector : MemberInspector
     private void UnattachPressed()
     {
         if (_instance == null) return;
-        Handlers.MemberInspectorHandler.Instance.OpenClassInspectorWindow(_instance);
+        MemberInspectorHandler.Instance.OpenClassInspectorWindow(_instance);
     }
 
     private async void SavePressed()
@@ -204,7 +206,7 @@ public partial class ClassInspector : MemberInspector
         }
         catch (Exception e)
         {
-            Handlers.MemberInspectorHandler.Logger?.LogError(e, "Failed to save file");
+            MemberInspectorHandler.Logger?.LogError(e, "Failed to save file");
         }
     }
 
@@ -217,7 +219,7 @@ public partial class ClassInspector : MemberInspector
 
         if (!File.Exists(filePath))
         {
-            Handlers.MemberInspectorHandler.Logger?.LogError("File not found: {filePath}", filePath);
+            MemberInspectorHandler.Logger?.LogError("File not found: {filePath}", filePath);
             return;
         }
 
@@ -233,7 +235,7 @@ public partial class ClassInspector : MemberInspector
         }
         catch (Exception e)
         {
-            Handlers.MemberInspectorHandler.Logger?.LogError(e, "Failed to save file");
+            MemberInspectorHandler.Logger?.LogError(e, "Failed to save file");
         }
     }
 

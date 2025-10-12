@@ -2,18 +2,18 @@ using System;
 using Godot;
 using LgkProductions.Inspector;
 using Microsoft.Extensions.Logging;
-using SettingInspector.addons.settings_inspector.Inspectors;
-using SettingInspector.addons.settings_inspector.Testing;
-using SettingInspector.addons.settings_inspector.Util;
+using SettingInspector.Inspectors;
+using SettingInspector.Testing;
+using SettingInspector.Util;
 
-namespace SettingInspector.addons.settings_inspector.Handlers;
+namespace SettingInspector.Handlers;
 
 public partial class MemberInspectorHandler : Control
 {
     public const string Scope = "SettingInspector";
 
     private readonly ILogger? _logger = new GodotLogger();
-    
+
     [Export] private PackedScene? _memberInspectorWindowScene;
     [Export] private bool _showTestingClass;
 
@@ -62,7 +62,7 @@ public partial class MemberInspectorHandler : Control
     public MemberInspectorHandle<T> OpenClassInspectorWindow<T>(T instance)
     {
         if (instance == null) throw new NullReferenceException("instance is null");
-        
+
         var memberInspectorWrapper = _memberInspectorWindowScene!.Instantiate<IMemberInspectorWrapper>();
         AddChild(memberInspectorWrapper.RootNode);
         var wrapper = MemberWrapperScene!.Instantiate<MemberWrapper>();
@@ -97,7 +97,7 @@ public partial class MemberInspectorHandler : Control
 }
 
 /// <summary>
-/// A handle class exposing functionality to interact with the member inspector
+///     A handle class exposing functionality to interact with the member inspector
 /// </summary>
 /// <typeparam name="T">type of the inspected instance</typeparam>
 public class MemberInspectorHandle<T> : IInspectorHandle
@@ -116,28 +116,28 @@ public class MemberInspectorHandle<T> : IInspectorHandle
     }
 
     /// <summary>
-    /// If set to true, the root will be set to invisible on close instead of being removed.
-    /// This enables reopening the window without constructing it again.
+    ///     If set to true, the root will be set to invisible on close instead of being removed.
+    ///     This enables reopening the window without constructing it again.
     /// </summary>
     public bool Buffered { get; set; } = false;
-    
+
     /// <summary>
-    /// Root of this inspector. 
+    ///     Root of this inspector.
     /// </summary>
     public IMemberInspectorWrapper Root { get; }
-    
+
     /// <summary>
-    /// Gets called, if Close is called on this handle
+    ///     Gets called, if Close is called on this handle
     /// </summary>
     public event Action? OnClose;
-    
+
     /// <summary>
-    /// The root inspector wrapper
+    ///     The root inspector wrapper
     /// </summary>
     public MemberWrapper RootInspectorWrapper { get; }
 
     /// <summary>
-    /// Applies values of the ui to the inspected instance
+    ///     Applies values of the ui to the inspected instance
     /// </summary>
     public void Apply()
     {
@@ -147,7 +147,7 @@ public class MemberInspectorHandle<T> : IInspectorHandle
     }
 
     /// <summary>
-    /// Closes the inspector
+    ///     Closes the inspector
     /// </summary>
     public void Close()
     {
@@ -166,7 +166,7 @@ public class MemberInspectorHandle<T> : IInspectorHandle
     }
 
     /// <summary>
-    /// Reopens the inspector, only if buffered is enabled
+    ///     Reopens the inspector, only if buffered is enabled
     /// </summary>
     public void Reopen()
     {
@@ -175,7 +175,7 @@ public class MemberInspectorHandle<T> : IInspectorHandle
     }
 
     /// <summary>
-    /// Gets called, if apply is called on this handle
+    ///     Gets called, if apply is called on this handle
     /// </summary>
     public event Action<T>? OnApply;
 }

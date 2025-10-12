@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using LgkProductions.Inspector;
-using SettingInspector.addons.settings_inspector.Util;
+using SettingInspector.Util;
 
-namespace SettingInspector.addons.settings_inspector.Inspectors.Collections;
+namespace SettingInspector.Inspectors.Collections;
 
 public interface IMemberInspectorCollection : IEnumerable<(InspectorElement, MemberInspector)>
 {

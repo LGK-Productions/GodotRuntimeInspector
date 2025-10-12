@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using Godot;
 using LgkProductions.Inspector.MetaData;
-using SettingInspector.addons.settings_inspector.Util;
+using SettingInspector.Util;
+using OptionButton = Godot.OptionButton;
 
-namespace SettingInspector.addons.settings_inspector.Inspectors.Other;
+namespace SettingInspector.Inspectors.Other;
 
 public partial class EnumInspector : MemberInspector
 {
     private readonly List<string> _enumLabels = new();
-    [Export] private Godot.OptionButton? _optionButton;
+    [Export] private OptionButton? _optionButton;
 
     protected override void OnInitialize()
     {

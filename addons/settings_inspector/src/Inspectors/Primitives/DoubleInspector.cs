@@ -1,4 +1,4 @@
-namespace SettingInspector.addons.settings_inspector.Inspectors.Primitives;
+namespace SettingInspector.Inspectors.Primitives;
 
 public partial class DoubleInspector : NumberInspector<double>
 {

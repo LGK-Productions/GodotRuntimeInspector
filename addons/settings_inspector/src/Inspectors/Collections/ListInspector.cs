@@ -5,9 +5,10 @@ using System.Linq;
 using Godot;
 using LgkProductions.Inspector;
 using LgkProductions.Inspector.MetaData;
-using SettingInspector.addons.settings_inspector.Util;
+using SettingInspector.Handlers;
+using SettingInspector.Util;
 
-namespace SettingInspector.addons.settings_inspector.Inspectors.Collections;
+namespace SettingInspector.Inspectors.Collections;
 
 public partial class ListInspector : MemberInspector
 {
@@ -87,7 +88,7 @@ public partial class ListInspector : MemberInspector
     private void AppendListElement(object value)
     {
         if (_listElementType == null) return;
-        var memberWrapper = Handlers.MemberInspectorHandler.Instance?.MemberWrapperScene?.Instantiate<MemberWrapper>();
+        var memberWrapper = MemberInspectorHandler.Instance?.MemberWrapperScene?.Instantiate<MemberWrapper>();
         memberWrapper.SetMemberType(_listElementType);
         var listElementInstance = _listElementScene!.Instantiate<ListElement>();
         var memberUiInfo = MemberUiInfo.Default;

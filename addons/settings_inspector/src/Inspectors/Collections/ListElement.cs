@@ -1,18 +1,18 @@
 using System;
 using Godot;
-using SettingInspector.addons.settings_inspector.Util;
+using SettingInspector.Util;
 
-namespace SettingInspector.addons.settings_inspector.Inspectors.Collections;
+namespace SettingInspector.Inspectors.Collections;
 
 public partial class ListElement : Control
 {
     [Export] private Button? _deleteButton;
     [Export] private Button? _downButton;
-    [Export] private Button? _upButton;
 
     private MemberInspector? _inspector;
     [Export] private Control? _inspectorContainer;
     private ListInspector? _listInspector;
+    [Export] private Button? _upButton;
 
     public void SetMemberInspector(MemberInspector inspector, ListInspector? listInspector = null)
     {

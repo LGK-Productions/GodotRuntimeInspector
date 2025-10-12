@@ -2,8 +2,9 @@ using System;
 using System.Threading.Tasks;
 using Godot;
 using Microsoft.Extensions.Logging;
+using SettingInspector.Handlers;
 
-namespace SettingInspector.addons.settings_inspector.Util;
+namespace SettingInspector.Util;
 
 public static class FileDialogHandler
 {
@@ -59,7 +60,7 @@ public static class FileDialogHandler
 
         private void OnFileSelected(string path)
         {
-            Handlers.MemberInspectorHandler.Logger?.LogInformation("File selected: {filePath}", path);
+            MemberInspectorHandler.Logger?.LogInformation("File selected: {filePath}", path);
             _fileSelectedTcs.TrySetResult(path);
             _pathSelected.TrySetResult(path);
             FileSelected?.Invoke(path);

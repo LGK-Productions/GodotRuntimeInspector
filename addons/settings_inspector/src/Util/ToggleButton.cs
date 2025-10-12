@@ -1,6 +1,6 @@
 using Godot;
 
-namespace SettingInspector.addons.settings_inspector.Util;
+namespace SettingInspector.Util;
 
 public partial class ToggleButton : Button
 {

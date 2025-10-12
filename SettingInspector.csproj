@@ -4,14 +4,16 @@
         <EnableDynamicLoading>true</EnableDynamicLoading>
         <Nullable>enable</Nullable>
         <LangVersion>preview</LangVersion>
+        <EnableDefaultItems>false</EnableDefaultItems>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="LgkProductions.Inspector" Version="0.4.1-alpha" />
-        <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.0-rc.1.25451.107" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0-rc.1.25451.107" />
+        <PackageReference Include="LgkProductions.Inspector" Version="0.4.1-alpha"/>
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.0-rc.1.25451.107"/>
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0-rc.1.25451.107"/>
         <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.14.0">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <Compile Include="addons/settings_inspector/**/*.cs" Link="%(RecursiveDir)%(Filename)%(Extension)"/>
     </ItemGroup>
 </Project>

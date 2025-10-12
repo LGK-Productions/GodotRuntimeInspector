@@ -2,11 +2,12 @@ using System;
 using Godot;
 using Microsoft.Extensions.Logging;
 
-namespace SettingInspector.addons.settings_inspector.Util;
+namespace SettingInspector.Util;
 
 public class GodotLogger : ILogger
 {
-    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception,
+        Func<TState, Exception?, string> formatter)
     {
         switch (logLevel)
         {
@@ -27,8 +28,6 @@ public class GodotLogger : ILogger
                 break;
             case LogLevel.Trace:
                 GD.Print(formatter(state, exception));
-                break;
-            default:
                 break;
         }
     }

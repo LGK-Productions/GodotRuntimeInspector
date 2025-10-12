@@ -5,15 +5,16 @@ using System.Linq;
 using Godot;
 using LgkProductions.Inspector;
 using LgkProductions.Inspector.MetaData;
-using SettingInspector.addons.settings_inspector.Util;
+using SettingInspector.Handlers;
+using SettingInspector.Util;
 
-namespace SettingInspector.addons.settings_inspector.Inspectors.Collections;
+namespace SettingInspector.Inspectors.Collections;
 
 public partial class ArrayInspector : MemberInspector
 {
     private readonly List<ListElement> _arrayElements = new();
-    [Export] private SpinBox? _elementCount;
     private List<Type>? _assignableTypes;
+    [Export] private SpinBox? _elementCount;
     [Export] private FoldableContainer? _foldableContainer;
 
     private IList? _list;
@@ -31,19 +32,11 @@ public partial class ArrayInspector : MemberInspector
         var previousCount = _arrayElements.Count;
         var diff = (int)value - previousCount;
         if (diff > 0)
-        {
-            for (int i = 0; i < diff; i++)
-            {
+            for (var i = 0; i < diff; i++)
                 AppendListElement(_listElementType);
-            }
-        }
         else
-        {
-            for (int i = 0; i < -diff; i++)
-            {
+            for (var i = 0; i < -diff; i++)
                 RemoveListElement(_arrayElements[^1]);
-            }
-        }
     }
 
     protected override void OnRemove()
@@ -72,16 +65,14 @@ public partial class ArrayInspector : MemberInspector
 
         _listElementType = ValueType.GetElementType();
         if (_listElementType.IsAbstract || _listElementType.IsInterface)
-        {
             _assignableTypes = Util.Util.GetAssignableTypes(_listElementType).ToList();
-        }
 
         foreach (var obj in _list)
         {
             if (obj == null) continue;
             AppendListElement(obj);
         }
-        
+
         _elementCount.SetValueNoSignal(_list.Count);
     }
 
@@ -101,7 +92,7 @@ public partial class ArrayInspector : MemberInspector
     private void AppendListElement(object value)
     {
         if (_listElementType == null) return;
-        var memberWrapper = Handlers.MemberInspectorHandler.Instance?.MemberWrapperScene?.Instantiate<MemberWrapper>();
+        var memberWrapper = MemberInspectorHandler.Instance?.MemberWrapperScene?.Instantiate<MemberWrapper>();
         memberWrapper.SetMemberType(_listElementType);
         var listElementInstance = _listElementScene!.Instantiate<ListElement>();
         var memberUiInfo = MemberUiInfo.Default;

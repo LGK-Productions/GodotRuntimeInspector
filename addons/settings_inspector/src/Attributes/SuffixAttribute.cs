@@ -2,7 +2,7 @@
 using LgkProductions.Inspector.Attributes;
 using LgkProductions.Inspector.MetaData;
 
-namespace SettingInspector.addons.settings_inspector.Attributes;
+namespace SettingInspector.Attributes;
 
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
 public sealed class SuffixAttribute(string suffix) : InspectorAttribute
