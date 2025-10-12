@@ -22,7 +22,3 @@ window/subwindows/embed_subwindows=false
 [dotnet]
 
 project/assembly_name="RuntimeInspector"
-
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/runtime_inspector/plugin.cfg")
