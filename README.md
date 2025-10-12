@@ -4,7 +4,7 @@
 This is a Godot addon (4.5 and later) for opening an inspector for c# classes at runtime. It implements a frontend for the [LgkProductions Inspector](https://github.com/LGK-Productions/LgkProductions.Inspector). The inspector can be customized using various tags which are resolved by the Metadata backend.
 
 ## Setup
-Put the addons/settings_inspector folder into the addons folder of your godot project. Drag the MemberInspectorHandler.tscn scene into the scene you want to open inspectors in.
+Put the addons/runtime_inspector folder into the addons folder of your godot project. Drag the MemberInspectorHandler.tscn scene into the scene you want to open inspectors in.
 
 ## API
 Inspectors can be created in two different ways:
