@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="SettingInspector"
-run/main_scene="res://addons/settings_inspector/testingScene.tscn"
+run/main_scene="res://addons/runtime_inspector/testingScene.tscn"
 config/features=PackedStringArray("4.5", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -25,4 +25,4 @@ project/assembly_name="RuntimeInspector"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/settings_inspector/plugin.cfg")
+enabled=PackedStringArray("res://addons/runtime_inspector/plugin.cfg")
