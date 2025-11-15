@@ -91,8 +91,11 @@ public abstract partial class MemberInspector : Control
 
     protected void SetValue(object value)
     {
-        Clear();
-        Callable.From(() => SetValueInternal(value)).CallDeferred();
+        Callable.From(() =>
+        {
+            Clear();
+            SetValueInternal(value);
+        }).CallDeferred();
     }
 
     protected virtual void SetValueInternal(object value)
