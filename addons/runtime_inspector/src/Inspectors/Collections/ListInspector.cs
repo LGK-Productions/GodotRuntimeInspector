@@ -179,9 +179,13 @@ public partial class ListInspector : MemberInspector
                 _foldableContainer.TooltipText = "";
             }
         }
-        
 
-        if (flags.IsSet(LayoutFlags.NoBackground)) _memberParent?.GetParent()?.Reparent(this);
+
+        if (flags.IsSet(LayoutFlags.NoBackground))
+        {
+            _foldableContainer?.SetVisible(false);
+            _memberParent?.GetParent()?.Reparent(this);
+        }
 
         
 
