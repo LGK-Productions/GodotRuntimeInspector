@@ -12,7 +12,7 @@ using Timer = System.Timers.Timer;
 namespace RuntimeInspector.Testing;
 
 [Serializable]
-internal class TestModel : ITickProvider
+internal class TestModel
 {
     public TestModel()
     {
@@ -20,8 +20,6 @@ internal class TestModel : ITickProvider
         timer.Elapsed += (sender, args) => TestUpdates++;
         timer.Start();
     }
-
-    public event Action? Tick;
 
     #region Primitives
 
@@ -113,15 +111,7 @@ internal class TestModel : ITickProvider
     [Tab("Other")]
     [Description("This should count up every second")]
     [ReadOnly(true)]
-    public int TestUpdates
-    {
-        get;
-        set
-        {
-            field = value;
-            Tick?.Invoke();
-        }
-    }
+    public int TestUpdates { get; set; }
 
     [Tab("Other")]
     [HideInInspector]

@@ -29,7 +29,7 @@ public partial class MemberGroup : Control
 
     private void ExpandButtonToggled(bool on)
     {
-        _memberParent?.Visible = on;
+        _memberParent?.SetVisible(on);
     }
 
     public void SetGroup(GroupLayout groupLayout)

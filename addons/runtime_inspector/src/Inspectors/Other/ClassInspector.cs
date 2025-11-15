@@ -84,8 +84,8 @@ public partial class ClassInspector : MemberInspector
 
         if (_assignables != null)
             _typeChooser.SetSelectedIndex(Array.IndexOf(_assignables, classInstance.GetType()));
-        if (Element == null)
-            _foldableContainer?.Title = ValueType?.Name;
+        if (Element == null && _foldableContainer != null)
+            _foldableContainer.Title = ValueType?.Name;
 
         _memberCollectionNode =
             (MemberUiInfo.AllowTabs ? _memberTabCollectionScene : _memberCollectionScene)!.Instantiate();
@@ -98,8 +98,11 @@ public partial class ClassInspector : MemberInspector
     protected override void OnSetMetaData(MetaDataMember member)
     {
         base.OnSetMetaData(member);
-        _foldableContainer?.Title = member.DisplayName;
-        _foldableContainer?.TooltipText = member.Description;
+        if (_foldableContainer != null)
+        {
+            _foldableContainer.Title = member.DisplayName;
+            _foldableContainer.TooltipText = member.Description;
+        }
     }
 
     protected override void Clear()
@@ -141,10 +144,10 @@ public partial class ClassInspector : MemberInspector
             _memberParent?.GetParent()?.Reparent(this);
         }
 
-        if (flags.IsSet(LayoutFlags.NoLabel))
+        if (flags.IsSet(LayoutFlags.NoLabel) && _foldableContainer != null)
         {
-            _foldableContainer?.Title = "";
-            _foldableContainer?.TooltipText = "";
+            _foldableContainer.Title = "";
+            _foldableContainer.TooltipText = "";
         }
     }
 

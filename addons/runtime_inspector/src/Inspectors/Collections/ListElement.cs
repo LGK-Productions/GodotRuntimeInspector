@@ -77,10 +77,10 @@ public partial class ListElement : Control
 
     private void SetButtonsVisible(bool visible)
     {
-        _deleteButton?.Visible = visible;
-        _downButton?.Visible = visible;
-        _upButton?.Visible = visible;
-        (_upButton?.GetParent() as Control)?.Visible = visible;
+        _deleteButton?.SetVisible(visible);
+        _downButton?.SetVisible(visible);
+        _upButton?.SetVisible(visible);
+        (_upButton?.GetParent() as Control)?.SetVisible(visible);
     }
 
     private void Clear()

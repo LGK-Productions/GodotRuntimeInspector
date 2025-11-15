@@ -106,10 +106,14 @@ public abstract partial class MemberInspector : Control
 
     protected virtual void OnSetMetaData(MetaDataMember member)
     {
-        _label?.Text = Element.MemberInfo.DisplayName;
-        _label?.TooltipText = Element.MemberInfo.Description;
-        if (member.TryGetMetaData(LabelSizeAttribute.MetadataKey, out var labelSizeMultiplier))
-            _label?.SizeFlagsStretchRatio = labelSizeMultiplier;
+        if (_label != null)
+        {
+            _label.Text = Element.MemberInfo.DisplayName;
+            _label.TooltipText = Element.MemberInfo.Description;
+            if (member.TryGetMetaData(LabelSizeAttribute.MetadataKey, out var labelSizeMultiplier))
+                _label.SizeFlagsStretchRatio = labelSizeMultiplier;
+        }
+        
         _wrapper?.AddMargin((int)member.Spacing.Top, (int)member.Spacing.Botton, (int)member.Spacing.Left,
             (int)member.Spacing.Right);
         if (member.TryGetMetaData(LabelAttribute.TextKey, out var text))

@@ -60,8 +60,8 @@ public partial class ArrayInspector : MemberInspector
         if (value is not IList list) return;
         _list = list;
 
-        if (Element == null)
-            _foldableContainer?.Title = ValueType?.Name;
+        if (Element == null && _foldableContainer != null)
+            _foldableContainer.Title = ValueType?.Name;
 
         _listElementType = ValueType.GetElementType();
         if (_listElementType.IsAbstract || _listElementType.IsInterface)
@@ -162,23 +162,29 @@ public partial class ArrayInspector : MemberInspector
     {
         base.OnSetMetaData(member);
         _elementCount!.Editable = !member.IsReadOnly;
-        _foldableContainer?.Title = member.Name;
-        _foldableContainer?.TooltipText = member.Description;
+        if (_foldableContainer != null)
+        {
+            _foldableContainer.Title = member.Name;
+            _foldableContainer.TooltipText = member.Description;
+        }
     }
 
 
     protected override void SetLayoutFlags(LayoutFlags flags)
     {
         base.SetLayoutFlags(flags);
-        _foldableContainer?.Folded = !flags.IsSet(LayoutFlags.ExpandedInitially);
+        if (_foldableContainer != null)
+        {
+            _foldableContainer.Folded = !flags.IsSet(LayoutFlags.ExpandedInitially);
+            if (flags.IsSet(LayoutFlags.NoLabel))
+            {
+                _foldableContainer.Title = "";
+                _foldableContainer.TooltipText = "";
+            }
+        }
 
         if (flags.IsSet(LayoutFlags.NoBackground)) _memberParent?.GetParent()?.Reparent(this);
 
-        if (flags.IsSet(LayoutFlags.NoLabel))
-        {
-            _foldableContainer?.Title = "";
-            _foldableContainer?.TooltipText = "";
-        }
 
         if (flags.IsSet(LayoutFlags.NoElements)) _elementCount!.Visible = false;
     }
