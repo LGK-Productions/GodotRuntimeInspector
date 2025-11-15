@@ -184,6 +184,7 @@ public partial class ListInspector : MemberInspector
         if (flags.IsSet(LayoutFlags.NoBackground))
         {
             _foldableContainer?.SetVisible(false);
+            _memberParent?.GetParent()?.SetOwner(null);
             _memberParent?.GetParent()?.Reparent(this);
         }
 
