@@ -144,6 +144,9 @@ public partial class ClassInspector : MemberInspector
             _memberParent?.GetParent()?.SetOwner(null);
             _memberParent?.GetParent()?.Reparent(this);
         }
+        
+        /*if (flags.HasFlag(LayoutFlags.NoBackground))
+            _foldableContainer.AddThemeStyleboxOverride("panel", new StyleBoxFlat() {BgColor = new Color(0, 0, 0, 0)});*/
 
         if (flags.IsSet(LayoutFlags.NoLabel) && _foldableContainer != null)
         {

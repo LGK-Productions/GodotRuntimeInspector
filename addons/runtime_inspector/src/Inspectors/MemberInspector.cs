@@ -91,11 +91,13 @@ public abstract partial class MemberInspector : Control
 
     protected void SetValue(object value)
     {
-        Callable.From(() =>
+        Clear();
+        SetValueInternal(value);
+        
+        /*Callable.From(() =>
         {
-            Clear();
-            SetValueInternal(value);
-        }).CallDeferred();
+            
+        }).CallDeferred();*/
     }
 
     protected virtual void SetValueInternal(object value)
@@ -133,7 +135,7 @@ public abstract partial class MemberInspector : Control
     {
         _wrapper = wrapper;
     }
-
+    
     protected virtual void Clear()
     {
     }

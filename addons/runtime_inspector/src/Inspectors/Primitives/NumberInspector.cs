@@ -40,7 +40,7 @@ public partial class NumberInspector<T> : MemberInspector where T : struct, INum
 
     protected override void SetValueInternal(object value)
     {
-        _range ??= _slider;
+        _range ??= _spinBox;
         var val = (double)Convert.ChangeType(value, typeof(double));
         _range!.SetValue(val);
         _internalValue = val;

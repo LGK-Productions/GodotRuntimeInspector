@@ -21,6 +21,8 @@ public partial class ArrayInspector : MemberInspector
     [Export] private PackedScene? _listElementScene;
     private Type? _listElementType;
     [Export] private Control? _memberParent;
+    
+    private static LayoutFlags _layoutFlags = LayoutFlags.NoLabel;
 
     protected override void OnInitialize()
     {
@@ -98,7 +100,7 @@ public partial class ArrayInspector : MemberInspector
         var memberUiInfo = MemberUiInfo.Default;
         if (value.GetType() != _listElementType)
             memberUiInfo = memberUiInfo with { ParentType = _listElementType };
-        memberWrapper.MemberInspector.SetInstance(value, memberUiInfo);
+        memberWrapper.MemberInspector.SetInstance(value, memberUiInfo, _layoutFlags);
         listElementInstance.SetMemberInspector(memberWrapper.MemberInspector);
         _memberParent!.AddChild(listElementInstance);
         _arrayElements.Add(listElementInstance);

@@ -91,6 +91,18 @@ internal class TestModel
 
     [Tab("ComplexTypes")] public int[] TestArray { get; set; }
 
+    [Tab("ComplexTypes")]
+    public Dictionary<string, int> TestDictionary { get; set; } =
+    new (){
+        { "Test1", 2 }, { "This is a key", 3 }
+    };
+    
+    [Tab("ComplexTypes")]
+    public Dictionary<TestingInterface, TestingInterface> TestDictionaryPolymorphic { get; set; } =
+        new (){
+            { new InterfaceType1(), new InterfaceType2() }
+        };
+
     [Tab("ComplexTypes")] public List<List<int>> TestListList { get; set; }
 
     [Tab("ComplexTypes")] public List<VeryComplexType> TestComplexList { get; set; }

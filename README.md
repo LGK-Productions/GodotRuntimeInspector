@@ -66,9 +66,9 @@ Aside from all primitive types, the runtime inspector can display:
 - (Godot-)Colors
 - Arrays
 - Lists
+- Dictionaries
 
 All classes are displayed as composites of their members.
-There is no support for dictionaries at the moment
 
 ## Layout Flags
 You can specify some additional layout options via the layout flags, which can take effect depending on the element they are used for. The following flags are available:

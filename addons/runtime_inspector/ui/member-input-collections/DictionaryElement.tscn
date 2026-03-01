@@ -1,0 +1,44 @@
+[gd_scene load_steps=3 format=3 uid="uid://c51puntjfct0f"]
+
+[ext_resource type="Script" uid="uid://bm4jo3vqj3xk0" path="res://addons/runtime_inspector/src/Inspectors/Collections/DictionaryElement.cs" id="1_seq32"]
+[ext_resource type="Texture2D" uid="uid://quf1g2d4wcdo" path="res://addons/runtime_inspector/art/icons/fluent--delete-20-regular.png" id="4_pplpd"]
+
+[node name="DictionaryElement" type="MarginContainer" node_paths=PackedStringArray("_deleteButton", "_keyParent", "_valueParent")]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 54.0
+grow_horizontal = 2
+script = ExtResource("1_seq32")
+_deleteButton = NodePath("MarginContainer/HBoxContainer/Delete")
+_keyParent = NodePath("MarginContainer/HBoxContainer/KeyContainer")
+_valueParent = NodePath("MarginContainer/HBoxContainer/ValueContainer")
+metadata/_edit_vertical_guides_ = [-29.0]
+
+[node name="Panel" type="Panel" parent="."]
+visible = false
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="KeyContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ValueContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Delete" type="Button" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(35, 0)
+layout_mode = 2
+icon = ExtResource("4_pplpd")
+icon_alignment = 1
+expand_icon = true
