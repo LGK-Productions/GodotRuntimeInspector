@@ -74,6 +74,18 @@ public partial class DictionaryInspector : MemberInspector
 		_foldableContainer.Title = member.Name;
 	}
 
+	public override void SetEditable(bool editable)
+	{
+		base.SetEditable(editable);
+		foreach (var element in _dictionaryElements)
+		{
+			element.SetEditable(editable);
+		}
+
+		_addButton.Visible = editable;
+		_keyParent.Visible = editable;
+	}
+
 	protected override void SetLayoutFlags(LayoutFlags flags)
 	{
 		base.SetLayoutFlags(flags);
@@ -157,6 +169,8 @@ public partial class DictionaryInspector : MemberInspector
 		valueWrapper.MemberInspector.SetInstance(value, valueMemberUiInfo, _layoutFlags);
 		
 		dictionaryElementInstance.SetMemberInspector(keyWrapper, valueWrapper, this);
+		
+		dictionaryElementInstance.SetEditable(Editable);
 		_memberParent!.AddChild(dictionaryElementInstance);
 		_dictionaryElements.Add(dictionaryElementInstance);
 		dictionaryElementInstance.ValueChanged += OnChildValueChanged;

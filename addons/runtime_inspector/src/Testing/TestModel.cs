@@ -98,6 +98,12 @@ internal class TestModel
     };
     
     [Tab("ComplexTypes")]
+    public Dictionary<string, string> TestDictionaryReadonly { get; } =
+        new (){
+            { "Test1", "sdf" }, { "This is a key", "bsdf" }
+        };
+    
+    [Tab("ComplexTypes")]
     public Dictionary<TestingInterface, TestingInterface> TestDictionaryPolymorphic { get; set; } =
         new (){
             { new InterfaceType1(), new InterfaceType2() }

@@ -56,7 +56,6 @@ public partial class DictionaryElement : Control
         value.AddThemeConstantOverride("margin_bottom", 0);
 
         _valueInspector.ValueChanged += OnMemberValueChanged;
-
         _dictionaryInspector = dictionaryInspector;
         _deleteButton!.Pressed += OnDeletePressed;
     }
@@ -72,6 +71,11 @@ public partial class DictionaryElement : Control
         _valueInspector?.Remove();
         _deleteButton!.Pressed -= OnDeletePressed;
         QueueFree();
+    }
+
+    public void SetEditable(bool editable)
+    {
+        _valueInspector?.SetEditable(editable);
     }
 
     private void OnMemberValueChanged(ValueChangeTree tree)
